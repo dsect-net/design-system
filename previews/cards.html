@@ -1,0 +1,65 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<title>DSECT — Cards &amp; Panels</title>
+<link rel="stylesheet" href="../fonts.css">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../base.css">
+<style>
+  body { padding: 24px 24px 60px; }
+  .label { font-family: var(--mono); font-size: 10px; letter-spacing: .05em; text-transform: uppercase; color: var(--fg-5); margin-bottom: 10px; }
+  section { margin-bottom: 32px; }
+</style>
+</head>
+<body>
+<button id="themeToggle" style="position:fixed;top:12px;inset-inline-end:12px;z-index:99;min-height:36px;padding:0 12px;border-radius:var(--radius);border:1px solid var(--border-3);background:var(--surface);color:var(--fg-2);font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;">theme: dark</button>
+
+<h1 class="text-section" style="margin-bottom:4px;">Cards &amp; Panels</h1>
+<p class="text-lede" style="max-width:60ch;margin-bottom:28px;"><code>.card</code> lifts on hover (translateY(-1px) + shadow-card) because it is a destination you click through. <code>.panel</code> never lifts — it's a container you read, like a sidebar stat block. The lift is disabled entirely on coarse-pointer devices, since hover has no meaning there.</p>
+
+<section>
+  <div class="label">Card — hover to lift</div>
+  <div class="card-grid-3">
+    <div class="card">
+      <h3>Tritium Linux</h3>
+      <p class="text-small" style="margin-top:6px;">2060 GPU, Radeon iGPU, XDNA2 NPU. 7 running services.</p>
+    </div>
+    <div class="card">
+      <h3>Nebula Vault</h3>
+      <p class="text-small" style="margin-top:6px;">Encrypted personal store. Pepper file, unbacked-up by design.</p>
+    </div>
+    <div class="card">
+      <h3>Quantum Memory</h3>
+      <p class="text-small" style="margin-top:6px;">Fleet-wide sqlite+sqlite-vec store, local embeddings only.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="label">Panel — static container, header + body</div>
+  <div class="panel" style="max-width:340px;">
+    <div class="panel-head">
+      <h3 style="margin:0;">At a glance</h3>
+      <span class="text-label">Live</span>
+    </div>
+    <div class="panel-body">
+      <div class="stat-strip">
+        <div><div class="text-label">Uptime</div><div class="text-mono" style="font-size:18px;">99.8%</div></div>
+        <div><div class="text-label">Services</div><div class="text-mono" style="font-size:18px;">12</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+document.getElementById('themeToggle').addEventListener('click', function(){
+  var root = document.documentElement;
+  var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  root.setAttribute('data-theme', next);
+  this.textContent = 'theme: ' + next;
+});
+</script>
+</body>
+</html>

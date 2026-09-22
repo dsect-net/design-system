@@ -1,0 +1,73 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<title>DSECT — Navigation</title>
+<link rel="stylesheet" href="../fonts.css">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../base.css">
+<link rel="stylesheet" href="../components.css">
+<style>
+  body { padding: 0 0 60px; }
+  .demo-body { display: flex; }
+  .demo-main { flex: 1; padding: 24px; }
+  section { margin-bottom: 32px; }
+  .label { font-family: var(--mono); font-size: 10px; letter-spacing: .05em; text-transform: uppercase; color: var(--fg-5); margin-bottom: 10px; }
+</style>
+</head>
+<body>
+<button id="themeToggle" style="position:fixed;top:12px;inset-inline-end:12px;z-index:99;min-height:36px;padding:0 12px;border-radius:var(--radius);border:1px solid var(--border-3);background:var(--surface);color:var(--fg-2);font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;">theme: dark</button>
+
+<div class="utility-bar"><div class="wrap utility-inner"><span>tritium-linux.fairy-chinstrap.ts.net</span><span>All systems nominal</span></div></div>
+<div class="masthead-wrap">
+  <div class="wrap masthead">
+    <span class="wordmark">DSECT HUB</span>
+    <nav class="mast-nav">
+      <a href="#" class="active">Overview</a>
+      <a href="#">Services</a>
+      <a href="#">Agents</a>
+      <a href="#">Settings</a>
+    </nav>
+  </div>
+</div>
+
+<div class="demo-body">
+  <nav class="sidenav">
+    <div class="sidenav__head"><span class="wordmark">Sections</span></div>
+    <div class="sidenav__body">
+      <p class="sidenav__sub">Operate</p>
+      <a href="#" class="active"><span class="sidenav__icon">◆</span><span class="sidenav__label">Overview</span></a>
+      <a href="#"><span class="sidenav__icon">◇</span><span class="sidenav__label">Services</span><span class="badge badge--sm">12</span></a>
+      <hr class="sidenav__divider">
+      <p class="sidenav__sub">Configure</p>
+      <a href="#"><span class="sidenav__icon">⚙</span><span class="sidenav__label">Settings</span></a>
+    </div>
+    <div class="sidenav__foot"><span class="text-label">v2026.09</span></div>
+  </nav>
+  <div class="demo-main">
+    <section>
+      <div class="label">Masthead — two-tier: utility strip + sticky nav</div>
+      <p class="text-small">Above: the thin mono utility strip. Below: the sticky masthead with wordmark and nav, collapsing to a hamburger under 900px (shell-nav.js owns mobile nav — the sidenav does not render below 760px, so there is only ever one mobile nav).</p>
+    </section>
+    <section>
+      <div class="label">Progress steps</div>
+      <ol class="steps steps--h">
+        <li class="steps__item steps__item--done"><span class="steps__ind"></span><div class="steps__body"><div class="steps__title">Provisioned</div><div class="steps__desc">Host reserved</div></div></li>
+        <li class="steps__item steps__item--current"><span class="steps__ind">2</span><div class="steps__body"><div class="steps__title">Deploying</div><div class="steps__desc">Running migrations</div></div></li>
+        <li class="steps__item"><span class="steps__ind">3</span><div class="steps__body"><div class="steps__title">Verify</div><div class="steps__desc">Health checks</div></div></li>
+      </ol>
+    </section>
+  </div>
+</div>
+
+<script>
+document.getElementById('themeToggle').addEventListener('click', function(){
+  var root = document.documentElement;
+  var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  root.setAttribute('data-theme', next);
+  this.textContent = 'theme: ' + next;
+});
+</script>
+</body>
+</html>

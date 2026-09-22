@@ -1,0 +1,77 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<title>DSECT — Feedback &amp; Loading</title>
+<link rel="stylesheet" href="../fonts.css">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../base.css">
+<link rel="stylesheet" href="../components.css">
+<style>
+  body { padding: 24px 24px 60px; }
+  section { margin-bottom: 32px; }
+  .label { font-family: var(--mono); font-size: 10px; letter-spacing: .05em; text-transform: uppercase; color: var(--fg-5); margin-bottom: 10px; }
+  .row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+</style>
+</head>
+<body>
+<button id="themeToggle" style="position:fixed;top:12px;inset-inline-end:12px;z-index:99;min-height:36px;padding:0 12px;border-radius:var(--radius);border:1px solid var(--border-3);background:var(--surface);color:var(--fg-2);font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;">theme: dark</button>
+
+<h1 class="text-section" style="margin-bottom:4px;">Feedback &amp; Loading</h1>
+<p class="text-lede" style="max-width:60ch;margin-bottom:28px;">A stopped spinner reads as "hung," not "done" — under <code>prefers-reduced-motion</code> it never just freezes, it swaps to a dimmed static state instead. A toast you cannot dismiss is a toast that hides content until it decides not to, so every toast ships a real close control.</p>
+
+<section>
+  <div class="label">Toasts</div>
+  <div class="row" style="flex-direction:column;align-items:stretch;max-width:340px;">
+    <div class="toast toast--ok"><span class="toast__icon">✓</span><div class="toast__body"><div class="toast__title">Deploy complete</div><div class="toast__text">tritium-gateway is live on :8091</div></div><button class="toast__close" aria-label="Dismiss">&times;</button></div>
+    <div class="toast toast--err"><span class="toast__icon">!</span><div class="toast__body"><div class="toast__title">Health check failed</div><div class="toast__text">3 retries exhausted</div></div><button class="toast__close" aria-label="Dismiss">&times;</button></div>
+  </div>
+</section>
+
+<section>
+  <div class="label">Spinners</div>
+  <div class="row">
+    <div class="spinner spinner--sm"></div>
+    <div class="spinner"></div>
+    <div class="spinner spinner--lg"></div>
+    <div class="loading"><div class="spinner spinner--sm"></div>Loading…</div>
+  </div>
+</section>
+
+<section>
+  <div class="label">Progress bar</div>
+  <div class="progbar" style="max-width:300px;"><i style="width:62%"></i></div>
+  <div style="height:10px;"></div>
+  <div class="progbar progbar--indeterminate" style="max-width:300px;"><i></i></div>
+</section>
+
+<section>
+  <div class="label">Skeleton</div>
+  <div style="max-width:300px;">
+    <div class="skel skel--line" style="width:90%;"></div>
+    <div class="skel skel--line" style="width:70%;"></div>
+    <div class="skel skel--line" style="width:80%;"></div>
+  </div>
+</section>
+
+<section>
+  <div class="label">Empty state</div>
+  <div class="empty" style="max-width:340px;">
+    <div class="empty__mark">∅</div>
+    <div class="empty__title">No services running</div>
+    <div class="empty__text">Nothing has been deployed to this environment yet.</div>
+    <div class="empty__actions"><button class="is-primary">Deploy one</button><button>Learn more</button></div>
+  </div>
+</section>
+
+<script>
+document.getElementById('themeToggle').addEventListener('click', function(){
+  var root = document.documentElement;
+  var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  root.setAttribute('data-theme', next);
+  this.textContent = 'theme: ' + next;
+});
+</script>
+</body>
+</html>

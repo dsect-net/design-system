@@ -1,0 +1,115 @@
+/* DSECT Hub — shared design tokens.
+   ONE source of truth. Extracted verbatim from index.html 2026-09-17.
+   Every page links this. No page redeclares --bg, --surface, --radius or --max:
+   seven inline copies that happen to agree is not a design system. */
+
+:root,:root[data-theme="dark"]{
+  --bg:#0A0C10;
+  --bg-2:#0F131A;
+  --bg-3:#161B22;
+  --bg-4:#1B212A;
+  --surface:#12161D;
+  --surface-2:#161B22;
+  --surface-hover:#1E242E;
+  --border:rgba(255,255,255,.06);
+  --border-2:rgba(255,255,255,.09);
+  --border-3:rgba(255,255,255,.12);
+  --fg:#F0F6FC;
+  --fg-2:#C9D1D9;
+  --fg-3:#9BA7B4;
+  --fg-4:#8594A3;
+  --fg-5:#738596;
+  --emerald:#3DF58A;
+  --emerald-pure:#00FF66;
+  --emerald-dim:#00B34A;
+  --emerald-bg:rgba(0,255,102,.09);
+  --amber:#FBBF24;
+  --amber-dim:#D97706;
+  --amber-bg:rgba(251,191,36,.08);
+  --red:#F87171;
+  --red-dim:#DC2626;
+  --red-bg:rgba(248,113,113,.08);
+  --slate:#8B98A6;
+  --slate-bg:rgba(148,163,184,.08);
+  --accent:#00E5FF;
+  --accent-soft:rgba(0,229,255,.10);
+  --ink-btn-bg:#F0F6FC;
+  --ink-btn-fg:#0A0C10;
+  --ink-btn-hover:#C9D1D9;
+  --chart-bar:rgba(255,255,255,.2);
+  --chart-bar-hot:rgba(251,191,36,.6);
+  --chart-bar-down:rgba(248,113,113,.4);
+  --chart-grid:rgba(255,255,255,.06);
+  --overlay:rgba(0,0,0,.5);
+  --shadow-drawer:-20px 0 60px rgba(0,0,0,.3);
+  --shadow-float:0 20px 60px rgba(0,0,0,.5);
+  --shadow-card:0 8px 24px -8px rgba(0,0,0,.4);
+  --shadow-toast:0 12px 32px rgba(0,0,0,.4);
+  --stamp-bg:rgba(10,12,16,.92);
+  --scrollbar:var(--fg-5);
+  --scrollbar-hover:var(--fg-4);
+  --selection-bg:rgba(255,255,255,.12);
+  --selection-fg:#fff;
+  --toast-tick-border:var(--border-2);
+  --focus-ring:#00E5FF;
+  --sans:"Inter",system-ui,-apple-system,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,monospace;
+  --max:1280px;
+  --radius:6px;
+  --radius-lg:8px;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-right:env(safe-area-inset-right,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+  --safe-left:env(safe-area-inset-left,0px);
+}
+
+:root[data-theme="light"]{
+  --emerald-pure:#00A344;
+  --accent-soft:rgba(0,150,180,.10);
+  --bg:#FFFFFF;
+  --bg-2:#FAFAFA;
+  --bg-3:#F4F4F5;
+  --bg-4:#E4E4E7;
+  --surface:#FFFFFF;
+  --surface-2:#FAFAFA;
+  --surface-hover:#F4F4F5;
+  --border:rgba(0,0,0,.06);
+  --border-2:rgba(0,0,0,.09);
+  --border-3:rgba(0,0,0,.12);
+  --fg:#09090B;
+  --fg-2:#27272A;
+  --fg-3:#3F3F46;
+  --fg-4:#52525B;
+  --fg-5:#6C6C7A;
+  --emerald:#047857;
+  --emerald-dim:#065F46;
+  --emerald-bg:rgba(4,120,87,.1);
+  --amber:#B45309;
+  --amber-dim:#92400E;
+  --amber-bg:rgba(180,83,9,.1);
+  --red:#B91C1C;
+  --red-dim:#991B1B;
+  --red-bg:rgba(185,28,28,.1);
+  --slate:#475569;
+  --slate-bg:rgba(71,85,105,.1);
+  --accent:#27272A;
+  --ink-btn-bg:#09090B;
+  --ink-btn-fg:#FFFFFF;
+  --ink-btn-hover:#27272A;
+  --chart-bar:rgba(0,0,0,.18);
+  --chart-bar-hot:rgba(180,83,9,.55);
+  --chart-bar-down:rgba(185,28,28,.4);
+  --chart-grid:rgba(0,0,0,.06);
+  --overlay:rgba(0,0,0,.35);
+  --shadow-drawer:-20px 0 60px rgba(0,0,0,.12);
+  --shadow-float:0 20px 60px rgba(0,0,0,.15);
+  --shadow-card:0 8px 24px -8px rgba(0,0,0,.12);
+  --shadow-toast:0 12px 32px rgba(0,0,0,.12);
+  --stamp-bg:rgba(255,255,255,.92);
+  --scrollbar:var(--fg-5);
+  --scrollbar-hover:var(--fg-4);
+  --selection-bg:rgba(0,0,0,.1);
+  --selection-fg:#09090B;
+  --toast-tick-border:var(--border-2);
+  --focus-ring:var(--fg-4);
+}

@@ -1,0 +1,65 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<title>DSECT — Tables &amp; Filters</title>
+<link rel="stylesheet" href="../fonts.css">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../base.css">
+<link rel="stylesheet" href="../components.css">
+<style>
+  body { padding: 24px 24px 60px; }
+  section { margin-bottom: 32px; }
+  .label { font-family: var(--mono); font-size: 10px; letter-spacing: .05em; text-transform: uppercase; color: var(--fg-5); margin-bottom: 10px; }
+</style>
+</head>
+<body>
+<button id="themeToggle" style="position:fixed;top:12px;inset-inline-end:12px;z-index:99;min-height:36px;padding:0 12px;border-radius:var(--radius);border:1px solid var(--border-3);background:var(--surface);color:var(--fg-2);font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;">theme: dark</button>
+
+<h1 class="text-section" style="margin-bottom:4px;">Tables &amp; Filters</h1>
+<p class="text-lede" style="max-width:60ch;margin-bottom:28px;">Operational tables scroll horizontally inside their own wrapper on mobile rather than collapsing to cards — the column set IS the information a dense ops dossier needs to keep visible together.</p>
+
+<section>
+  <div class="label">Filter bar with applied chips</div>
+  <div class="filterbar">
+    <div class="filterbar__content">
+      <input type="search" placeholder="Search services…">
+      <select><option>All environments</option><option>Production</option></select>
+    </div>
+    <div class="filterbar__actions"><button class="filterbar__clear">Clear all</button></div>
+    <div class="filterbar__applied">
+      <span class="filter-chip">env: production<button aria-label="Remove">&times;</button></span>
+      <span class="filter-chip">status: ok<button aria-label="Remove">&times;</button></span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="label">Data table</div>
+  <div class="tbl-wrap">
+    <div class="tbl-head"><h3>Services</h3><span class="count">3 total</span></div>
+    <div class="tbl-scroll">
+      <table class="tbl">
+        <thead><tr><th>Name</th><th>Status</th><th class="num">Uptime</th><th class="actions">Actions</th></tr></thead>
+        <tbody>
+          <tr><td>tritium-gateway</td><td><span class="badge badge--ok">OK</span></td><td class="num">99.8%</td><td class="actions"><button aria-label="Edit">✎</button></td></tr>
+          <tr><td>dsect-hub-api</td><td><span class="badge badge--ok">OK</span></td><td class="num">99.9%</td><td class="actions"><button aria-label="Edit">✎</button></td></tr>
+          <tr><td>quantum-memory</td><td><span class="badge badge--warn">DEGRADED</span></td><td class="num">94.2%</td><td class="actions"><button aria-label="Edit">✎</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tbl-foot"><span>Page 1 of 1</span><nav><button disabled>Prev</button><button disabled>Next</button></nav></div>
+  </div>
+</section>
+
+<script>
+document.getElementById('themeToggle').addEventListener('click', function(){
+  var root = document.documentElement;
+  var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  root.setAttribute('data-theme', next);
+  this.textContent = 'theme: ' + next;
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!-- @dsCard group="Foundations" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<title>DSECT — Typography</title>
+<link rel="stylesheet" href="../fonts.css">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../base.css">
+<style>
+  body { padding: 24px 24px 60px; }
+  .row { border-bottom: 1px solid var(--border); padding: 20px 0; }
+  .row:first-of-type { padding-top: 0; }
+  .row .spec { font-family: var(--mono); font-size: 10px; color: var(--fg-5); margin-top: 6px; letter-spacing: .02em; }
+</style>
+</head>
+<body>
+<button id="themeToggle" style="position:fixed;top:12px;inset-inline-end:12px;z-index:99;min-height:36px;padding:0 12px;border-radius:var(--radius);border:1px solid var(--border-3);background:var(--surface);color:var(--fg-2);font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;">theme: dark</button>
+
+<h1 class="text-section" style="margin-bottom:4px;">Typography</h1>
+<p class="text-lede" style="max-width:60ch;margin-bottom:32px;">Two families, self-hosted so the hub never phones fonts.gstatic.com. Inter carries every proportional size; JetBrains Mono is reserved for data — labels, timestamps, stats, code — never for reading prose. Display sizes use <code>clamp()</code> so hero type scales with the viewport instead of jumping at a breakpoint.</p>
+
+<div class="row">
+  <h1>Display heading</h1>
+  <div class="spec">h1 / clamp(28px, 3.8vw, 52px) / weight 600 / letter-spacing -.035em / line-height 1.08</div>
+</div>
+<div class="row">
+  <h1>Display with <em>de-emphasis</em></h1>
+  <div class="spec">h1 em / same size, weight 300, not italic — a de-emphasized inline span</div>
+</div>
+<div class="row">
+  <h2>Section heading</h2>
+  <div class="spec">h2 / clamp(20px, 4vw, 28px) / weight 600 / letter-spacing -.02em</div>
+</div>
+<div class="row">
+  <h3>Card title</h3>
+  <div class="spec">h3 / 16px / weight 500 / letter-spacing -.01em / line-height 1.2</div>
+</div>
+<div class="row">
+  <p class="text-lede">Lede paragraph — the one sentence of supporting text under a section heading, set slightly larger and looser than body copy so it reads as a lead-in, not another line of the list below it.</p>
+  <div class="spec">.text-lede / 15px / line-height 1.7 / color --fg-3</div>
+</div>
+<div class="row">
+  <p class="text-body">Body copy is the estate default: 14px at 1.6 line-height, color --fg-2. Everything not explicitly a heading, label or lede falls back to this.</p>
+  <div class="spec">.text-body / 14px / line-height 1.6 / color --fg-2</div>
+</div>
+<div class="row">
+  <p class="text-small">Small text — card descriptions, secondary copy inside a dense panel.</p>
+  <div class="spec">.text-small / 13px / line-height 1.5 / color --fg-3</div>
+</div>
+<div class="row">
+  <div class="text-label">Mono micro-label</div>
+  <div class="spec">.text-label / JetBrains Mono / 10px / weight 400 / letter-spacing .05em / uppercase / color --fg-5 — used for every eyebrow, stat label, table header and timestamp in the estate</div>
+</div>
+<div class="row">
+  <div class="text-mono" style="font-size:20px;">1,204.50</div>
+  <div class="spec">.text-mono / JetBrains Mono / tabular-nums — for any number a user compares against another number</div>
+</div>
+
+<script>
+document.getElementById('themeToggle').addEventListener('click', function(){
+  var root = document.documentElement;
+  var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  root.setAttribute('data-theme', next);
+  this.textContent = 'theme: ' + next;
+});
+</script>
+</body>
+</html>

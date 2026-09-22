@@ -1,0 +1,50 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<title>DSECT — Badges &amp; Status</title>
+<link rel="stylesheet" href="../fonts.css">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../base.css">
+<link rel="stylesheet" href="../components.css">
+<style>
+  body { padding: 24px 24px 60px; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 20px; }
+  .label { font-family: var(--mono); font-size: 10px; letter-spacing: .05em; text-transform: uppercase; color: var(--fg-5); width: 100%; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+<button id="themeToggle" style="position:fixed;top:12px;inset-inline-end:12px;z-index:99;min-height:36px;padding:0 12px;border-radius:var(--radius);border:1px solid var(--border-3);background:var(--surface);color:var(--fg-2);font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;">theme: dark</button>
+
+<h1 class="text-section" style="margin-bottom:4px;">Badges &amp; Status</h1>
+<p class="text-lede" style="max-width:60ch;margin-bottom:28px;">Flat rounded rectangles, not pills — the hub squares everything, and pills read as consumer UI. Colour is never the only carrier of state: the label always states it too, so badges stay legible to colour-blind readers and in a monochrome screenshot.</p>
+
+<div class="row"><div class="label">Semantic variants</div>
+  <span class="badge badge--ok"><span class="badge__dot"></span>OK</span>
+  <span class="badge badge--warn"><span class="badge__dot"></span>WARN</span>
+  <span class="badge badge--err"><span class="badge__dot"></span>ERROR</span>
+  <span class="badge badge--info"><span class="badge__dot"></span>INFO</span>
+  <span class="badge">NEUTRAL</span>
+</div>
+<div class="row"><div class="label">Sizes</div>
+  <span class="badge badge--ok">Default</span>
+  <span class="badge badge--sm badge--ok">Small</span>
+</div>
+<div class="row"><div class="label">Dismissible</div>
+  <span class="badge badge--info">Beta<button class="badge__close" aria-label="Remove">&times;</button></span>
+</div>
+<div class="row"><div class="label">Filter chip</div>
+  <span class="filter-chip">env: production<button aria-label="Remove filter">&times;</button></span>
+</div>
+
+<script>
+document.getElementById('themeToggle').addEventListener('click', function(){
+  var root = document.documentElement;
+  var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  root.setAttribute('data-theme', next);
+  this.textContent = 'theme: ' + next;
+});
+</script>
+</body>
+</html>

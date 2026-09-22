@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none">
+  <!-- D//SECT Logo Mark — Geometric Node with Parallel Slash Motif -->
+  <!-- Design tokens: bg.0 #0A0B0E, accent.400 #22D3EE, text.1 #E8EBF0 -->
+  <defs>
+    <linearGradient id="accent-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#22D3EE"/>
+      <stop offset="100%" stop-color="#0891B2"/>
+    </linearGradient>
+    <linearGradient id="slash-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#22D3EE"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Hexagonal frame — systems/structure -->
+  <polygon points="128,16 236,70 236,186 128,240 20,186 20,70"
+    fill="none" stroke="#E8EBF0" stroke-width="3" opacity="0.15"/>
+
+  <!-- Inner hex node ring -->
+  <polygon points="128,44 222,92 222,164 128,212 34,164 34,92"
+    fill="none" stroke="#22D3EE" stroke-width="1.5" opacity="0.3"/>
+
+  <!-- Parallel slash lines — the "//" motif, cutting forward -->
+  <line x1="72" y1="52" x2="148" y2="176" stroke="url(#slash-grad)" stroke-width="6" stroke-linecap="square"/>
+  <line x1="108" y1="52" x2="184" y2="176" stroke="url(#slash-grad)" stroke-width="6" stroke-linecap="square"/>
+
+  <!-- Center node — computational core -->
+  <circle cx="128" cy="128" r="8" fill="#22D3EE"/>
+
+  <!-- Connection traces — data flow -->
+  <line x1="128" y1="120" x2="128" y2="44" stroke="#22D3EE" stroke-width="1.5" opacity="0.5"/>
+  <line x1="128" y1="136" x2="128" y2="212" stroke="#22D3EE" stroke-width="1.5" opacity="0.5"/>
+  <line x1="120" y1="128" x2="34" y2="92" stroke="#22D3EE" stroke-width="1.5" opacity="0.5"/>
+  <line x1="136" y1="128" x2="222" y2="92" stroke="#22D3EE" stroke-width="1.5" opacity="0.5"/>
+  <line x1="116" y1="132" x2="34" y2="164" stroke="#22D3EE" stroke-width="1.5" opacity="0.5"/>
+  <line x1="140" y1="132" x2="222" y2="164" stroke="#22D3EE" stroke-width="1.5" opacity="0.5"/>
+
+  <!-- Small accent nodes at trace endpoints -->
+  <circle cx="128" cy="44" r="2.5" fill="#22D3EE" opacity="0.7"/>
+  <circle cx="128" cy="212" r="2.5" fill="#22D3EE" opacity="0.7"/>
+  <circle cx="34" cy="92" r="2.5" fill="#22D3EE" opacity="0.7"/>
+  <circle cx="222" cy="92" r="2.5" fill="#22D3EE" opacity="0.7"/>
+  <circle cx="34" cy="164" r="2.5" fill="#22D3EE" opacity="0.7"/>
+  <circle cx="222" cy="164" r="2.5" fill="#22D3EE" opacity="0.7"/>
+</svg>
