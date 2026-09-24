@@ -22,7 +22,7 @@
     "./tokens.css": "./dist/tokens.css"
   },
   "scripts": {
-    "build": "vite build && node --input-type=module -e \"import { copyFileSync } from 'node:fs'; import { join } from 'node:path'; for (const name of ['tokens', 'base', 'components']) copyFileSync(join(process.cwd(), '..', name + '.css'), join(process.cwd(), 'dist', name + '.css'));\"",
+    "build": "vite build",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
