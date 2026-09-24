@@ -3,8 +3,8 @@
  *
  * This package adds NO new visual decisions. Every class it renders comes from
  * the canonical CSS at the repo root (tokens.css, base.css, components.css),
- * which were extracted verbatim from the shipping hub UI. The stylesheets are
- * imported here so a consumer gets the whole system with one import.
+ * which were extracted verbatim from the shipping hub UI. These imports emit
+ * the published stylesheet that consumers load from `@dsect/ui/styles.css`.
  */
 
 import '../../tokens.css';

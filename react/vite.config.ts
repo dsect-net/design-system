@@ -11,6 +11,7 @@ export default defineConfig({
       name: 'DsectUI',
       formats: ['es', 'umd'],
       fileName: (format) => (format === 'es' ? 'dsect-ui.js' : 'dsect-ui.umd.cjs'),
+      cssFileName: 'dsect-ui',
     },
     rollupOptions: {
       external: ['react', 'react-dom', 'react/jsx-runtime'],
@@ -18,6 +19,7 @@ export default defineConfig({
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',
+          'react/jsx-runtime': 'ReactJSXRuntime',
         },
       },
     },

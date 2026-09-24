@@ -9,11 +9,21 @@ import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react';
 type ButtonVariant = 'primary' | 'outline' | 'ghost';
 type ButtonSize = 'md' | 'sm';
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: ButtonVariant;
-  size?: ButtonSize;
+type BaseButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   children: ReactNode;
-}
+};
+
+type GhostButtonProps = BaseButtonProps & {
+  variant: 'ghost';
+  size?: 'sm';
+};
+
+type StandardButtonProps = BaseButtonProps & {
+  variant?: Exclude<ButtonVariant, 'ghost'>;
+  size?: ButtonSize;
+};
+
+export type ButtonProps = GhostButtonProps | StandardButtonProps;
 
 const variantClass: Record<ButtonVariant, string> = {
   primary: 'btn-primary',

@@ -159,10 +159,10 @@ export function FilterBarActions({ className = '', children, ...rest }: FilterBa
   );
 }
 
-export type SearchInputProps = InputHTMLAttributes<HTMLInputElement>;
+export type SearchInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'type'>;
 
 export function SearchInput({ ...rest }: SearchInputProps) {
-  return <input type="search" aria-label={rest['aria-label'] ?? 'Search'} {...rest} />;
+  return <input {...rest} type="search" aria-label={rest['aria-label'] ?? 'Search'} />;
 }
 
 export type FilterSelectProps = SelectHTMLAttributes<HTMLSelectElement>;

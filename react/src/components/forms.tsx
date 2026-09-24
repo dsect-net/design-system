@@ -22,6 +22,8 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function T
   const inputId = id ?? `tf-${autoId}`;
   const hintId = hint ? `${inputId}-hint` : undefined;
   const errorId = error ? `${inputId}-error` : undefined;
+  const describedBy = [error ? undefined : hintId, errorId].filter(Boolean).join(' ') || undefined;
+
   return (
     <div>
       <label htmlFor={inputId} className="text-label" style={{ display: 'block', marginBottom: 6 }}>
@@ -32,7 +34,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function T
         id={inputId}
         className={['input', className].filter(Boolean).join(' ')}
         aria-invalid={error ? true : undefined}
-        aria-describedby={[hintId, errorId].filter(Boolean).join(' ') || undefined}
+        aria-describedby={describedBy}
         {...rest}
       />
       {hint && !error && (
@@ -49,7 +51,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function T
   );
 });
 
-export interface TextAreaProps extends TextareaHTMLAttributes<HTMLInputElement> {
+export interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: ReactNode;
   hint?: ReactNode;
   error?: ReactNode;
@@ -61,6 +63,10 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function 
 ) {
   const autoId = useId();
   const inputId = id ?? `ta-${autoId}`;
+  const hintId = hint ? `${inputId}-hint` : undefined;
+  const errorId = error ? `${inputId}-error` : undefined;
+  const describedBy = [error ? undefined : hintId, errorId].filter(Boolean).join(' ') || undefined;
+
   return (
     <div>
       <label htmlFor={inputId} className="text-label" style={{ display: 'block', marginBottom: 6 }}>
@@ -71,15 +77,16 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function 
         id={inputId}
         className={className || undefined}
         aria-invalid={error ? true : undefined}
+        aria-describedby={describedBy}
         {...rest}
       />
       {hint && !error && (
-        <div className="text-small" style={{ marginTop: 6 }}>
+        <div id={hintId} className="text-small" style={{ marginTop: 6 }}>
           {hint}
         </div>
       )}
       {error && (
-        <div className="text-small" style={{ marginTop: 6, color: 'var(--red)' }}>
+        <div id={errorId} className="text-small" style={{ marginTop: 6, color: 'var(--red)' }}>
           {error}
         </div>
       )}

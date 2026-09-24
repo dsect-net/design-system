@@ -3,8 +3,8 @@
 Typed React components over the canonical design-system CSS. This package makes
 **zero new visual decisions**: every class it renders comes from `tokens.css`,
 `base.css`, and `components.css` at the repo root, which were extracted verbatim
-from the shipping hub UI. Importing this package pulls those stylesheets in, so a
-consumer gets the whole system with one import.
+from the shipping hub UI. Import the published stylesheet alongside the
+components to get the full system styles.
 
 ## Install
 
@@ -17,6 +17,7 @@ Requires React 18+ (peer dependency).
 ## Use
 
 ```tsx
+import '@dsect/ui/styles.css';
 import { Button, Card, Badge, Table, Th, Td, setTheme } from '@dsect/ui';
 
 function Services() {
@@ -68,7 +69,7 @@ and is intentionally not part of this package.
 
 ## Components
 
-- **Buttons:** `Button` (primary / outline / ghost, sm/md), `IconButton` (label required)
+- **Buttons:** `Button` (primary / outline in sm/md, ghost in sm), `IconButton` (label required)
 - **Surfaces:** `Card` (lifts on hover — a destination), `Panel` + `PanelHead`/`PanelBody` (a container you read)
 - **Feedback:** `Badge` (ok/warn/err/info, dot, dismissible), `EmptyState`, `Spinner`, `Loading`, `ProgressBar`, `Skeleton`, `Toast` + `Toaster` (render one `Toaster` per app)
 - **Data:** `Table` (title, mono count, footer), `Th` (sortable), `Td` (numeric, actions), `TableUserCell`
@@ -80,7 +81,7 @@ and is intentionally not part of this package.
 ```bash
 npm install
 npm run typecheck
-npm run build   # emits dist/ with types
+npm run build   # emits dist/ with JS, CSS, and types
 ```
 
 ## License
