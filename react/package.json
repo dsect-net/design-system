@@ -1,0 +1,41 @@
+{
+  "name": "@dsect/ui",
+  "version": "0.1.0",
+  "description": "React component layer for the DSECT design system \u2014 typed wrappers over the canonical CSS classes. No new visual decisions.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/dsect-ui.umd.cjs",
+  "module": "./dist/dsect-ui.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/dsect-ui.js",
+      "require": "./dist/dsect-ui.umd.cjs"
+    },
+    "./styles.css": "./dist/dsect-ui.css",
+    "./base.css": "./dist/base.css",
+    "./components.css": "./dist/components.css",
+    "./tokens.css": "./dist/tokens.css"
+  },
+  "scripts": {
+    "build": "vite build",
+    "prepack": "npm run build",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^4",
+    "typescript": "^5",
+    "vite": "^6",
+    "vite-plugin-dts": "^4"
+  }
+}
