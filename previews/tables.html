@@ -18,7 +18,7 @@
 <button id="themeToggle" style="position:fixed;top:12px;inset-inline-end:12px;z-index:99;min-height:36px;padding:0 12px;border-radius:var(--radius);border:1px solid var(--border-3);background:var(--surface);color:var(--fg-2);font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;">theme: dark</button>
 
 <h1 class="text-section" style="margin-bottom:4px;">Tables &amp; Filters</h1>
-<p class="text-lede" style="max-width:60ch;margin-bottom:28px;">Operational tables scroll horizontally inside their own wrapper on mobile rather than collapsing to cards — the column set IS the information a dense ops dossier needs to keep visible together.</p>
+<p class="text-lede" style="max-width:60ch;margin-bottom:28px;">Operational tables scroll horizontally inside their own wrapper on mobile rather than collapsing to cards — the column set IS the information a dense ops dossier needs to keep visible together. Sort state is <code>aria-sort</code> on the <code>&lt;th&gt;</code>; the arrow follows it.</p>
 
 <section>
   <div class="label">Filter bar with applied chips</div>
@@ -41,7 +41,7 @@
     <div class="tbl-head"><h3>Services</h3><span class="count">3 total</span></div>
     <div class="tbl-scroll">
       <table class="tbl">
-        <thead><tr><th>Name</th><th>Status</th><th class="num">Uptime</th><th class="actions">Actions</th></tr></thead>
+        <thead><tr><th>Name</th><th>Status</th><th class="num" aria-sort="descending"><button type="button">Uptime</button></th><th class="actions">Actions</th></tr></thead>
         <tbody>
           <tr><td>tritium-gateway</td><td><span class="badge badge--ok">OK</span></td><td class="num">99.8%</td><td class="actions"><button aria-label="Edit">✎</button></td></tr>
           <tr><td>dsect-hub-api</td><td><span class="badge badge--ok">OK</span></td><td class="num">99.9%</td><td class="actions"><button aria-label="Edit">✎</button></td></tr>

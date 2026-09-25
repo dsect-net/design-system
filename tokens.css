@@ -1,9 +1,17 @@
 /* DSECT Hub — shared design tokens.
    ONE source of truth. Extracted verbatim from index.html 2026-09-17.
    Every page links this. No page redeclares --bg, --surface, --radius or --max:
-   seven inline copies that happen to agree is not a design system. */
+   seven inline copies that happen to agree is not a design system.
+
+   Layout of this file:
+     1. :root / [data-theme="dark"]  — colour, shadow, type family, radius (dark = home theme)
+     2. [data-theme="light"]         — the full parallel light set, not a filter
+     3. :root                        — theme-invariant scales: space, motion, z-index,
+                                       touch target, focus. Added 2026-09-25; none of these
+                                       change between themes, so they are declared once. */
 
 :root,:root[data-theme="dark"]{
+  color-scheme:dark; /* native controls, scrollbars and pickers render dark too */
   --bg:#0A0C10;
   --bg-2:#0F131A;
   --bg-3:#161B22;
@@ -52,6 +60,15 @@
   --selection-fg:#fff;
   --toast-tick-border:var(--border-2);
   --focus-ring:#00E5FF;
+  /* Division accents — DSECT Brand Architecture (DSECT-BRAND-002 §3, §6).
+     A division's accent is the entire extent of its visual independence: same
+     mark, same type, same voice. Only Labs has an assigned hue; Systems and
+     Software inherit the entity accent until an ADR assigns one. */
+  --division-labs:#A78BFA;
+  --division-systems:var(--accent);
+  --division-software:var(--accent);
+  /* the // in the DSECT// wordmark treatment (ADR-012: visual only, never the name) */
+  --wordmark-cut:var(--accent);
   --sans:"Inter",system-ui,-apple-system,sans-serif;
   --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,monospace;
   --max:1280px;
@@ -64,6 +81,7 @@
 }
 
 :root[data-theme="light"]{
+  color-scheme:light;
   --emerald-pure:#00A344;
   --accent-soft:rgba(0,150,180,.10);
   --bg:#FFFFFF;
@@ -112,4 +130,42 @@
   --selection-fg:#09090B;
   --toast-tick-border:var(--border-2);
   --focus-ring:var(--fg-4);
+  --division-labs:#7C3AED;       /* same hue, stepped down: #A78BFA is 2.7:1 on white */
+  --wordmark-cut:#0096B4;        /* the hue already behind light --accent-soft */
+}
+
+/* Theme-invariant scales. */
+:root{
+  /* 4px grid (BRAND-001 §2, still authoritative) */
+  --space-1:4px;
+  --space-2:8px;
+  --space-3:12px;
+  --space-4:16px;
+  --space-5:20px;
+  --space-6:24px;
+  --space-8:32px;
+  --space-10:40px;
+  --space-12:48px;
+  --space-16:64px;
+
+  /* motion — micro-interactions (hover, focus, colour) are always --dur-micro */
+  --ease-panel:cubic-bezier(.2,.8,.2,1);    /* drawers, palettes, modals sliding in */
+  --ease-bounce:cubic-bezier(.2,.9,.3,1.2); /* toast-in, stamp, small emphasis pops */
+  --dur-micro:.15s;
+  --dur-enter:.3s;   /* cards, toasts arriving */
+  --dur-panel:.35s;  /* drawer/modal open */
+
+  /* stacking — native <dialog> uses the top layer and needs none of these */
+  --z-masthead:30;
+  --z-overlay:100;
+  --z-toast:130;
+
+  /* touch target floor; test/touch_test.js in the hub enforces 44 */
+  --tap:44px;
+  --tap-coarse:46px;
+
+  /* one focus ring for every non-text control */
+  --focus-width:2px;
+  --focus-offset:2px;
+  --focus-soft:rgba(127,127,127,.08); /* text inputs: soft ring, neutral grey reads on both themes */
 }

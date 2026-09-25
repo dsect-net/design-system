@@ -1,0 +1,134 @@
+<!-- @dsCard group="Brand" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DSECT — Brand</title>
+<link rel="stylesheet" href="../fonts.css">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../base.css">
+<link rel="stylesheet" href="../components.css">
+<style>
+  body { padding: 24px 24px 60px; }
+  section { margin-bottom: 40px; max-width: 920px; }
+  .label { font-family: var(--mono); font-size: 10px; letter-spacing: .05em; text-transform: uppercase; color: var(--fg-5); margin-bottom: 12px; }
+  .hero { padding: 40px 0 32px; }
+  .hero .tagline { margin-top: 10px; font-size: clamp(18px, 2.4vw, 24px); font-weight: 300; letter-spacing: -.02em; color: var(--fg-3); }
+  .tiers { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  .tier { padding: 16px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); display: flex; flex-direction: column; gap: 12px; }
+  .tier .wordmark { font-size: 18px; }
+  .usage { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+  .usage li { display: grid; grid-template-columns: 76px 180px 1fr; gap: 14px; align-items: baseline; padding: 10px 14px; background: var(--surface); font-size: 13px; }
+  .usage .verdict { font-family: var(--mono); font-size: 10px; letter-spacing: .05em; text-transform: uppercase; }
+  .usage .do .verdict { color: var(--emerald); }
+  .usage .dont .verdict { color: var(--red); }
+  .usage .ex { font-family: var(--mono); font-size: 12px; color: var(--fg); }
+  .usage .dont .ex { text-decoration: line-through; text-decoration-color: var(--red); color: var(--fg-4); }
+  .usage .why { color: var(--fg-4); font-size: 12px; }
+  @media (max-width: 640px) { .usage li { grid-template-columns: 1fr; gap: 2px; } }
+  .swatches { display: flex; flex-wrap: wrap; gap: 20px; }
+  .slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+  .slot { border: 1px dashed var(--border-3); border-radius: var(--radius-lg); padding: 14px; display: flex; flex-direction: column; gap: 6px; }
+  .slot__box { display: flex; align-items: center; justify-content: center; border: 1px dashed var(--border-2); border-radius: var(--radius); color: var(--fg-5); font-family: var(--mono); font-size: 10px; letter-spacing: .04em; }
+  .slot__name { font-size: 13px; font-weight: 500; color: var(--fg-2); }
+  .slot__spec { font-family: var(--mono); font-size: 10px; color: var(--fg-5); line-height: 1.5; }
+  pre.snippet { padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--bg-2); color: var(--fg-3); font-size: 12px; line-height: 1.6; }
+</style>
+</head>
+<body>
+<button id="themeToggle" style="position:fixed;top:12px;inset-inline-end:12px;z-index:99;min-height:36px;padding:0 12px;border-radius:var(--radius);border:1px solid var(--border-3);background:var(--surface);color:var(--fg-2);font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;">theme: dark</button>
+
+<h1 class="text-section" style="margin-bottom:4px;">Brand</h1>
+<p class="text-lede" style="max-width:64ch;">The name is <strong>DSECT</strong> in text, code, domains and documents (said <em>dee-sect</em>; it reads as <em>dissect</em>). <strong>DSECT//</strong> is how it looks: a visual treatment for the logo and branding only (ADR-012, ratified 2026-09-23). The <code>//</code> is <code>aria-hidden</code>, so a screen reader, a search engine and a copy-paste all get DSECT.</p>
+
+<section class="hero">
+  <span class="wordmark wordmark--xl">DSECT<span class="wordmark__cut" aria-hidden="true">//</span></span>
+  <p class="tagline">Decompose. Then build.</p>
+</section>
+
+<section>
+  <div class="label">Markup</div>
+<pre class="snippet"><code>&lt;a class="wordmark" href="/"&gt;DSECT&lt;span class="wordmark__cut" aria-hidden="true"&gt;//&lt;/span&gt;&lt;/a&gt;
+&lt;a class="wordmark" href="/"&gt;DSECT&lt;span class="wordmark__cut" aria-hidden="true"&gt;//&lt;/span&gt;&lt;span class="wordmark__descriptor"&gt;Hub&lt;/span&gt;&lt;/a&gt;</code></pre>
+</section>
+
+<section>
+  <div class="label">Lockups by tier — the name is earned by external exposure</div>
+  <p class="text-small" style="max-width:68ch;margin:0 0 14px;">If someone outside the company will see it, it carries the name. If it is an instrument the operator drives, it gets a codename. Branded house: everything inherits DSECT by default, and no sub-brand gets its own logo; a division accent is the entire extent of its visual independence.</p>
+  <div class="tiers">
+    <div class="tier">
+      <span class="text-label">Tier 1 · Entity</span>
+      <span class="wordmark">DSECT<span class="wordmark__cut" aria-hidden="true">//</span></span>
+      <span class="text-small">Developmental Systems, Engineering &amp; Computing Technologies</span>
+    </div>
+    <div class="tier">
+      <span class="text-label">Tier 2 · Division</span>
+      <span class="wordmark">DSECT<span class="wordmark__cut" aria-hidden="true">//</span><span class="wordmark__descriptor">Labs</span></span>
+      <span class="division division--labs">Labs · research</span>
+    </div>
+    <div class="tier">
+      <span class="text-label">Tier 3 · Product</span>
+      <span class="wordmark">DSECT<span class="wordmark__cut" aria-hidden="true">//</span><span class="wordmark__descriptor">Hub</span></span>
+      <span class="text-small">A plain descriptive noun: Hub, not Nexus.</span>
+    </div>
+    <div class="tier">
+      <span class="text-label">Tier 4 · Instrument</span>
+      <span class="wordmark">Nebula</span>
+      <span class="text-small">Codename alone, in Inter 600. No prefix, no <code>//</code>.</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="label">Writing the name</div>
+  <ul class="usage">
+    <li class="do"><span class="verdict">✓ Use</span><span class="ex">DSECT</span><span class="why">Running text, code, handles, domains: <code>dsect.net</code>, <code>dsect-net/…</code></span></li>
+    <li class="do"><span class="verdict">✓ Use</span><span class="ex">DSECT Labs</span><span class="why">Division: DSECT plus the discipline, as two words.</span></li>
+    <li class="do"><span class="verdict">✓ Use</span><span class="ex">DSECT Hub</span><span class="why">Product: DSECT plus a plain descriptive noun.</span></li>
+    <li class="dont"><span class="verdict">✕ Avoid</span><span class="ex">D//SECT · D-SECT · D/SECT</span><span class="why">Superseded by ADR-012. <code>//</code> is a path separator; it can't live in a hostname, package scope or shell command.</span></li>
+    <li class="dont"><span class="verdict">✕ Avoid</span><span class="ex">DSECT// in a sentence</span><span class="why">The <code>//</code> is a visual treatment, never part of the written name.</span></li>
+    <li class="dont"><span class="verdict">✕ Avoid</span><span class="ex">Labs by DSECT · DSECTLabs</span><span class="why">Divisions are named for the discipline, never restyled.</span></li>
+    <li class="dont"><span class="verdict">✕ Avoid</span><span class="ex">DSECT Nebula</span><span class="why">Instruments carry no prefix; a prefix implies an external product commitment that does not exist.</span></li>
+  </ul>
+</section>
+
+<section>
+  <div class="label">Division accents</div>
+  <p class="text-small" style="max-width:68ch;margin:0 0 14px;">Square swatch = identity; circle = live state. The label always names the division. Only Labs has an assigned hue — Systems and Software inherit the entity accent until an ADR assigns them one.</p>
+  <div class="swatches">
+    <span class="division division--systems">DSECT Systems</span>
+    <span class="division division--software">DSECT Software</span>
+    <span class="division division--labs">DSECT Labs</span>
+  </div>
+</section>
+
+<section>
+  <div class="label">The cut as a system device</div>
+  <p class="text-small" style="max-width:68ch;margin:0;">ADR-012 did not delete the <code>//</code>; it promoted it out of the name and into the system — section rules and dividers. The break is a transparent gap in the hairline, not a painted block, so it sits on any surface.</p>
+  <hr class="rule rule--cut">
+  <p class="text-small" style="margin:0;">Plain rule, for everything that is not a section boundary:</p>
+  <hr class="rule">
+</section>
+
+<section>
+  <div class="label">Logo artwork — slots reserved, not drawn here</div>
+  <p class="text-small" style="max-width:68ch;margin:0 0 14px;">The 2026-09-24 direction: <code>DSECT</code> in wide, extended geometric caps with an even, thin stroke, trailed by <code>//</code> — two tall, steep parallel bars in an ice-blue to steel-blue gradient. The artwork is produced outside this system and dropped into <code>brand/</code>; see <code>brand/README.md</code> for the file names. Until then the typographic treatment above stands in.</p>
+  <div class="slots">
+    <div class="slot"><div class="slot__box" style="aspect-ratio:4/1;">2400 × 600</div><div class="slot__name">Wordmark DSECT//</div><div class="slot__spec">transparent · light + dark<br>headers, docs, signatures</div></div>
+    <div class="slot"><div class="slot__box" style="aspect-ratio:1;width:96px;">1024²</div><div class="slot__name">Mark //</div><div class="slot__spec">transparent · light + dark<br>must read at 16px</div></div>
+    <div class="slot"><div class="slot__box" style="aspect-ratio:1;width:96px;">1024²</div><div class="slot__name">App icon</div><div class="slot__spec">full-bleed square, no rounded corners<br>maskable: art inside the central 80%</div></div>
+    <div class="slot"><div class="slot__box" style="aspect-ratio:1200/630;">1200 × 630</div><div class="slot__name">Link preview</div><div class="slot__spec">dark · text inside the middle 1000 × 500<br>og:image</div></div>
+  </div>
+</section>
+
+<script>
+document.getElementById('themeToggle').addEventListener('click', function(){
+  var root = document.documentElement;
+  var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  root.setAttribute('data-theme', next);
+  this.textContent = 'theme: ' + next;
+});
+</script>
+</body>
+</html>

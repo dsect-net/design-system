@@ -1,0 +1,248 @@
+<!-- @dsCard group="Patterns" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DSECT — Hub Overview (composed)</title>
+<link rel="stylesheet" href="../fonts.css">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../base.css">
+<link rel="stylesheet" href="../components.css">
+<style>
+  /* page-level layout only — every visual decision below comes from the system */
+  .shell { display: flex; align-items: stretch; min-height: calc(100dvh - 90px); }
+  .main { flex: 1; min-width: 0; padding-block: 28px 64px; }
+  .page-head { margin-bottom: 20px; }
+  .page-head h1 { margin: 6px 0 6px; font-size: clamp(26px, 3.2vw, 40px); }
+  .stack { display: grid; gap: 16px; align-content: start; }
+  .mast-tools { display: flex; gap: 4px; margin-inline-start: 12px; }
+  .nav-toggle { display: none; }
+  @media (max-width: 900px) { .nav-toggle { display: inline-flex; } .mast-tools { margin-inline-start: auto; } }
+  .agent-list { list-style: none; margin: 0; padding: 0; }
+  .agent-list li { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .agent-list li:last-child { border-bottom: 0; }
+  .agent-list .grow { flex: 1; min-width: 0; }
+  .agent-list .agent__role { margin: 0; }
+  .foot { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; color: var(--fg-5); font-size: 12px; }
+  .mobile-nav a { display: flex; align-items: center; min-height: var(--tap); padding: 0 4px; color: var(--fg-2); text-decoration: none; border-bottom: 1px solid var(--border); }
+  #toastWrap .toast { animation-delay: .6s; animation-fill-mode: both; }
+</style>
+</head>
+<body>
+
+<div class="utility-bar"><div class="wrap utility-inner"><span>node: tritium</span><span>all systems nominal · updated <span class="text-mono">14:02:31</span></span></div></div>
+<header class="masthead-wrap">
+  <div class="wrap masthead">
+    <button class="icon-btn nav-toggle" data-open="navDrawer" aria-label="Open navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <a class="wordmark" href="#">DSECT<span class="wordmark__cut" aria-hidden="true">//</span><span class="wordmark__descriptor">Hub</span></a>
+    <nav class="mast-nav" aria-label="Primary">
+      <a href="#" class="active" aria-current="page">Overview</a>
+      <a href="#">Services</a>
+      <a href="#">Agents</a>
+      <a href="#">Codex</a>
+    </nav>
+    <div class="mast-tools">
+      <button class="icon-btn" data-open="palette" aria-label="Search (Ctrl K)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+      <button class="icon-btn" id="themeToggle" aria-label="Switch to light theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<div class="shell">
+  <nav class="sidenav" aria-label="Sections">
+    <div class="sidenav__body">
+      <p class="sidenav__sub">Operate</p>
+      <a href="#" class="active" aria-current="page"><span class="sidenav__icon">01</span><span class="sidenav__label">Overview</span></a>
+      <a href="#"><span class="sidenav__icon">02</span><span class="sidenav__label">Services</span><span class="badge badge--sm">34</span></a>
+      <a href="#"><span class="sidenav__icon">03</span><span class="sidenav__label">Agents</span><span class="badge badge--sm">6</span></a>
+      <a href="#"><span class="sidenav__icon">04</span><span class="sidenav__label">Codex</span></a>
+      <hr class="sidenav__divider">
+      <p class="sidenav__sub">Records</p>
+      <a href="#"><span class="sidenav__icon">07</span><span class="sidenav__label">Storage</span></a>
+      <a href="#"><span class="sidenav__icon">09</span><span class="sidenav__label">Feeds</span></a>
+    </div>
+    <div class="sidenav__foot"><span class="text-label">v2026.09</span></div>
+  </nav>
+
+  <main class="main wrap" id="main">
+    <div class="page-head">
+      <span class="text-label">01 — Overview</span>
+      <h1>Tritium <em>at a glance</em></h1>
+      <p class="text-lede" style="margin:0;max-width:60ch;">Sample data. The composition is the point: every piece on this page is a system component, arranged with layout-only CSS.</p>
+    </div>
+
+    <div class="panel" style="margin-bottom:20px;"><div class="panel-body">
+      <div class="stat-strip">
+        <div class="metric"><span class="metric__label">Generation</span><span class="metric__value">41.8<span class="metric__unit">tok/s</span></span><span class="metric__delta metric__delta--good">▲ 6.2% vs 24h</span></div>
+        <div class="metric"><span class="metric__label">p95 latency</span><span class="metric__value">212<span class="metric__unit">ms</span></span><span class="metric__delta metric__delta--bad">▲ 18 ms vs 24h</span></div>
+        <div class="metric"><span class="metric__label">Services</span><span class="metric__value">34</span><span class="metric__delta">1 degraded</span></div>
+        <div class="metric"><span class="metric__label">Agents</span><span class="metric__value">6</span><span class="metric__delta">4 live · 1 stopped · 1 external</span></div>
+      </div>
+    </div></div>
+
+    <div class="content-grid">
+      <div class="stack">
+        <div class="tbl-wrap">
+          <div class="tbl-head"><h3>Services</h3><span class="count">6 of 34 · sorted by state</span></div>
+          <div class="tbl-scroll">
+            <table class="tbl">
+              <thead><tr>
+                <th>Service</th>
+                <th aria-sort="descending"><button type="button">State</button></th>
+                <th class="num">Uptime</th><th class="num">p95</th><th class="actions"><span class="sr-only">Actions</span></th>
+              </tr></thead>
+              <tbody>
+                <tr><td>quantum-memory</td><td><span class="state state--degraded"><i class="state__dot" aria-hidden="true"></i>Degraded</span></td><td class="num">94.2%</td><td class="num">480 ms</td><td class="actions"><button type="button" data-open="svcDrawer" aria-label="Details for quantum-memory">Details</button></td></tr>
+                <tr><td>codex-sync</td><td><span class="state state--busy"><i class="state__dot" aria-hidden="true"></i>Syncing</span></td><td class="num">99.1%</td><td class="num">—</td><td class="actions"><button type="button" data-open="svcDrawer" aria-label="Details for codex-sync">Details</button></td></tr>
+                <tr><td>tritium-gateway</td><td><span class="state state--ready"><i class="state__dot" aria-hidden="true"></i>Ready</span></td><td class="num">99.8%</td><td class="num">38 ms</td><td class="actions"><button type="button" data-open="svcDrawer" aria-label="Details for tritium-gateway">Details</button></td></tr>
+                <tr><td>dsect-hub-api</td><td><span class="state state--ready"><i class="state__dot" aria-hidden="true"></i>Ready</span></td><td class="num">99.9%</td><td class="num">22 ms</td><td class="actions"><button type="button" data-open="svcDrawer" aria-label="Details for dsect-hub-api">Details</button></td></tr>
+                <tr><td>llama-engine</td><td><span class="state state--ready"><i class="state__dot" aria-hidden="true"></i>Ready</span></td><td class="num">99.6%</td><td class="num">212 ms</td><td class="actions"><button type="button" data-open="svcDrawer" aria-label="Details for llama-engine">Details</button></td></tr>
+                <tr><td>feeds</td><td><span class="state state--ready"><i class="state__dot" aria-hidden="true"></i>Ready</span></td><td class="num">100%</td><td class="num">9 ms</td><td class="actions"><button type="button" data-open="svcDrawer" aria-label="Details for feeds">Details</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tbl-foot"><span>Page 1 of 6</span><nav aria-label="Pagination"><button disabled>Prev</button><button>Next</button></nav></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h3 style="margin:0;">Uptime · 90 days</h3><span class="text-label">dsect-hub-api</span></div>
+          <div class="panel-body">
+            <div class="uptime" role="img" aria-label="90 days: 86 up, 2 degraded, 1 down, 1 with no data." id="uptime"></div>
+            <div class="uptime__legend"><span>90 days ago</span><span>86 up · 2 degraded · 1 down · 1 no data</span><span>today</span></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-label" style="margin-bottom:10px;">Goals in flight</div>
+          <ul class="records">
+            <li class="record"><span class="record__id">HUB-001</span><div><div class="record__title"><span class="record__codename">Horizon</span>Hub foundation and module frame</div><div class="record__meta">Phase 1</div></div><span class="badge badge--info">Active</span></li>
+            <li class="record"><span class="record__id">HUB-003</span><div><div class="record__title"><span class="record__codename">Rostrum</span>Collaboration surfaces</div><div class="record__meta">Phase 3</div></div><span class="badge badge--info">Active</span></li>
+            <li class="record"><span class="record__id">HUB-007</span><div><div class="record__title"><span class="record__codename">Docket</span>Wishlist and acquisition board</div><div class="record__meta">Phase 4</div></div><span class="badge badge--warn">Pending review</span></li>
+            <li class="record"><span class="record__id">BRD-002</span><div><div class="record__title"><span class="record__codename">Imprint</span>Wordmark rollout and name clearance</div><div class="record__meta">Brand · phase 2</div></div><span class="badge">Draft</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <aside class="stack" aria-label="Node">
+        <div class="panel">
+          <div class="panel-head"><h3 style="margin:0;">Tritium</h3><span class="state state--ready"><i class="state__dot" aria-hidden="true"></i>Ready</span></div>
+          <div class="panel-body stack" style="gap:14px;">
+            <dl class="kv">
+              <dt>Tier</dt><dd>Full node</dd>
+              <dt>Engine</dt><dd>llama.cpp</dd>
+              <dt>Division</dt><dd><span class="division division--systems">DSECT Systems</span></dd>
+              <dt>Uptime</dt><dd class="num">41d 06:12:09</dd>
+            </dl>
+            <div class="meter"><span class="meter__label">GPU</span><span class="meter__value">62%</span><div class="progbar"><i style="width:62%"></i></div></div>
+            <div class="meter"><span class="meter__label">VRAM</span><span class="meter__value">38.4 / 48 GB</span><div class="progbar progbar--warn"><i style="width:80%"></i></div></div>
+            <div class="meter"><span class="meter__label">Disk · /srv</span><span class="meter__value">71%</span><div class="progbar"><i style="width:71%"></i></div></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h3 style="margin:0;">Agents</h3><a class="text-label" href="#" style="text-decoration:none;">All 6</a></div>
+          <div class="panel-body" style="padding-block:4px;">
+            <ul class="agent-list">
+              <li><span class="avatar avatar--sm" aria-hidden="true">Q</span><div class="grow"><div class="agent__name">Qubit</div><div class="agent__role">Orchestrator</div></div><span class="state state--ready"><i class="state__dot" aria-hidden="true"></i>Ready</span></li>
+              <li><span class="avatar avatar--sm" aria-hidden="true">R</span><div class="grow"><div class="agent__name">Reeve</div><div class="agent__role">Builder</div></div><span class="state state--busy"><i class="state__dot" aria-hidden="true"></i>Building</span></li>
+              <li><span class="avatar avatar--sm" aria-hidden="true">I</span><div class="grow"><div class="agent__name">Ion</div><div class="agent__role">Victus</div></div><span class="state state--ready"><i class="state__dot" aria-hidden="true"></i>Ready</span></li>
+              <li><span class="avatar avatar--sm" aria-hidden="true">Q</span><div class="grow"><div class="agent__name">Quark</div><div class="agent__role">Bookkeeper</div></div><span class="state state--stopped"><i class="state__dot" aria-hidden="true"></i>Stopped</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <figure class="term">
+          <figcaption class="term__bar"><span class="term__title">quantum doctor</span><span class="exit exit--ok">exit 0 · ok</span></figcaption>
+<pre class="term__body"><code><span class="t-prompt">$ </span><span class="t-cmd">quantum doctor</span>
+<span class="t-ok">✓</span> engine /health     <span class="t-dim">200 · 11 ms</span>
+<span class="t-ok">✓</span> memory recall      <span class="t-dim">ok</span>
+<span class="t-ok">✓</span> codex writable     <span class="t-dim">ok</span>
+<span class="t-ok">✓</span> registry           <span class="t-dim">3 nodes · 6 agents</span></code></pre>
+        </figure>
+      </aside>
+    </div>
+
+    <hr class="rule rule--cut" style="margin-top:40px;">
+    <div class="foot">
+      <span class="wordmark" style="font-size:13px;">DSECT<span class="wordmark__cut" aria-hidden="true">//</span></span>
+      <span>Decompose. Then build.</span>
+    </div>
+  </main>
+</div>
+
+<div id="toastWrap" aria-live="polite">
+  <div class="toast toast--ok" role="status"><span class="toast__icon">✓</span><div class="toast__body"><div class="toast__title">Codex synced</div><div class="toast__text">12 notes updated · 14:02</div></div><button class="toast__close" aria-label="Dismiss">&times;</button></div>
+</div>
+
+<dialog class="drawer" id="svcDrawer" aria-labelledby="svc-title">
+  <div class="dialog__head"><h2 class="dialog__title" id="svc-title">quantum-memory</h2><button class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+  <div class="dialog__body stack">
+    <span class="state state--degraded"><i class="state__dot" aria-hidden="true"></i>Degraded · recall p95 above 400 ms</span>
+    <div class="panel"><div class="panel-head"><span class="text-label">Recall latency · 24h</span><span class="text-mono" style="font-size:11px;color:var(--fg-3);">p95 480 ms</span></div>
+      <div class="panel-body"><div class="bars bars--lg" role="img" aria-label="Recall latency over 24 hours, rising through the afternoon to a p95 of 480 milliseconds." id="svcBars"></div></div></div>
+    <dl class="kv"><dt>Owner</dt><dd>Quantum Core</dd><dt>Instrument</dt><dd>Quantum Memory</dd><dt>Last deploy</dt><dd class="num">2026-09-24 21:40</dd></dl>
+  </div>
+  <div class="dialog__foot"><button class="btn btn-outline" data-close>Close</button><button class="btn btn-primary" data-close>Restart service</button></div>
+</dialog>
+
+<dialog class="drawer" id="navDrawer" aria-label="Navigation">
+  <div class="dialog__head"><a class="wordmark" href="#">DSECT<span class="wordmark__cut" aria-hidden="true">//</span><span class="wordmark__descriptor">Hub</span></a><button class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+  <nav class="dialog__body mobile-nav" aria-label="Sections">
+    <a href="#" aria-current="page">01 · Overview</a><a href="#">02 · Services</a><a href="#">03 · Agents</a><a href="#">04 · Codex</a><a href="#">07 · Storage</a><a href="#">09 · Feeds</a>
+  </nav>
+</dialog>
+
+<dialog class="palette" id="palette" aria-label="Command palette">
+  <div class="palette__search">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input type="text" placeholder="Jump to a node, agent or command…" aria-label="Search commands">
+  </div>
+  <ul class="palette__list" role="listbox" aria-label="Results">
+    <li class="palette__group" role="presentation">Services</li>
+    <li class="palette__item" role="option" aria-selected="true">quantum-memory<span class="palette__meta">degraded</span></li>
+    <li class="palette__item" role="option" aria-selected="false">tritium-gateway<span class="palette__meta">ready</span></li>
+    <li class="palette__group" role="presentation">Commands</li>
+    <li class="palette__item" role="option" aria-selected="false">Run quantum doctor<kbd>D</kbd></li>
+  </ul>
+  <div class="palette__foot"><span><kbd>↑</kbd> <kbd>↓</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span></div>
+</dialog>
+
+<script>
+(function(){
+  // sample series
+  var up = document.getElementById('uptime');
+  for (var d = 0; d < 90; d++) {
+    var i = document.createElement('i');
+    if (d === 0) i.className = 'is-none';
+    else if (d === 47) i.className = 'is-down';
+    else if (d === 46 || d === 71) i.className = 'is-warn';
+    up.appendChild(i);
+  }
+  var lat = [.3,.28,.31,.29,.33,.3,.32,.35,.38,.42,.45,.5,.55,.61,.66,.72,.8,.86,.9,.84,.78,.74,.7,.68];
+  var bars = document.getElementById('svcBars');
+  lat.forEach(function(v){ var i = document.createElement('i'); i.style.setProperty('--v', v); if (v >= .8) i.className = 'is-hot'; bars.appendChild(i); });
+
+  // theme
+  var t = document.getElementById('themeToggle');
+  t.addEventListener('click', function(){
+    var root = document.documentElement, next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    root.setAttribute('data-theme', next);
+    t.setAttribute('aria-label', 'Switch to ' + (next === 'light' ? 'dark' : 'light') + ' theme');
+  });
+
+  // dialogs + toasts
+  document.querySelectorAll('[data-open]').forEach(function(b){
+    b.addEventListener('click', function(){ document.getElementById(b.getAttribute('data-open')).showModal(); });
+  });
+  document.querySelectorAll('dialog').forEach(function(d){
+    d.addEventListener('click', function(e){ if (e.target === d || e.target.closest('[data-close]')) d.close(); });
+  });
+  document.addEventListener('keydown', function(e){
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); document.getElementById('palette').showModal(); }
+  });
+  document.querySelectorAll('.toast__close').forEach(function(b){ b.addEventListener('click', function(){ b.closest('.toast').remove(); }); });
+})();
+</script>
+</body>
+</html>

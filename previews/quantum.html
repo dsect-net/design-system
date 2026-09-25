@@ -1,0 +1,138 @@
+<!-- @dsCard group="Patterns" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DSECT — Quantum Fleet</title>
+<link rel="stylesheet" href="../fonts.css">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../base.css">
+<link rel="stylesheet" href="../components.css">
+<style>
+  body { padding: 24px 24px 60px; }
+  section { margin-bottom: 40px; max-width: 1040px; }
+  .label { font-family: var(--mono); font-size: 10px; letter-spacing: .05em; text-transform: uppercase; color: var(--fg-5); margin-bottom: 12px; }
+  .tier-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+  @media (max-width: 900px) { .tier-grid { grid-template-columns: 1fr; } }
+  .tier-col { display: grid; gap: 10px; }
+  .tier-col > .text-label { display: flex; justify-content: space-between; }
+  .unit { padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); display: grid; gap: 4px; }
+  .unit__head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .unit__name { font-size: 14px; font-weight: 600; letter-spacing: -.01em; color: var(--fg); }
+  .unit__desc { font-size: 12px; color: var(--fg-4); line-height: 1.5; }
+  .roster { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+  .naming { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  @media (max-width: 700px) { .naming { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<button id="themeToggle" style="position:fixed;top:12px;inset-inline-end:12px;z-index:99;min-height:36px;padding:0 12px;border-radius:var(--radius);border:1px solid var(--border-3);background:var(--surface);color:var(--fg-2);font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;">theme: dark</button>
+
+<div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px;">
+  <span class="wordmark wordmark--lg">Quantum</span>
+  <span class="text-label">Tier 4 · instrument</span>
+  <span class="division division--labs">DSECT Labs</span>
+</div>
+<p class="text-lede" style="max-width:66ch;margin:0 0 30px;">Quantum is the AI system: device-bound agents federating into one shared core, so context never has to be re-explained agent by agent. It is an instrument, not a product, so it carries a codename and no DSECT prefix. This page composes existing components (panel, state, kv, avatar, agent card) into the fleet view. It adds no new CSS.</p>
+
+<section>
+  <div class="label">Three tiers — core, nodes, clients</div>
+  <div class="tier-grid">
+    <div class="tier-col">
+      <div class="text-label"><span>Quantum Core</span><span>shared</span></div>
+      <div class="unit"><div class="unit__head"><span class="unit__name">Memory</span><span class="state state--ready"><i class="state__dot" aria-hidden="true"></i>Ready</span></div><div class="unit__desc">Semantic recall shared by every agent.</div></div>
+      <div class="unit"><div class="unit__head"><span class="unit__name">Codex</span><span class="state state--busy"><i class="state__dot" aria-hidden="true"></i>Syncing</span></div><div class="unit__desc">Docs, planning and the inter-agent mailbox.</div></div>
+      <div class="unit"><div class="unit__head"><span class="unit__name">Registry</span><span class="state state--ready"><i class="state__dot" aria-hidden="true"></i>Ready</span></div><div class="unit__desc">Devices, agents and config — one source of truth.</div></div>
+    </div>
+    <div class="tier-col">
+      <div class="text-label"><span>Quantum Nodes</span><span>per device</span></div>
+      <div class="unit"><div class="unit__head"><span class="unit__name">Tritium</span><span class="state state--ready"><i class="state__dot" aria-hidden="true"></i>Ready</span></div><div class="unit__desc">Full node — inference engine, chat gateways, orchestrator.</div>
+        <div class="meter" style="margin-top:6px;"><span class="meter__label">GPU</span><span class="meter__value">62%</span><div class="progbar"><i style="width:62%"></i></div></div></div>
+      <div class="unit"><div class="unit__head"><span class="unit__name">Victus</span><span class="state state--ready"><i class="state__dot" aria-hidden="true"></i>Ready</span></div><div class="unit__desc">Light node — a laptop running one agent.</div></div>
+      <div class="unit"><div class="unit__head"><span class="unit__name">Pixel</span><span class="state state--stopped"><i class="state__dot" aria-hidden="true"></i>Stopped</span></div><div class="unit__desc">Minimal node — a phone; started by hand when needed.</div></div>
+    </div>
+    <div class="tier-col">
+      <div class="text-label"><span>Quantum Clients</span><span>surfaces</span></div>
+      <div class="unit"><div class="unit__head"><span class="unit__name">CLI</span><span class="badge badge--ok">Built</span></div><div class="unit__desc"><code>quantum</code> — the control plane. Exit 0 ok · 1 warn · 2 error.</div></div>
+      <div class="unit"><div class="unit__head"><span class="unit__name">Desktop app</span><span class="badge">Planned</span></div><div class="unit__desc">Consumes the same core surface as the CLI.</div></div>
+      <div class="unit"><div class="unit__head"><span class="unit__name">Chat gateways</span><span class="badge badge--info">Live</span></div><div class="unit__desc">Where most conversations with the fleet start.</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="label">Agent roster — sample states</div>
+  <div class="roster">
+    <article class="agent">
+      <span class="avatar" aria-hidden="true">Q</span>
+      <div>
+        <div class="agent__head"><span class="agent__name">Qubit</span><span class="state state--ready"><i class="state__dot" aria-hidden="true"></i>Ready</span></div>
+        <div class="agent__role">Ecosystem orchestrator</div>
+        <div class="agent__meta"><span>Node <b>Tritium</b></span><span>Tier <b>Full</b></span></div>
+      </div>
+    </article>
+    <article class="agent">
+      <span class="avatar" aria-hidden="true">R</span>
+      <div>
+        <div class="agent__head"><span class="agent__name">Reeve</span><span class="state state--busy"><i class="state__dot" aria-hidden="true"></i>Building</span></div>
+        <div class="agent__role">Builder · systems</div>
+        <div class="agent__meta"><span>Node <b>Tritium</b></span><span>Tier <b>Full</b></span></div>
+      </div>
+    </article>
+    <article class="agent">
+      <span class="avatar" aria-hidden="true">I</span>
+      <div>
+        <div class="agent__head"><span class="agent__name">Ion</span><span class="state state--ready"><i class="state__dot" aria-hidden="true"></i>Ready</span></div>
+        <div class="agent__role">Default agent on the laptop</div>
+        <div class="agent__meta"><span>Node <b>Victus</b></span><span>Tier <b>Light</b></span></div>
+      </div>
+    </article>
+    <article class="agent">
+      <span class="avatar" aria-hidden="true">Q</span>
+      <div>
+        <div class="agent__head"><span class="agent__name">Quark</span><span class="state state--stopped"><i class="state__dot" aria-hidden="true"></i>Stopped</span></div>
+        <div class="agent__role">Bookkeeper · content only</div>
+        <div class="agent__meta"><span>Node <b>Pixel</b></span><span>Tier <b>Minimal</b></span></div>
+      </div>
+    </article>
+    <article class="agent">
+      <span class="avatar" aria-hidden="true">A</span>
+      <div>
+        <div class="agent__head"><span class="agent__name">Axiom</span><span class="state state--degraded"><i class="state__dot" aria-hidden="true"></i>Degraded</span></div>
+        <div class="agent__role">Architecture · ventures</div>
+        <div class="agent__meta"><span>Node <b>—</b></span></div>
+      </div>
+    </article>
+    <article class="agent">
+      <span class="avatar" aria-hidden="true">S</span>
+      <div>
+        <div class="agent__head"><span class="agent__name">Spark</span><span class="state state--unknown"><i class="state__dot" aria-hidden="true"></i>Unknown</span></div>
+        <div class="agent__role">External research agent</div>
+        <div class="agent__meta"><span>Node <b>external</b></span><span>Not managed by Quantum</span></div>
+      </div>
+    </article>
+  </div>
+  <p class="text-small" style="margin-top:10px;max-width:68ch;">Avatars fall back to a mono monogram. The agent portraits are a consistent series still being made, and a monogram is honest where a stock silhouette would not be. When one lands, it goes inside the same circle: <code>&lt;span class="avatar"&gt;&lt;img alt=""&gt;&lt;/span&gt;</code>.</p>
+</section>
+
+<section>
+  <div class="label">Naming — the machine and the system are different words</div>
+  <div class="naming">
+    <div class="panel"><div class="panel-head"><h3 style="margin:0;">Tritium</h3><span class="text-label">hardware</span></div>
+      <div class="panel-body"><p class="text-small" style="margin:0;">The physical server: its hostname and network identity. The name is fixed. Change it and certificates, host lookups and config values break.</p></div></div>
+    <div class="panel"><div class="panel-head"><h3 style="margin:0;">Quantum</h3><span class="text-label">system</span></div>
+      <div class="panel-body"><p class="text-small" style="margin:0;">The AI infrastructure that runs on Tritium, renamed away from the clashing name. Never find-and-replace one word for the other.</p></div></div>
+  </div>
+</section>
+
+<script>
+document.getElementById('themeToggle').addEventListener('click', function(){
+  var root = document.documentElement;
+  var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  root.setAttribute('data-theme', next);
+  this.textContent = 'theme: ' + next;
+});
+</script>
+</body>
+</html>
