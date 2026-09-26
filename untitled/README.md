@@ -8,8 +8,8 @@ It maps Untitled's **semantic** tokens (`--color-text-primary`, `--color-bg-bran
 tokens (`var(--fg)`, `var(--ink-btn-bg)`, …). It does not re-tint Untitled's colour ramps. So:
 
 - **`tokens.css` stays the single source of truth.** Change a DSECT token and both kits move.
-- **DSECT's `data-theme` drives both kits.** Never apply Untitled's `.dark-mode` class. The bridge redefines
-  Tailwind's `dark:` variant to follow DSECT's dark theme.
+- **DSECT's `data-theme` drives both kits.** Light is the default; `data-theme="dark"` switches both. Never apply
+  Untitled's `.dark-mode` class. The bridge redefines Tailwind's `dark:` variant to follow `data-theme="dark"`.
 - **Contrast is inherited.** Every pair the bridge creates is a pair `scripts/check.mjs` already measures in
   both themes. The check also enforces that the bridge reads only real DSECT tokens and redefines none of them.
 

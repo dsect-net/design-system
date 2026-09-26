@@ -89,6 +89,9 @@ measures.
 
 ## Decisions for the founder
 
+> **Decided 2026-09-26:** both themes stay, and **light is the default** (TRELLIS Phase 0 asked "dark-only or dark +
+> light"). `data-theme="dark"` switches every token, the Untitled bridge's `dark:` variant included.
+
 1. **Kit shape:** combine (recommended) · `@dsect/ui` only · Untitled only.
 2. **The primary action's fill in the Untitled half:** DSECT's ink (the hub's `btn-primary`; the bridge's
    default), or Terminal Green with Obsidian text (the TRELLIS pilot; 7.41:1). Either way it is one look; this

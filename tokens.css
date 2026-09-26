@@ -4,14 +4,77 @@
    seven inline copies that happen to agree is not a design system.
 
    Layout of this file:
-     1. :root / [data-theme="dark"]  — colour, shadow, type family, radius (dark = home theme)
-     2. [data-theme="light"]         — the full parallel light set, not a filter
-     3. :root                        — theme-invariant scales: space, motion, z-index,
-                                       touch target, focus. Added 2026-09-25; none of these
-                                       change between themes, so they are declared once. */
+     1. :root / [data-theme="light"] — colour and shadow for the DEFAULT theme, light
+                                       (the default since 2026-09-26; a page with no
+                                       data-theme attribute is light)
+     2. [data-theme="dark"]          — the full parallel dark set, not a filter
+     3. :root                        — theme-invariant: type families, radius, max width,
+                                       safe areas, space, motion, z-index, touch target,
+                                       focus. None of these change between themes. */
 
-:root,:root[data-theme="dark"]{
-  color-scheme:dark; /* native controls, scrollbars and pickers render dark too */
+:root,:root[data-theme="light"]{
+  color-scheme:light; /* native controls, scrollbars and pickers follow the theme */
+  --bg:#FFFFFF;
+  --bg-2:#FAFAFA;
+  --bg-3:#F4F4F5;
+  --bg-4:#E4E4E7;
+  --surface:#FFFFFF;
+  --surface-2:#FAFAFA;
+  --surface-hover:#F4F4F5;
+  --border:rgba(0,0,0,.06);
+  --border-2:rgba(0,0,0,.09);
+  --border-3:rgba(0,0,0,.12);
+  --fg:#09090B;
+  --fg-2:#27272A;
+  --fg-3:#3F3F46;
+  --fg-4:#52525B;
+  --fg-5:#6C6C7A;
+  --emerald:#047857;
+  --emerald-pure:#00A344;
+  --emerald-dim:#065F46;
+  --emerald-bg:rgba(4,120,87,.1);
+  --amber:#B45309;
+  --amber-dim:#92400E;
+  --amber-bg:rgba(180,83,9,.1);
+  --red:#B91C1C;
+  --red-dim:#991B1B;
+  --red-bg:rgba(185,28,28,.1);
+  --slate:#475569;
+  --slate-bg:rgba(71,85,105,.1);
+  --accent:#27272A;
+  --accent-soft:rgba(0,150,180,.10);
+  --ink-btn-bg:#09090B;
+  --ink-btn-fg:#FFFFFF;
+  --ink-btn-hover:#27272A;
+  --chart-bar:rgba(0,0,0,.18);
+  --chart-bar-hot:rgba(180,83,9,.55);
+  --chart-bar-down:rgba(185,28,28,.4);
+  --chart-grid:rgba(0,0,0,.06);
+  --overlay:rgba(0,0,0,.35);
+  --shadow-drawer:-20px 0 60px rgba(0,0,0,.12);
+  --shadow-float:0 20px 60px rgba(0,0,0,.15);
+  --shadow-card:0 8px 24px -8px rgba(0,0,0,.12);
+  --shadow-toast:0 12px 32px rgba(0,0,0,.12);
+  --stamp-bg:rgba(255,255,255,.92);
+  --scrollbar:var(--fg-5);
+  --scrollbar-hover:var(--fg-4);
+  --selection-bg:rgba(0,0,0,.1);
+  --selection-fg:#09090B;
+  --toast-tick-border:var(--border-2);
+  --focus-ring:var(--fg-4);
+  /* Division accents — DSECT Brand Architecture (DSECT-BRAND-002 §3, §6).
+     A division's accent is the entire extent of its visual independence: same
+     mark, same type, same voice. Only Labs has an assigned hue; Systems and
+     Software inherit the entity accent until an ADR assigns one. */
+  --division-labs:#7C3AED;       /* #A78BFA stepped down: it is 2.7:1 on white */
+  --division-systems:var(--accent);
+  --division-software:var(--accent);
+  /* the // in the DSECT// wordmark treatment (ADR-012: visual only, never the name) */
+  --wordmark-cut:#0096B4;        /* the hue already behind light --accent-soft */
+}
+
+:root[data-theme="dark"]{
+  color-scheme:dark;
   --bg:#0A0C10;
   --bg-2:#0F131A;
   --bg-3:#161B22;
@@ -60,15 +123,12 @@
   --selection-fg:#fff;
   --toast-tick-border:var(--border-2);
   --focus-ring:#00E5FF;
-  /* Division accents — DSECT Brand Architecture (DSECT-BRAND-002 §3, §6).
-     A division's accent is the entire extent of its visual independence: same
-     mark, same type, same voice. Only Labs has an assigned hue; Systems and
-     Software inherit the entity accent until an ADR assigns one. */
   --division-labs:#A78BFA;
-  --division-systems:var(--accent);
-  --division-software:var(--accent);
-  /* the // in the DSECT// wordmark treatment (ADR-012: visual only, never the name) */
   --wordmark-cut:var(--accent);
+}
+
+/* Theme-invariant. */
+:root{
   --sans:"Inter",system-ui,-apple-system,sans-serif;
   --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,monospace;
   --max:1280px;
@@ -78,64 +138,7 @@
   --safe-right:env(safe-area-inset-right,0px);
   --safe-bottom:env(safe-area-inset-bottom,0px);
   --safe-left:env(safe-area-inset-left,0px);
-}
 
-:root[data-theme="light"]{
-  color-scheme:light;
-  --emerald-pure:#00A344;
-  --accent-soft:rgba(0,150,180,.10);
-  --bg:#FFFFFF;
-  --bg-2:#FAFAFA;
-  --bg-3:#F4F4F5;
-  --bg-4:#E4E4E7;
-  --surface:#FFFFFF;
-  --surface-2:#FAFAFA;
-  --surface-hover:#F4F4F5;
-  --border:rgba(0,0,0,.06);
-  --border-2:rgba(0,0,0,.09);
-  --border-3:rgba(0,0,0,.12);
-  --fg:#09090B;
-  --fg-2:#27272A;
-  --fg-3:#3F3F46;
-  --fg-4:#52525B;
-  --fg-5:#6C6C7A;
-  --emerald:#047857;
-  --emerald-dim:#065F46;
-  --emerald-bg:rgba(4,120,87,.1);
-  --amber:#B45309;
-  --amber-dim:#92400E;
-  --amber-bg:rgba(180,83,9,.1);
-  --red:#B91C1C;
-  --red-dim:#991B1B;
-  --red-bg:rgba(185,28,28,.1);
-  --slate:#475569;
-  --slate-bg:rgba(71,85,105,.1);
-  --accent:#27272A;
-  --ink-btn-bg:#09090B;
-  --ink-btn-fg:#FFFFFF;
-  --ink-btn-hover:#27272A;
-  --chart-bar:rgba(0,0,0,.18);
-  --chart-bar-hot:rgba(180,83,9,.55);
-  --chart-bar-down:rgba(185,28,28,.4);
-  --chart-grid:rgba(0,0,0,.06);
-  --overlay:rgba(0,0,0,.35);
-  --shadow-drawer:-20px 0 60px rgba(0,0,0,.12);
-  --shadow-float:0 20px 60px rgba(0,0,0,.15);
-  --shadow-card:0 8px 24px -8px rgba(0,0,0,.12);
-  --shadow-toast:0 12px 32px rgba(0,0,0,.12);
-  --stamp-bg:rgba(255,255,255,.92);
-  --scrollbar:var(--fg-5);
-  --scrollbar-hover:var(--fg-4);
-  --selection-bg:rgba(0,0,0,.1);
-  --selection-fg:#09090B;
-  --toast-tick-border:var(--border-2);
-  --focus-ring:var(--fg-4);
-  --division-labs:#7C3AED;       /* same hue, stepped down: #A78BFA is 2.7:1 on white */
-  --wordmark-cut:#0096B4;        /* the hue already behind light --accent-soft */
-}
-
-/* Theme-invariant scales. */
-:root{
   /* 4px grid (BRAND-001 §2, still authoritative) */
   --space-1:4px;
   --space-2:8px;

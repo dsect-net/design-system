@@ -25,6 +25,7 @@
       "require": "./dist/dsect-ui.umd.cjs"
     },
     "./styles.css": "./dist/dsect-ui.css",
+    "./fonts.css": "./dist/fonts.css",
     "./base.css": "./dist/base.css",
     "./components.css": "./dist/components.css",
     "./tokens.css": "./dist/tokens.css"

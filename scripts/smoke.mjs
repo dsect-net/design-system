@@ -4,6 +4,9 @@
 // check.mjs reads the source; this renders it. Every page (index, previews,
 // embedded pages, templates) is loaded in Chromium in both themes, and fails on:
 //   errors     any console error, uncaught exception or failed request
+//   fonts      text set in Inter or JetBrains Mono renders without that face
+//              loaded — i.e. the page forgot fonts.css and fell back silently
+//              (a missing font FILE already shows up under errors)
 //   overflow   the page scrolls sideways at 360, 393 or 1280px
 //   touch      an interactive control whose HIT AREA is under 44 × 44px on a
 //              phone: 393px wide WITH touch input, so (pointer: coarse) rules
@@ -55,6 +58,23 @@ for (const page of PAGES) {
       loads++;
       const where = `${theme} ${width}`;
       for (const e of new Set(errs)) fail(page, 'errors', `[${where}] ${e}`);
+
+      if (width === 1280) {
+        const unloaded = await p.evaluate(() => {
+          const SYSTEM = ['Inter', 'JetBrains Mono'];
+          const used = new Set();
+          for (const el of document.querySelectorAll('body *')) {
+            if (el.closest('dialog:not([open]), [hidden]')) continue;
+            if (![...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) continue;
+            const cs = getComputedStyle(el);
+            if (cs.display === 'none' || cs.visibility === 'hidden') continue;
+            used.add(cs.fontFamily.split(',')[0].trim().replace(/["']/g, ''));
+          }
+          const loaded = new Set([...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family.replace(/["']/g, '')));
+          return [...used].filter((f) => SYSTEM.includes(f) && !loaded.has(f));
+        });
+        for (const f of unloaded) fail(page, 'fonts', `[${theme}] text is set in ${f}, but no ${f} face loaded (is fonts.css linked?)`);
+      }
 
       const over = await p.evaluate(() => {
         const vw = innerWidth;
@@ -117,5 +137,5 @@ if (failures.length) {
   console.log(`\nexit 2 · error — ${failures.length} failure(s) across ${PAGES.length} pages (${loads} loads, ${probed} controls probed)`);
   process.exit(2);
 }
-console.log(`✓ ${PAGES.length} pages × 2 themes × 3 widths (${loads} loads): no errors, no sideways scroll; ${probed} controls meet the 44px hit area at 393px`);
+console.log(`✓ ${PAGES.length} pages × 2 themes × 3 widths (${loads} loads): no errors, system fonts loaded, no sideways scroll; ${probed} controls meet the 44px hit area at 393px`);
 console.log('\nexit 0 · ok');

@@ -10,7 +10,8 @@ This is the UI system that actually ships: tokens, type, components. It is not a
 ## Files
 
 - `tokens.css` — the single source of truth for colour, radius, shadow, font family and safe-area
-  tokens. Dark and light themes are both defined, and dark is the estate's home theme. Also here: `color-scheme` (so native
+  tokens. Light and dark themes are both defined; **light is the default** (since 2026-09-26), and
+  `data-theme="dark"` on `<html>` switches to the dark set. Also here: `color-scheme` (so native
   controls match the theme), the division accents from the Brand Architecture, `--wordmark-cut`, and one
   theme-invariant block for the 4px spacing scale, motion, z-index, the 44px touch floor and the focus ring.
   Every page links this one file and redeclares nothing.

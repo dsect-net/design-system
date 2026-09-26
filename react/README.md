@@ -16,6 +16,9 @@ Requires React 18+ (peer dependency).
 
 ## Use
 
+`styles.css` brings the self-hosted fonts (Inter, JetBrains Mono) with it; the font files and their OFL licences
+ship in the package, so nothing is fetched from a font CDN.
+
 ```tsx
 import '@dsect/ui/styles.css';
 import { Button, Card, Badge, Table, Th, Td, StateIndicator, setTheme } from '@dsect/ui';
@@ -48,11 +51,11 @@ function Services() {
 
 ## Theming
 
-Dark is the estate's home theme and the default — no attribute needed. For light:
+Light is the default: no attribute needed. For dark:
 
 ```tsx
 import { setTheme } from '@dsect/ui';
-setTheme('light'); // sets data-theme="light" on <html>
+setTheme('dark'); // sets data-theme="dark" on <html>
 ```
 
 ## Principles (embodied, not aspirational)
@@ -98,6 +101,7 @@ the parts into layers instead, together with the Untitled UI bridge (`untitled/d
 ```css
 @import "tailwindcss";
 @import "<untitled>/styles/theme.css";
+@import "@dsect/ui/fonts.css";
 @import "@dsect/ui/tokens.css";
 @import "<design-system>/untitled/dsect-theme.css";
 @import "@dsect/ui/base.css" layer(base);

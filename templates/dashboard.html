@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Dashboard — DSECT Hub</title>
-<meta name="theme-color" content="#0A0C10" media="(prefers-color-scheme: dark)">
-<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
-<script>try { var t = localStorage.getItem('dsect-theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}</script>
+<!-- browser chrome colour = --bg, copied (meta tags can't read CSS); the theme script keeps it in step -->
+<meta name="theme-color" content="#FFFFFF">
+<script>try { var t = localStorage.getItem('dsect-theme'); if (t === 'light' || t === 'dark') { document.documentElement.setAttribute('data-theme', t); document.querySelector('meta[name="theme-color"]').content = t === 'dark' ? '#0A0C10' : '#FFFFFF'; } } catch (e) {}</script>
 <link rel="stylesheet" href="../fonts.css">
 <link rel="stylesheet" href="../tokens.css">
 <link rel="stylesheet" href="../base.css">

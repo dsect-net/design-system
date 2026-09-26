@@ -2,6 +2,19 @@
 
 ## 2026-09-26
 
+### Changed
+
+- **Light is the default theme.** A page with no `data-theme` renders light; `data-theme="dark"` switches to the dark
+  set. `tokens.css` is restructured (light in the default block, dark as the override, invariant values in their own
+  block), and every token resolves to exactly its previous value in each theme, verified token by token. Pages,
+  templates, the manifest, `@dsect/ui`'s `setTheme`/`getTheme`, the Untitled bridge's `dark:` variant and the check
+  script all follow.
+- **`@dsect/ui` ships the fonts.** `dist/fonts.css`, the four woff2 files and their OFL licences are in the package;
+  `styles.css` imports them, and `@dsect/ui/fonts.css` is exported for layered imports. Verified in a consumer Vite
+  app and via a plain `<link>`: Inter and JetBrains Mono load, and no request fails.
+- The smoke test fails a page whose text is set in Inter or JetBrains Mono but that never loaded the face.
+
+
 Exploration for TRELLIS (HUB-015): React, Untitled UI React, and the hub as a standalone phone app. The
 decision memo is `docs/proposals/2026-09-26-react-untitled-mobile.md`.
 

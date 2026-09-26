@@ -12,9 +12,11 @@ Every visual value comes from the system; the templates declare none, only layou
 ## What's already set up in each `<head>`, and why
 
 - **`viewport-fit=cover`.** Without it every `env(safe-area-inset-*)` is 0 and content sits under the notch.
-- **`theme-color` per colour scheme.** These are `--bg`'s values copied as literals, because meta tags can't read CSS.
-- **Pre-paint theme script.** It applies a saved `dsect-theme` before the first frame, so a light-theme reader
-  never sees a dark flash. It uses `localStorage` for one viewer's preference only, inside `try` so private
+- **`theme-color`.** This is `--bg`'s value copied as a literal, because meta tags can't read CSS. The theme script
+  swaps it with the theme.
+- **Light by default.** `data-theme="light"` is on `<html>`; the toggle switches to `dark`.
+- **Pre-paint theme script.** It applies a saved `dsect-theme` before the first frame, so a dark-theme reader
+  never sees a light flash, and keeps `theme-color` in step. It uses `localStorage` for one viewer's preference only, inside `try` so private
   mode can't break the page.
 - **Stylesheet order:** `fonts.css`, `tokens.css`, `base.css`, `components.css`. In a Tailwind app, load them
   as `untitled/README.md` describes instead, with `base.css` and `components.css` in layers.

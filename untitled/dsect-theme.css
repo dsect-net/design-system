@@ -9,7 +9,7 @@
  *     both the hand-written DSECT components and every Untitled component move.
  *   - Theming is DSECT's [data-theme]. Untitled's .dark-mode class is never
  *     applied, and its `dark:` variant is redefined below to follow DSECT's
- *     dark theme (the default, i.e. anything but data-theme="light").
+ *     dark theme, data-theme="dark". Light is the default.
  *   - Contrast is inherited: every text/surface pair here is a pair
  *     scripts/check.mjs already measures in both themes.
  *
@@ -30,7 +30,7 @@
  * Tokens only: every value is a var() into tokens.css (or color-mix of one).
  */
 
-@custom-variant dark (&:where(:root:not([data-theme="light"]), :root:not([data-theme="light"]) *));
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 :root {
   /* ---------------------------------------------------------------- type */
@@ -127,9 +127,9 @@
   --color-bg-success-secondary: var(--emerald-bg);
   --color-bg-success-solid: var(--emerald-dim);
   /* tooltips and scrims are dark in BOTH themes (Untitled pairs them with
-     text-white), so these two are set per theme below */
-  --color-bg-primary-solid: var(--bg-4);
-  --color-bg-overlay: var(--bg);
+     text-white): the ink here, and a dark surface in the dark theme below */
+  --color-bg-primary-solid: var(--fg);
+  --color-bg-overlay: var(--fg);
 
   /* ------------------------------------------------------------ borders */
   --color-border-primary: var(--border-3);
@@ -213,7 +213,7 @@
   --color-utility-purple-700: var(--division-labs);
 }
 
-:root[data-theme="light"] {
-  --color-bg-primary-solid: var(--fg);
-  --color-bg-overlay: var(--fg);
+:root[data-theme="dark"] {
+  --color-bg-primary-solid: var(--bg-4);
+  --color-bg-overlay: var(--bg);
 }

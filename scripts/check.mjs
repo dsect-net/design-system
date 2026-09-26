@@ -52,15 +52,21 @@ function parseBlocks(css) {
   return blocks;
 }
 const tokenBlocks = parseBlocks(read('tokens.css'));
-const darkBlock = tokenBlocks.find((b) => b.selector.includes('[data-theme="dark"]'));
-const lightBlock = tokenBlocks.find((b) => b.selector.includes('[data-theme="light"]'));
+// The DEFAULT theme's block is the one that also matches a bare :root
+// (":root,:root[data-theme=…]"); the other theme's block only overrides it.
+const themeBlocks = tokenBlocks.filter((b) => /\[data-theme="(light|dark)"\]/.test(b.selector));
+const baseBlock = themeBlocks.find((b) => b.selector.split(',').some((s) => s.trim() === ':root'));
+const overBlock = themeBlocks.find((b) => b !== baseBlock);
 const scaleBlock = tokenBlocks.find((b) => b.selector === ':root');
-if (!darkBlock || !lightBlock || !scaleBlock) {
-  err('tokens', 'expected a dark block, a light block and a theme-invariant :root block in tokens.css');
+if (!baseBlock || !overBlock || !scaleBlock) {
+  err('tokens', 'expected a default theme block (:root,:root[data-theme=…]), the other theme\'s block, and a theme-invariant :root block');
 }
+const DEFAULT_THEME = /data-theme="(\w+)"/.exec(baseBlock?.selector ?? '')?.[1] ?? '?';
 const onlyTokens = (decls) => Object.fromEntries(Object.entries(decls).filter(([k]) => k.startsWith('--')));
-const dark = { ...onlyTokens(scaleBlock?.decls ?? {}), ...onlyTokens(darkBlock?.decls ?? {}) };
-const light = { ...dark, ...onlyTokens(lightBlock?.decls ?? {}) };
+const base = { ...onlyTokens(scaleBlock?.decls ?? {}), ...onlyTokens(baseBlock?.decls ?? {}) };
+const over = { ...base, ...onlyTokens(overBlock?.decls ?? {}) };
+const light = DEFAULT_THEME === 'light' ? base : over;
+const dark = DEFAULT_THEME === 'light' ? over : base;
 const DECLARED = new Set(Object.keys(dark));
 
 // ---------------------------------------------------------------- 1. every var() resolves
@@ -104,18 +110,18 @@ const DECLARED = new Set(Object.keys(dark));
 }
 
 // ---------------------------------------------------------------- 3. theme parity
-// A dark token holding a colour literal must be restated in light, or light
-// silently inherits a dark-theme colour.
+// A colour token in the default theme's block must be restated in the other
+// theme's block, or that theme silently inherits the default's colour.
 {
   const COLOURISH = /#[0-9a-fA-F]{3,8}\b|rgba?\(/;
-  const lightOwn = new Set(Object.keys(onlyTokens(lightBlock?.decls ?? {})));
-  const missing = Object.entries(onlyTokens(darkBlock?.decls ?? {}))
-    .filter(([k, v]) => COLOURISH.test(v) && !lightOwn.has(k))
-    .map(([k]) => k);
-  for (const k of missing) err('parity', `${k} has a dark colour but no light value`);
-  const extra = [...lightOwn].filter((k) => !(k in onlyTokens(darkBlock?.decls ?? {})));
-  for (const k of extra) err('parity', `${k} exists only in the light theme`);
-  if (!missing.length && !extra.length) ok('parity', `every colour token in dark has a light counterpart (${lightOwn.size} light tokens)`);
+  const overOwn = new Set(Object.keys(onlyTokens(overBlock?.decls ?? {})));
+  const baseOwn = onlyTokens(baseBlock?.decls ?? {});
+  const other = DEFAULT_THEME === 'light' ? 'dark' : 'light';
+  const missing = Object.entries(baseOwn).filter(([k, v]) => COLOURISH.test(v) && !overOwn.has(k)).map(([k]) => k);
+  for (const k of missing) err('parity', `${k} has a ${DEFAULT_THEME} colour but no ${other} value`);
+  const extra = [...overOwn].filter((k) => !(k in baseOwn));
+  for (const k of extra) err('parity', `${k} exists only in the ${other} theme`);
+  if (!missing.length && !extra.length) ok('parity', `default theme is ${DEFAULT_THEME}; every colour token has a ${other} counterpart (${overOwn.size} ${other} tokens)`);
 }
 
 // ---------------------------------------------------------------- 4. contrast (WCAG 2.x)
