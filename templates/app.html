@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<!-- viewport-fit=cover is what makes env(safe-area-inset-*) non-zero on a notched phone -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DSECT Hub</title>
+<!-- browser chrome colour = --bg, copied (meta tags can't read CSS); the theme script keeps it in step -->
+<meta name="theme-color" content="#FFFFFF">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<script>try { var t = localStorage.getItem('dsect-theme'); if (t === 'light' || t === 'dark') { document.documentElement.setAttribute('data-theme', t); document.querySelector('meta[name="theme-color"]').content = t === 'dark' ? '#0A0C10' : '#FFFFFF'; } } catch (e) {}</script>
+<link rel="stylesheet" href="../fonts.css">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../base.css">
+<link rel="stylesheet" href="../components.css">
+</head>
+<body class="app">
+  <header class="appbar">
+    <h1 class="appbar__title">Title<span class="appbar__sub">Subtitle</span></h1>
+    <button class="icon-btn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+  </header>
+
+  <main class="app__main" style="display:grid;gap:var(--space-4);align-content:start;">
+    <div class="panel"><div class="panel-body"><p class="text-body" style="margin:0;">Content. The tab bar below renders only under 760px; wider screens get the masthead and sidenav from <code>templates/dashboard.html</code>.</p></div></div>
+    <button class="btn btn-primary" data-open="sheet">Open a sheet</button>
+  </main>
+
+  <!-- one mobile nav: the tab bar replaces the hamburger drawer in the installed app -->
+  <nav class="tabbar" aria-label="Primary">
+    <a href="#" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Home</a>
+    <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Second</a>
+    <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 9a6 6 0 1 1 12 0c0 6 3 7 3 7H3s3-1 3-7"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>Third</a>
+  </nav>
+
+  <dialog class="sheet" id="sheet" aria-labelledby="sheet-title">
+    <div class="dialog__head"><h2 class="dialog__title" id="sheet-title">Sheet</h2><button class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+    <div class="dialog__body"><p style="margin:0;">Bottom sheets are the phone's modal.</p></div>
+    <div class="dialog__foot"><button class="btn btn-primary" data-close>Done</button></div>
+  </dialog>
+
+<script>
+document.querySelectorAll('[data-open]').forEach(function(b){ b.addEventListener('click', function(){ document.getElementById(b.getAttribute('data-open')).showModal(); }); });
+document.querySelectorAll('dialog').forEach(function(d){ d.addEventListener('click', function(e){ if (e.target === d || e.target.closest('[data-close]')) d.close(); }); });
+</script>
+</body>
+</html>

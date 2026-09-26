@@ -1,0 +1,39 @@
+name: Token or brand change
+description: Change a value in tokens.css, or propose a brand change (palette, type, mark, naming).
+labels: [tokens]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of change
+      options:
+        - Technical token (spacing, motion, a stepped-down colour for contrast, …)
+        - Brand — palette, typography, the mark or naming (founder decision; needs an ADR)
+    validations:
+      required: true
+  - type: textarea
+    id: change
+    attributes:
+      label: Tokens, current and proposed values
+      description: Give both themes for any colour.
+      placeholder: "--fg-5  dark #738596 → …  light #6C6C7A → …"
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why
+    validations:
+      required: true
+  - type: textarea
+    id: measured
+    attributes:
+      label: Measured
+      description: Paste the relevant lines of `npm run check:verbose` (contrast in both themes).
+      render: text
+  - type: input
+    id: adr
+    attributes:
+      label: ADR
+      description: Required for brand changes. A pull request can propose one; the founder decides.
+      placeholder: "ADR-0xx"

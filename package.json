@@ -1,0 +1,18 @@
+{
+  "name": "@dsect/design-system",
+  "private": true,
+  "description": "The DSECT design system — tokens, type, components and previews for the DSECT Hub. Plain CSS, no build step.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "check": "node scripts/check.mjs",
+    "check:verbose": "node scripts/check.mjs --verbose",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.56.1"
+  }
+}

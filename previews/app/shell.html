@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<!-- viewport-fit=cover is what makes env(safe-area-inset-*) non-zero -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- browser chrome colour = --bg, copied (meta tags can't read CSS); the theme script keeps it in step -->
+<meta name="theme-color" content="#FFFFFF">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>DSECT Hub — app shell</title>
+<link rel="stylesheet" href="../../fonts.css">
+<link rel="stylesheet" href="../../tokens.css">
+<link rel="stylesheet" href="../../base.css">
+<link rel="stylesheet" href="../../components.css">
+<style>
+  /* layout only */
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .stack { display: grid; gap: 14px; }
+  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .agent-list { list-style: none; margin: 0; padding: 0; }
+  .agent-list li { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); }
+  .agent-list li:last-child { border-bottom: 0; }
+  .agent-list .grow { flex: 1; min-width: 0; }
+  .agent-list .agent__role { margin: 0; }
+  .alert { display: grid; gap: 8px; padding: 12px 14px; border: 1px solid color-mix(in srgb, var(--amber) 30%, var(--border-2)); border-radius: var(--radius-lg); background: var(--surface); }
+</style>
+</head>
+<body class="app">
+  <header class="appbar">
+    <h1 class="appbar__title">Tritium<span class="appbar__sub">Quantum · full node</span></h1>
+    <button class="icon-btn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+    <button class="icon-btn" id="themeToggle" aria-label="Switch theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+  </header>
+
+  <main class="app__main stack">
+    <div class="row">
+      <span class="state state--ready"><i class="state__dot" aria-hidden="true"></i>All systems nominal</span>
+      <span class="text-label">updated 14:02</span>
+    </div>
+
+    <div class="panel"><div class="panel-body">
+      <div class="stat-strip">
+        <div class="metric"><span class="metric__label">Generation</span><span class="metric__value">41.8<span class="metric__unit">tok/s</span></span><span class="metric__delta metric__delta--good">▲ 6.2%</span></div>
+        <div class="metric"><span class="metric__label">p95</span><span class="metric__value">212<span class="metric__unit">ms</span></span><span class="metric__delta metric__delta--bad">▲ 18 ms</span></div>
+        <div class="metric"><span class="metric__label">Services</span><span class="metric__value">34</span><span class="metric__delta">1 degraded</span></div>
+        <div class="metric"><span class="metric__label">Agents</span><span class="metric__value">6</span><span class="metric__delta">4 live</span></div>
+      </div>
+    </div></div>
+
+    <section class="alert" aria-labelledby="needs-you">
+      <div class="row"><span class="text-label" id="needs-you">Needs you</span><span class="state state--degraded"><i class="state__dot" aria-hidden="true"></i>Degraded</span></div>
+      <div style="color:var(--fg);font-weight:500;">quantum-memory</div>
+      <div class="text-small">Recall p95 is 480 ms, above its 400 ms normal.</div>
+      <button class="btn btn-outline" data-open="svcSheet">Details</button>
+    </section>
+
+    <div class="actions">
+      <button class="btn btn-primary" data-open="doctorSheet">Run doctor</button>
+      <button class="btn btn-outline">Restart gateway</button>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><h2 style="margin:0;font-size:15px;">Agents</h2><span class="text-label">6</span></div>
+      <div class="panel-body" style="padding-block:2px;">
+        <ul class="agent-list">
+          <li><span class="avatar avatar--sm" aria-hidden="true">Q</span><div class="grow"><div class="agent__name">Qubit</div><div class="agent__role">Orchestrator</div></div><span class="state state--ready"><i class="state__dot" aria-hidden="true"></i>Ready</span></li>
+          <li><span class="avatar avatar--sm" aria-hidden="true">R</span><div class="grow"><div class="agent__name">Reeve</div><div class="agent__role">Builder</div></div><span class="state state--busy"><i class="state__dot" aria-hidden="true"></i>Building</span></li>
+          <li><span class="avatar avatar--sm" aria-hidden="true">I</span><div class="grow"><div class="agent__name">Ion</div><div class="agent__role">Victus</div></div><span class="state state--ready"><i class="state__dot" aria-hidden="true"></i>Ready</span></li>
+          <li><span class="avatar avatar--sm" aria-hidden="true">Q</span><div class="grow"><div class="agent__name">Quark</div><div class="agent__role">Bookkeeper</div></div><span class="state state--stopped"><i class="state__dot" aria-hidden="true"></i>Stopped</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="text-small browser-only" style="margin:0;">Running in a browser tab. Install it (Add to Home Screen) and this line disappears: <code>.browser-only</code>.</p>
+    <p class="text-small app-only" style="margin:0;">Running as an installed app: <code>.app-only</code>.</p>
+  </main>
+
+  <nav class="tabbar" aria-label="Primary">
+    <a href="#" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Overview</a>
+    <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Agents</a>
+    <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 3h11l3 3v15H5z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>Codex</a>
+    <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 9a6 6 0 1 1 12 0c0 6 3 7 3 7H3s3-1 3-7"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>Alerts<span class="badge badge--warn" aria-label="1 new">1</span></a>
+    <button type="button" data-open="moreSheet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>More</button>
+  </nav>
+
+  <dialog class="sheet" id="svcSheet" aria-labelledby="svc-title">
+    <div class="dialog__head"><h2 class="dialog__title" id="svc-title">quantum-memory</h2><button class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+    <div class="dialog__body stack">
+      <span class="state state--degraded"><i class="state__dot" aria-hidden="true"></i>Degraded · recall p95 480 ms</span>
+      <div class="bars bars--lg" role="img" aria-label="Recall latency over 24 hours, rising through the afternoon to 480 ms." id="svcBars"></div>
+      <dl class="kv"><dt>Owner</dt><dd>Quantum Core</dd><dt>Last deploy</dt><dd class="num">09-24 21:40</dd></dl>
+    </div>
+    <div class="dialog__foot"><button class="btn btn-outline" data-close>Close</button><button class="btn btn-primary" data-close>Restart</button></div>
+  </dialog>
+
+  <dialog class="sheet" id="doctorSheet" aria-labelledby="doc-title">
+    <div class="dialog__head"><h2 class="dialog__title" id="doc-title">quantum doctor</h2><button class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+    <div class="dialog__body">
+      <figure class="term">
+        <figcaption class="term__bar"><span class="term__title">quantum doctor</span><span class="exit exit--ok">exit 0 · ok</span></figcaption>
+<pre class="term__body"><code><span class="t-ok">✓</span> engine /health  <span class="t-dim">200 · 11 ms</span>
+<span class="t-ok">✓</span> memory recall   <span class="t-dim">ok</span>
+<span class="t-ok">✓</span> codex writable  <span class="t-dim">ok</span></code></pre>
+      </figure>
+    </div>
+  </dialog>
+
+  <dialog class="sheet" id="moreSheet" aria-label="More">
+    <nav class="dialog__body" aria-label="More sections" style="display:grid;">
+      <a class="btn btn-outline" href="#" style="justify-content:flex-start;">Storage</a>
+      <a class="btn btn-outline" href="#" style="justify-content:flex-start;margin-top:8px;">Feeds</a>
+      <a class="btn btn-outline" href="#" style="justify-content:flex-start;margin-top:8px;">Settings</a>
+    </nav>
+  </dialog>
+
+<script>
+(function(){
+  var q = new URLSearchParams(location.search).get('theme');
+  if (q === 'light' || q === 'dark') document.documentElement.setAttribute('data-theme', q);
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    var r = document.documentElement; r.setAttribute('data-theme', r.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+  });
+  var bars = document.getElementById('svcBars');
+  [.3,.28,.31,.29,.33,.3,.32,.35,.38,.42,.45,.5,.55,.61,.66,.72,.8,.86,.9,.84,.78,.74,.7,.68].forEach(function(v){
+    var i = document.createElement('i'); i.style.setProperty('--v', v); if (v >= .8) i.className = 'is-hot'; bars.appendChild(i);
+  });
+  document.querySelectorAll('[data-open]').forEach(function(b){ b.addEventListener('click', function(){ document.getElementById(b.getAttribute('data-open')).showModal(); }); });
+  document.querySelectorAll('dialog').forEach(function(d){ d.addEventListener('click', function(e){ if (e.target === d || e.target.closest('[data-close]')) d.close(); }); });
+})();
+</script>
+</body>
+</html>

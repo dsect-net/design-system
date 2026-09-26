@@ -1,0 +1,12 @@
+{
+  "name": "DSECT Hub",
+  "short_name": "DSECT",
+  "description": "The DSECT operations hub.",
+  "start_url": "./app.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FFFFFF",
+  "icons": []
+}

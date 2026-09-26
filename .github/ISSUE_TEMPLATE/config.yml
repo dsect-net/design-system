@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Brand rules (name, lockups, logo artwork)
+    url: https://github.com/dsect-net/design-system/blob/main/brand/README.md
+    about: How DSECT is written and shown, and where logo artwork comes from. Read before filing a brand issue.
+  - name: Contributing guide
+    url: https://github.com/dsect-net/design-system/blob/main/CONTRIBUTING.md
+    about: Set-up, the checks, and how to add a token or component.

@@ -9,6 +9,14 @@
  * Colour, radius and type come from tokens.css. Declare none here.
  * Canonical classes are the new ones; legacy selectors are aliased so existing
  * pages adopt these without a rewrite.
+ *
+ * Focus: components do NOT restate the focus ring. base.css gives every
+ * :focus-visible the same --focus-ring outline; a component only overrides
+ * outline-offset where the control is flush to an edge.
+ *
+ * Touch targets: where a control is drawn smaller than --tap (a badge's ×, a
+ * sort header, a chip's remove button), a transparent ::before pads the HIT
+ * AREA to the floor without changing what you see.
  */
 
 /* ===================================================================== */
@@ -55,6 +63,8 @@
 .badge--warn, .pill.warn { color: var(--amber);   border-color: color-mix(in srgb, var(--amber) 30%, var(--border-2)); }
 .badge--err,  .pill.bad  { color: var(--red);     border-color: color-mix(in srgb, var(--red) 30%, var(--border-2)); }
 .badge--info             { color: var(--accent);  border-color: color-mix(in srgb, var(--accent) 30%, var(--border-2)); }
+/* muted: archived, superseded, stopped-on-purpose — present but not live */
+.badge--slate            { color: var(--slate);   border-color: color-mix(in srgb, var(--slate) 30%, var(--border-2)); background: var(--slate-bg); }
 
 /* dismissible badge, per BadgeWithButton */
 .badge__close {
@@ -62,8 +72,10 @@
   color: inherit; cursor: pointer; font: inherit; line-height: 1;
   min-width: 24px; min-height: 24px;
   display: inline-flex; align-items: center; justify-content: center;
+  position: relative;
 }
-.badge__close:focus-visible { outline: 2px solid var(--emerald); outline-offset: 1px; }
+.badge__close::before { content: ""; position: absolute; inset: calc((var(--tap) - 24px) / -2); }
+.badge__close:focus-visible { outline-offset: 1px; }
 
 /* ===================================================================== */
 /* EMPTY STATE                                                           */
@@ -98,10 +110,12 @@
   min-height: 36px; padding: 0 14px; display: inline-flex; align-items: center;
   border-radius: var(--radius); font-size: 13px; cursor: pointer;
   border: 1px solid var(--border-2); background: var(--surface); color: var(--fg-3);
-  font-family: var(--sans);
+  font-family: var(--sans); text-decoration: none;
 }
 .empty__actions .is-primary { background: var(--ink-btn-bg); color: var(--ink-btn-fg); border-color: transparent; }
-.empty__actions *:focus-visible { outline: 2px solid var(--emerald); outline-offset: 2px; }
+@media (hover: none), (pointer: coarse) {
+  .empty__actions .btn, .empty__actions button, .empty__actions a { min-height: var(--tap-coarse); } /* same bump as .btn */
+}
 
 /* compact variant for inside a card (wishlist thumbnails, chat log) */
 .empty--inline { padding: 18px 14px; gap: 6px; }
@@ -119,7 +133,7 @@
 /* ===================================================================== */
 #toastWrap {
   position: fixed;
-  z-index: 130;
+  z-index: var(--z-toast);
   inset-inline-end: calc(16px + var(--safe-right, 0px));
   bottom: calc(24px + var(--safe-bottom, 0px));
   display: flex; flex-direction: column; gap: 8px; align-items: flex-end;
@@ -146,8 +160,10 @@
   padding: 12px 14px; border-radius: var(--radius);
   min-width: min(280px, 100%); max-width: 360px;
   box-shadow: var(--shadow-toast); pointer-events: auto;
-  animation: toastIn .3s cubic-bezier(.2, .9, .3, 1.1);
+  animation: toastIn var(--dur-enter) var(--ease-bounce);
 }
+/* was referenced but never defined until 2026-09-25, so toasts never animated in */
+@keyframes toastIn { from { opacity: 0; transform: translateY(8px) scale(.98); } }
 @media (prefers-reduced-motion: reduce) { .toast { animation: none; } }
 
 .toast__icon { flex: 0 0 auto; font-family: var(--mono); font-size: 12px; line-height: 1.5; }
@@ -160,12 +176,11 @@
      padding edge without the hit area inflating the toast. */
   flex: 0 0 auto; background: none; border: 0; padding: 0;
   color: var(--fg-5); cursor: pointer; font: inherit; line-height: 1;
-  min-width: 44px; min-height: 44px;
+  min-width: var(--tap); min-height: var(--tap);
   display: inline-flex; align-items: center; justify-content: center;
   margin: -10px -8px -10px 0;
 }
 .toast__close:hover { color: var(--fg-2); }
-.toast__close:focus-visible { outline: 2px solid var(--emerald); outline-offset: 2px; }
 
 .toast--ok   { border-inline-start-color: var(--emerald); }
 .toast--warn { border-inline-start-color: var(--amber); }
@@ -197,10 +212,15 @@
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* Reduced motion: never just freeze a spinner -- a stopped spinner reads as
-   "hung". Swap to a pulsing dot so the state still says "working". */
+   "hung". Rotation is swapped for a slow opacity breath: nothing moves, so it
+   is safe under reduced motion, and the state still says "working".
+   !important + a class selector is what beats base.css's global clamp
+   (`* { animation-duration: .01ms !important }`), which would otherwise
+   collapse the breath into a single frame -- the freeze this rule exists to
+   prevent. (Until 2026-09-25 this block set `animation: none`.) */
+@keyframes breathe { 0%, 100% { opacity: .3; } 50% { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
-  .spinner { animation: none; border-top-color: var(--emerald); opacity: .7; }
-  .spinner::after { content: ""; }
+  .spinner { animation: breathe 1.6s ease-in-out infinite !important; }
 }
 
 .loading {
@@ -215,7 +235,8 @@
 .progbar--indeterminate > i { width: 40%; animation: progSlide 1.1s ease-in-out infinite; }
 @keyframes progSlide { 0% { margin-inline-start: -40%; } 100% { margin-inline-start: 100%; } }
 @media (prefers-reduced-motion: reduce) {
-  .progbar--indeterminate > i { animation: none; width: 100%; opacity: .5; margin-inline-start: 0; }
+  /* a static full-width bar reads as "done"; breathe it instead, like the spinner */
+  .progbar--indeterminate > i { width: 100%; margin-inline-start: 0; animation: breathe 1.6s ease-in-out infinite !important; }
   .progbar > i { transition: none; }
 }
 
@@ -237,7 +258,7 @@
 .tbl-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 12px 14px; border-bottom: 1px solid var(--border); }
 .tbl-head h3 { font-size: 14px; font-weight: 600; letter-spacing: -.01em; }
 .tbl-head .count { font-family: var(--mono); font-size: 10px; color: var(--fg-5); letter-spacing: .04em; text-transform: uppercase; }
-.tbl-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.tbl-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; position: relative; } /* contains absolutely-positioned .sr-only labels, which otherwise escape the scroller and widen the page */
 
 .tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
 .tbl th, .tbl td { text-align: start; padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
@@ -248,27 +269,37 @@
 }
 .tbl tbody tr:last-child td { border-bottom: 0; }
 .tbl tbody tr:hover { background: color-mix(in srgb, var(--fg) 3%, transparent); }
-.tbl--sm th, .tbl--sm td { padding: 6px 12px; font-size: 12px; }
+.tbl--sm th, .tbl--sm td { padding: 6px 12px; }
+.tbl--sm td { font-size: 12px; } /* th keeps its 10px mono label size */
 
 /* sortable column header — a real button, so it is keyboard reachable */
 .tbl th button {
   background: none; border: 0; padding: 0; font: inherit; color: inherit;
   cursor: pointer; display: inline-flex; align-items: center; gap: 4px;
   letter-spacing: inherit; text-transform: inherit; min-height: 24px;
+  position: relative;
 }
-.tbl th button:focus-visible { outline: 2px solid var(--emerald); outline-offset: 2px; }
+.tbl th button::before { content: ""; position: absolute; inset: -10px -8px; } /* 24px visible, 44px hit */
+/* aria-sort belongs on the <th> itself (ARIA); data-sort on the button is the
+   legacy hook. The old `th [aria-sort]` descendant selector is kept as an alias
+   but never matched correct markup, so sorted columns showed no arrow. */
+.tbl th[aria-sort="ascending"] button::after,
 .tbl th [aria-sort="ascending"]::after,
 .tbl th button[data-sort="asc"]::after { content: "\2191"; color: var(--emerald); }
+.tbl th[aria-sort="descending"] button::after,
 .tbl th button[data-sort="desc"]::after { content: "\2193"; color: var(--emerald); }
 
-.tbl td.num { font-family: var(--mono); text-align: end; font-variant-numeric: tabular-nums; }
+.tbl td.num { font-family: var(--mono); text-align: end; font-variant-numeric: tabular-nums; white-space: nowrap; } /* "480 ms" never splits; the table scrolls instead */
 .tbl td.actions { text-align: end; white-space: nowrap; }
+/* headers align with their column, or the number column reads as ragged */
+.tbl th.num, .tbl th.actions { text-align: end; }
 .tbl td.actions button, .tbl td.actions a {
-  min-height: 44px; min-width: 44px; display: inline-flex; align-items: center; justify-content: center;
+  min-height: var(--tap); min-width: var(--tap); display: inline-flex; align-items: center; justify-content: center;
   background: none; border: 0; color: var(--fg-4); cursor: pointer; font: inherit; padding: 0 8px;
+  text-decoration: none;
 }
-.tbl td.actions button:hover { color: var(--fg); }
-.tbl td.actions *:focus-visible { outline: 2px solid var(--emerald); outline-offset: -2px; }
+.tbl td.actions button:hover, .tbl td.actions a:hover { color: var(--fg); }
+.tbl td.actions *:focus-visible { outline-offset: -2px; }
 
 .tbl-cell-user { display: flex; align-items: center; gap: 8px; min-width: 0; }
 .tbl-avatar {
@@ -286,12 +317,11 @@
 }
 .tbl-foot nav { display: flex; gap: 6px; }
 .tbl-foot button {
-  min-height: 44px; padding: 0 12px; border-radius: var(--radius);
+  min-height: var(--tap); padding: 0 12px; border-radius: var(--radius);
   border: 1px solid var(--border-2); background: var(--surface);
   color: var(--fg-3); cursor: pointer; font: inherit;
 }
 .tbl-foot button:disabled { opacity: .4; cursor: not-allowed; }
-.tbl-foot button:focus-visible { outline: 2px solid var(--emerald); outline-offset: 2px; }
 
 /* ===================================================================== */
 /* FILTER BAR                                                            */
@@ -304,13 +334,18 @@
 .filterbar__actions { display: flex; align-items: center; gap: 8px; margin-inline-start: auto; }
 
 .filterbar input[type="search"], .filterbar input[type="text"], .filterbar select {
-  min-height: 44px; padding: 0 12px; border-radius: var(--radius);
+  min-height: var(--tap); padding: 0 12px; border-radius: var(--radius);
   border: 1px solid var(--border-2); background: var(--bg); color: var(--fg);
   font-family: var(--sans); font-size: 16px; min-width: 0;
 }
 .filterbar input[type="search"] { flex: 1 1 180px; }
-.filterbar select { flex: 0 1 auto; }
-.filterbar *:focus-visible { outline: 2px solid var(--emerald); outline-offset: 2px; }
+/* width:auto undoes base.css's form-wide `select { width: 100% }`, which
+   forced the select onto its own full-width row beside the search */
+.filterbar select { flex: 0 1 auto; width: auto; }
+/* text fields keep the soft ring (see base.css FORMS); buttons get the global ring */
+.filterbar input:focus, .filterbar select:focus {
+  outline: none; border-color: var(--border-3); box-shadow: 0 0 0 3px var(--focus-soft);
+}
 
 /* applied filters */
 .filterbar__applied { display: flex; flex-wrap: wrap; gap: 6px; width: 100%; }
@@ -325,12 +360,14 @@
 .filter-chip button {
   background: none; border: 0; color: inherit; cursor: pointer; font: inherit;
   min-width: 28px; min-height: 28px; display: inline-flex; align-items: center; justify-content: center;
+  position: relative;
 }
-.filter-chip button:focus-visible { outline: 2px solid var(--emerald); outline-offset: 1px; }
+.filter-chip button::before { content: ""; position: absolute; inset: calc((var(--tap) - 28px) / -2); }
+.filter-chip button:focus-visible { outline-offset: 1px; }
 .filterbar__clear {
   background: none; border: 0; color: var(--fg-5); cursor: pointer;
   font-family: var(--mono); font-size: 10px; letter-spacing: .04em;
-  text-transform: uppercase; min-height: 44px; padding: 0 6px;
+  text-transform: uppercase; min-height: var(--tap); padding: 0 6px;
 }
 .filterbar__clear:hover { color: var(--fg-2); }
 
@@ -338,7 +375,7 @@
   /* stack, and let the search take the full row -- four controls side by side
      wrap into a ragged grid on a phone. */
   .filterbar__content { flex-direction: column; align-items: stretch; }
-  .filterbar__content > * { width: 100%; }
+  .filterbar .filterbar__content > * { width: 100%; }
   .filterbar__actions { margin-inline-start: 0; width: 100%; }
 }
 
@@ -410,13 +447,13 @@
 .sidenav__divider { height: 1px; background: var(--border); margin: 8px 0; border: 0; }
 .sidenav a {
   display: flex; align-items: center; gap: 10px;
-  min-height: 44px; padding: 0 14px;
-  color: var(--fg-4); font-size: 13px;
+  min-height: var(--tap); padding: 0 14px;
+  color: var(--fg-4); font-size: 13px; text-decoration: none;
   border-inline-start: 2px solid transparent;
 }
 .sidenav a:hover { background: color-mix(in srgb, var(--fg) 4%, transparent); color: var(--fg-2); }
 .sidenav a.active { color: var(--fg); font-weight: 500; border-inline-start-color: var(--emerald); background: color-mix(in srgb, var(--emerald) 7%, transparent); }
-.sidenav a:focus-visible { outline: 2px solid var(--emerald); outline-offset: -2px; }
+.sidenav a:focus-visible { outline-offset: -2px; }
 .sidenav__icon { flex: 0 0 auto; width: 16px; text-align: center; font-family: var(--mono); font-size: 12px; opacity: .8; }
 .sidenav__label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .sidenav a .badge { margin-inline-start: auto; }
@@ -429,3 +466,527 @@
 .sidenav--slim a { justify-content: center; padding: 0; }
 
 @media (max-width: 760px) { .sidenav { display: none; } }
+
+/* ===================================================================== */
+/* STATE INDICATOR                                                       */
+/* The live state of an agent, node or service. Modelled on the Quantum  */
+/* status plane: colour is NEVER the sole differentiator. Every state     */
+/* has its own SHAPE, the live ones their own MOTION, and the label       */
+/* always names the state -- so it reads in a monochrome screenshot, to a */
+/* colour-blind operator, and with motion switched off.                   */
+/*                                                                       */
+/*   modifier    colour    shape           motion        say it as        */
+/*   --ready     emerald   solid disc      static        READY / ONLINE   */
+/*   --busy      accent    half disc       slow breath   THINKING, SYNCING*/
+/*   --degraded  amber     ringed disc     static        DEGRADED         */
+/*   --stopped   slate     hollow ring     static        STOPPED, OFFLINE */
+/*   --alert     red       diamond         fast breath   OPERATOR REQUIRED*/
+/*   --unknown   fg-5      dashed ring     static        UNKNOWN          */
+/*                                                                       */
+/* Circle = state; the square swatch (.division) = identity. Reporting    */
+/* STOPPED or UNKNOWN is a status-plane success, not a failure: this must */
+/* keep rendering when the thing it describes is down.                    */
+/* ===================================================================== */
+.state {
+  --state: var(--fg-5);
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--mono); font-size: 10px; line-height: 1.4;
+  letter-spacing: .05em; text-transform: uppercase;
+  color: var(--fg-3); white-space: nowrap;
+}
+.state__dot {
+  flex: 0 0 auto; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--state);
+}
+.state--ready    { --state: var(--emerald); }
+.state--busy     { --state: var(--accent); }
+.state--degraded { --state: var(--amber); }
+.state--stopped  { --state: var(--slate); }
+.state--alert    { --state: var(--red); color: var(--red); }
+.state--unknown  { --state: var(--fg-5); }
+
+.state--busy .state__dot {
+  background: linear-gradient(90deg, var(--state) 50%, transparent 50%);
+  box-shadow: inset 0 0 0 1.5px var(--state);
+  animation: breathe 2.4s ease-in-out infinite;
+}
+/* the ring is an outline with an offset, so the gap is genuinely empty and
+   composites on any surface -- never a gap painted in the canvas colour */
+.state--degraded .state__dot { width: 6px; height: 6px; margin: 1px; outline: 1.5px solid var(--state); outline-offset: 1.5px; }
+.state--stopped .state__dot  { background: transparent; box-shadow: inset 0 0 0 1.5px var(--state); }
+.state--alert .state__dot    { border-radius: 1px; width: 7px; height: 7px; transform: rotate(45deg); animation: breathe 1s ease-in-out infinite; }
+.state--unknown .state__dot  { background: transparent; border: 1.5px dashed var(--state); }
+/* reduced motion: base.css's clamp stops both breaths; shape still carries it */
+
+/* ===================================================================== */
+/* KEY-VALUE LIST                                                        */
+/* The dossier fact sheet: host, tier, engine, uptime. dt/dd straight     */
+/* into a two-column grid -- labels are mono micro-labels, values are     */
+/* prose unless they are data (add .num).                                 */
+/* ===================================================================== */
+.kv {
+  display: grid; grid-template-columns: minmax(88px, max-content) 1fr;
+  align-items: baseline; margin: 0; font-size: 13px;
+}
+.kv > dt, .kv > dd { margin: 0; padding-block: 7px; border-bottom: 1px solid var(--border); }
+.kv > dt {
+  padding-inline-end: var(--space-4);
+  font-family: var(--mono); font-size: 10px; letter-spacing: .05em;
+  text-transform: uppercase; color: var(--fg-5);
+}
+.kv > dd { min-width: 0; color: var(--fg-2); overflow-wrap: anywhere; }
+.kv > dd.num { font-family: var(--mono); font-size: 12px; font-variant-numeric: tabular-nums; }
+.kv > dt:nth-last-of-type(1), .kv > dd:nth-last-of-type(1) { border-bottom: 0; }
+
+/* ===================================================================== */
+/* METRIC, METER, BARS, UPTIME                                           */
+/* The chart tokens (--chart-bar, -hot, -down, -grid) were defined and    */
+/* never used; these are the components they were waiting for. Every      */
+/* chart ships role="img" + an aria-label that states the summary in      */
+/* words -- a chart is never the only place a number lives.               */
+/* ===================================================================== */
+.metric { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.metric__label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .05em;
+  text-transform: uppercase; color: var(--fg-5);
+}
+.metric__value {
+  font-family: var(--mono); font-size: 22px; font-weight: 500; line-height: 1.15;
+  letter-spacing: -.02em; color: var(--fg); font-variant-numeric: tabular-nums;
+}
+.metric__unit { margin-inline-start: 4px; font-size: 11px; font-weight: 400; letter-spacing: 0; color: var(--fg-5); }
+/* direction is the arrow glyph in the text; sentiment is the modifier --
+   up is not always good (latency, error rate), so they are separate */
+.metric__delta { font-family: var(--mono); font-size: 10px; letter-spacing: .03em; color: var(--fg-4); }
+.metric__delta--good { color: var(--emerald); }
+.metric__delta--bad  { color: var(--red); }
+
+/* resource meter: label + value in text, bar underneath. Thresholds change
+   the bar colour AND the value text says the number, so colour is a hint. */
+.meter { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 6px 12px; }
+.meter__label { font-size: 12px; color: var(--fg-3); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.meter__value { font-family: var(--mono); font-size: 11px; color: var(--fg-2); font-variant-numeric: tabular-nums; }
+.meter .progbar { grid-column: 1 / -1; }
+.progbar--warn > i { background: var(--amber); }
+.progbar--err  > i { background: var(--red); }
+
+/* bars: a sparkline in columns. Each <i> takes its height from --v (0..1),
+   which is data, not a design literal. */
+.bars {
+  display: flex; align-items: flex-end; gap: 2px; height: 32px;
+  border-bottom: 1px solid var(--chart-grid);
+  background-image: linear-gradient(var(--chart-grid) 1px, transparent 1px);
+  background-size: 100% 25%;
+}
+.bars > i {
+  flex: 1 1 0; min-width: 2px; min-height: 1px;
+  height: calc(var(--v, 0) * 100%);
+  background: var(--chart-bar); border-radius: 1px 1px 0 0;
+}
+.bars > i.is-hot  { background: var(--chart-bar-hot); }
+.bars > i.is-down { background: var(--chart-bar-down); }
+.bars--lg { height: 64px; }
+
+/* uptime strip: one tick per period. Severity is carried by HEIGHT as well as
+   colour -- a healthy tick is full height, degraded two-thirds, down a third --
+   so the pattern survives greyscale. */
+.uptime { display: flex; align-items: flex-end; gap: 2px; height: 24px; }
+.uptime > i {
+  flex: 1 1 0; min-width: 2px; height: 100%; border-radius: 1px;
+  background: color-mix(in srgb, var(--emerald-pure) 60%, transparent);
+}
+.uptime > i.is-warn { height: 66%; background: var(--amber); }
+.uptime > i.is-down { height: 33%; background: var(--red); }
+.uptime > i.is-none { background: var(--chart-bar); }
+/* 90 ticks at 2px + 2px gaps is 358px: wider than a phone column. Halve both. */
+@media (max-width: 480px) { .uptime { gap: 1px; } .uptime > i { min-width: 1px; } }
+.uptime__legend {
+  display: flex; justify-content: space-between; gap: 12px; margin-top: 6px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .04em; color: var(--fg-5);
+}
+
+/* ===================================================================== */
+/* TERMINAL                                                              */
+/* Captured CLI output, e.g. `quantum status`. The Quantum CLI contract   */
+/* is exit 0 ok / 1 warn / 2 error, so the exit chip speaks that contract */
+/* in text: "exit 2 · error", never a red dot alone.                      */
+/* ===================================================================== */
+.term { margin: 0; border: 1px solid var(--border-2); border-radius: var(--radius-lg); background: var(--bg); overflow: hidden; }
+.term__bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 8px 12px; border-bottom: 1px solid var(--border); background: var(--bg-2);
+  font-family: var(--mono); font-size: 10px; letter-spacing: .04em; color: var(--fg-5);
+}
+.term__title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.term__body { padding: 12px 14px; font-size: 12px; line-height: 1.65; color: var(--fg-2); tab-size: 2; }
+.term__body code { font-size: inherit; }
+.term .t-prompt { color: var(--fg-5); user-select: none; }
+.term .t-cmd    { color: var(--fg); }
+.term .t-dim    { color: var(--fg-5); }
+.term .t-ok     { color: var(--emerald); }
+.term .t-warn   { color: var(--amber); }
+.term .t-err    { color: var(--red); }
+.term .t-accent { color: var(--accent); }
+
+.exit {
+  display: inline-flex; align-items: center; gap: 5px; flex: 0 0 auto;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--fg-4); white-space: nowrap;
+}
+.exit::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.exit--ok   { color: var(--emerald); }
+.exit--warn { color: var(--amber); }
+.exit--err  { color: var(--red); }
+
+/* ===================================================================== */
+/* TABS                                                                  */
+/* ARIA tablist. The selected tab takes the masthead's active treatment   */
+/* (fg + 2px emerald underline) so there is one "you are here" mark.      */
+/* Scrolls sideways on a phone rather than wrapping into two rows.        */
+/* ===================================================================== */
+.tabs {
+  display: flex; gap: var(--space-1); overflow-x: auto; scrollbar-width: none;
+  border-bottom: 1px solid var(--border-2);
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tabs [role="tab"] {
+  position: relative; flex: 0 0 auto;
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: var(--tap); padding: 0 12px;
+  background: none; border: 0; cursor: pointer; text-decoration: none;
+  font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--fg-3);
+  transition: color var(--dur-micro);
+}
+.tabs [role="tab"]:hover { color: var(--fg-2); }
+.tabs [role="tab"][aria-selected="true"] { color: var(--fg); }
+.tabs [role="tab"][aria-selected="true"]::after {
+  content: ""; position: absolute; inset-inline: 12px; bottom: -1px; height: 2px; background: var(--emerald);
+}
+.tabs [role="tab"]:focus-visible { outline-offset: -2px; }
+[role="tabpanel"]:focus-visible { outline-offset: 4px; }
+
+/* ===================================================================== */
+/* DIALOGS -- modal, drawer, command palette                             */
+/* All three are a native <dialog> opened with showModal(): focus is      */
+/* trapped, Esc closes, the page behind is inert, and it renders in the   */
+/* top layer so no z-index is needed. --shadow-float, --shadow-drawer,    */
+/* --overlay and --ease-panel were tokenised for exactly these.           */
+/* Parts (.dialog__head/__title/__body/__foot) are shared.                */
+/* ===================================================================== */
+.modal, .drawer, .palette {
+  padding: 0; max-width: none; max-height: none;
+  border: 1px solid var(--border-2); background: var(--bg-2); color: var(--fg-2);
+}
+.modal::backdrop, .drawer::backdrop, .palette::backdrop { background: var(--overlay); }
+body:has(dialog[open]:modal) { overflow: hidden; }
+
+.modal {
+  width: min(480px, calc(100vw - 32px)); max-height: calc(100dvh - 64px);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-float);
+}
+.modal[open] { display: flex; flex-direction: column; animation: dialogIn var(--dur-panel) var(--ease-panel); }
+@keyframes dialogIn { from { opacity: 0; transform: translateY(8px) scale(.98); } }
+
+.drawer {
+  --drawer-from: 100%;
+  margin-block: 0; margin-inline: auto 0;
+  width: min(420px, 100vw); height: 100dvh; max-height: 100dvh;
+  border-width: 0; border-inline-start-width: 1px; border-radius: 0;
+  box-shadow: var(--shadow-drawer);
+  padding-top: var(--safe-top); padding-bottom: var(--safe-bottom);
+}
+[dir="rtl"] .drawer { --drawer-from: -100%; }
+.drawer[open] { display: flex; flex-direction: column; animation: drawerIn var(--dur-panel) var(--ease-panel); }
+@keyframes drawerIn { from { transform: translateX(var(--drawer-from)); } }
+
+.dialog__head {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 6px 6px 6px 16px; border-bottom: 1px solid var(--border);
+}
+.dialog__title { margin: 0; font-size: 15px; font-weight: 600; letter-spacing: -.01em; color: var(--fg); }
+.dialog__body { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 16px; font-size: 14px; }
+.dialog__foot {
+  display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px;
+  padding: 12px 16px; border-top: 1px solid var(--border);
+}
+
+.palette {
+  width: min(560px, calc(100vw - 32px)); margin-top: 12vh;
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-float);
+}
+.palette[open] { animation: dialogIn var(--dur-panel) var(--ease-panel); }
+.palette__search {
+  display: flex; align-items: center; gap: 10px; padding: 0 14px;
+  border-bottom: 1px solid var(--border); color: var(--fg-5);
+  transition: border-color var(--dur-micro);
+}
+.palette__search:focus-within { border-bottom-color: var(--border-3); }
+.palette__search input {
+  flex: 1; min-width: 0; min-height: 52px; padding: 0;
+  background: none; border: 0; outline: none; /* the open palette IS the focus context; the caret shows where */
+  color: var(--fg); font-family: var(--sans); font-size: 16px;
+}
+.palette__list { list-style: none; margin: 0; padding: 6px; max-height: min(360px, 50dvh); overflow-y: auto; }
+.palette__group {
+  padding: 10px 10px 4px; font-family: var(--mono); font-size: 9px;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--fg-5);
+}
+.palette__item {
+  display: flex; align-items: center; gap: 10px; min-height: var(--tap); padding: 0 10px;
+  border-radius: var(--radius); color: var(--fg-3); font-size: 13px; cursor: pointer;
+}
+.palette__item[aria-selected="true"] { background: var(--surface-hover); color: var(--fg); }
+.palette__item kbd, .palette__item .palette__meta { margin-inline-start: auto; }
+.palette__meta { font-family: var(--mono); font-size: 10px; color: var(--fg-5); letter-spacing: .04em; }
+.palette__item[aria-selected="true"] .palette__meta { color: var(--fg-4); } /* --fg-5 on --surface-hover is 4.1:1 in dark; --fg-4 is 5.0:1 */
+.palette__foot {
+  display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 8px 14px; border-top: 1px solid var(--border);
+  font-family: var(--mono); font-size: 10px; color: var(--fg-5);
+}
+
+/* ===================================================================== */
+/* STAMP                                                                 */
+/* An overlay label pinned to media or a chart -- capture time, source,   */
+/* a price on a thumbnail. --stamp-bg is the canvas at 92% so the label   */
+/* stays legible on any image beneath it.                                  */
+/* ===================================================================== */
+.has-stamp { position: relative; }
+.stamp {
+  position: absolute; z-index: 1;
+  inset-block-start: var(--space-2); inset-inline-start: var(--space-2);
+  display: inline-flex; align-items: center; gap: 6px; padding: 2px 7px;
+  border: 1px solid var(--border-2); border-radius: var(--radius);
+  background: var(--stamp-bg); color: var(--fg-3);
+  font-family: var(--mono); font-size: 10px; letter-spacing: .04em;
+  text-transform: uppercase; font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+.stamp--end    { inset-inline: auto var(--space-2); }
+.stamp--bottom { inset-block: auto var(--space-2); }
+.stamp.is-new  { animation: stampIn var(--dur-enter) var(--ease-bounce); }
+@keyframes stampIn { from { opacity: 0; transform: scale(.9); } }
+
+/* ===================================================================== */
+/* RECORD ROW -- goals, ADRs, anything with an ID and a lifecycle        */
+/* ID (mono) + CODENAME + title + meta + status badge. The lifecycle maps */
+/* onto existing badge variants, always with the status in words:         */
+/*   Draft          .badge            Completed / Ratified  .badge--ok     */
+/*   Active         .badge--info      Archived / Superseded .badge--slate  */
+/*   Pending Review .badge--warn                                          */
+/* A superseded record keeps its row and gains a successor pointer in     */
+/* .record__meta -- history is not retro-edited.                          */
+/* ===================================================================== */
+.records {
+  list-style: none; margin: 0; padding: 0;
+  border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface);
+}
+.record {
+  display: grid; grid-template-columns: 88px minmax(0, 1fr) auto; align-items: center;
+  gap: 4px 14px; padding: 12px 14px; border-bottom: 1px solid var(--border);
+}
+.record:last-child { border-bottom: 0; }
+.record__id { font-family: var(--mono); font-size: 11px; color: var(--fg-4); font-variant-numeric: tabular-nums; }
+.record__title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; font-size: 13px; color: var(--fg-2); }
+.record__codename {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--fg);
+}
+.record__meta { margin-top: 2px; font-family: var(--mono); font-size: 10px; letter-spacing: .02em; color: var(--fg-5); }
+.record--archived .record__title { color: var(--fg-4); }
+@media (max-width: 600px) {
+  .record { grid-template-columns: minmax(0, 1fr) auto; }
+  .record__id { grid-column: 1 / -1; }
+}
+
+/* ===================================================================== */
+/* AVATAR + AGENT CARD                                                   */
+/* The fleet is people and agents. Avatars are circles (profile images    */
+/* are cropped to circles everywhere they appear) and fall back to a mono */
+/* monogram -- most agent portraits are still being made, and a           */
+/* monogram is honest where a stock silhouette would not be.               */
+/* ===================================================================== */
+.avatar {
+  --avatar: 40px;
+  flex: 0 0 auto; width: var(--avatar); height: var(--avatar);
+  display: inline-flex; align-items: center; justify-content: center; overflow: hidden;
+  border-radius: 50%; border: 1px solid var(--border-2); background: var(--bg-3);
+  color: var(--fg-3); font-family: var(--mono); font-size: calc(var(--avatar) * .36);
+  font-weight: 500; text-transform: uppercase;
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+.avatar--sm { --avatar: 28px; }
+.avatar--lg { --avatar: 56px; }
+
+.agent {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: start;
+  padding: 14px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+}
+.agent__head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.agent__name { font-size: 14px; font-weight: 600; letter-spacing: -.01em; color: var(--fg); }
+.agent__role { margin-top: 1px; font-size: 12px; color: var(--fg-4); }
+.agent__meta {
+  display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 10px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--fg-5);
+}
+.agent__meta b { font-weight: 400; color: var(--fg-3); }
+
+/* ===================================================================== */
+/* BRAND LAYER -- wordmark treatment, division tags, the cut rule        */
+/* ADR-012 (ratified 2026-09-23): the name is DSECT in all running text,  */
+/* code, domains and documents. DSECT// is a VISUAL treatment for logo    */
+/* and branding only -- so the // is aria-hidden: screen readers, search  */
+/* and copy-paste all get "DSECT", never "DSECT slash slash".             */
+/*                                                                       */
+/* This layer does not draw a logo. Logo artwork is produced outside the  */
+/* system (brand/README.md); what follows is the typographic treatment    */
+/* used in mastheads and footers, plus the // promoted to a system device */
+/* (section rules, dividers) as ADR-012 describes.                        */
+/*                                                                       */
+/* Lockups by tier (DSECT Brand Architecture):                            */
+/*   Entity      DSECT//                                                  */
+/*   Division    DSECT// Labs        (descriptor in Ice)                  */
+/*   Product     DSECT// Hub         (plain descriptive noun)             */
+/*   Instrument  Nebula              (codename alone -- no prefix, no //) */
+/* ===================================================================== */
+.wordmark { display: inline-flex; align-items: baseline; white-space: nowrap; }
+/* as the home link it is a primary tap target: pad the hit area, not the look */
+a.wordmark { position: relative; }
+a.wordmark::before { content: ""; position: absolute; inset: -10px -6px; }
+.wordmark__cut {
+  margin-inline-start: .06em; padding-inline-end: .1em;
+  color: var(--wordmark-cut); font-weight: 500; letter-spacing: -.1em;
+}
+.wordmark__descriptor { margin-inline-start: .42em; font-weight: 400; letter-spacing: -.005em; color: var(--fg-3); }
+.wordmark img { display: block; height: 1.25em; width: auto; } /* the artwork, once it lands */
+.wordmark--lg { font-size: 22px; letter-spacing: -.02em; }
+.wordmark--xl { font-size: clamp(32px, 6vw, 56px); letter-spacing: -.035em; }
+
+/* division tag: a SQUARE swatch (identity) -- never a circle, which means
+   live state (.state). The label names the division; the hue confirms it. */
+.division {
+  --division: var(--accent);
+  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .05em;
+  text-transform: uppercase; color: var(--fg-3);
+}
+.division::before { content: ""; flex: 0 0 auto; width: 8px; height: 8px; background: var(--division); }
+.division--systems  { --division: var(--division-systems); }
+.division--software { --division: var(--division-software); }
+.division--labs     { --division: var(--division-labs); }
+
+/* rules: a plain hairline, and the cut rule -- the hairline broken by a //.
+   The break is a gradient gap, not a painted block, so it sits on any surface. */
+.rule { height: 1px; margin: var(--space-6) 0; border: 0; background: var(--border-2); }
+.rule--cut {
+  --cut-at: var(--space-6);
+  position: relative; overflow: visible;
+  background: linear-gradient(to right,
+    var(--border-2) 0 var(--cut-at),
+    transparent var(--cut-at) calc(var(--cut-at) + 22px),
+    var(--border-2) calc(var(--cut-at) + 22px));
+}
+[dir="rtl"] .rule--cut {
+  background: linear-gradient(to left,
+    var(--border-2) 0 var(--cut-at),
+    transparent var(--cut-at) calc(var(--cut-at) + 22px),
+    var(--border-2) calc(var(--cut-at) + 22px));
+}
+.rule--cut::after {
+  content: "//"; content: "//" / "";
+  position: absolute; inset-inline-start: calc(var(--cut-at) + 4px); top: 50%;
+  transform: translateY(-54%);
+  font-family: var(--sans); font-size: 13px; font-weight: 500; line-height: 1;
+  letter-spacing: -.1em; color: var(--wordmark-cut);
+}
+
+/* ===================================================================== */
+/* APP SHELL -- the hub as an installed, standalone app                  */
+/* For phones first: a compact app bar, a bottom tab bar in thumb reach,  */
+/* bottom sheets instead of centred modals, and the safe areas a notch or */
+/* home indicator takes. One mobile nav still holds: a page uses the tab  */
+/* bar OR the hamburger drawer, never both. The tab bar only renders      */
+/* below 760px -- the same width at which the sidenav stops -- so wider    */
+/* screens keep the masthead and sidenav.                                 */
+/*                                                                       */
+/* Page setup this layer expects:                                         */
+/*   <meta name="viewport" content="width=device-width, initial-scale=1,  */
+/*         viewport-fit=cover">   (without viewport-fit the safe-area      */
+/*         insets are all 0 and content hides under the notch)            */
+/*   <body class="app"> <header class="appbar"> <main class="app__main">  */
+/*   <nav class="tabbar">                                                 */
+/* ===================================================================== */
+.app {
+  min-height: 100dvh; display: flex; flex-direction: column;
+  -webkit-tap-highlight-color: transparent; /* we draw our own :active states */
+}
+.app :is(a, button, [role="tab"], [role="option"], summary, label) { touch-action: manipulation; } /* no double-tap-zoom delay */
+.app__main { flex: 1 0 auto; min-width: 0; overflow-x: clip; padding-inline: var(--space-4); padding-block: var(--space-4) var(--space-8); }
+
+.appbar {
+  position: sticky; top: 0; z-index: var(--z-masthead);
+  display: flex; align-items: center; gap: var(--space-2);
+  min-height: calc(var(--appbar-h) + var(--safe-top));
+  padding: var(--safe-top) max(var(--space-2), var(--safe-right)) 0 max(var(--space-2), var(--safe-left));
+  background: var(--bg); border-bottom: 1px solid var(--border-2);
+}
+.appbar__title {
+  flex: 1; min-width: 0; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-size: 16px; font-weight: 600; letter-spacing: -.01em; color: var(--fg);
+}
+.appbar__title:first-child { padding-inline-start: var(--space-2); }
+.appbar__sub { display: block; font-family: var(--mono); font-size: 10px; font-weight: 400; letter-spacing: .05em; text-transform: uppercase; color: var(--fg-5); }
+
+.tabbar { display: none; }
+@media (max-width: 760px) {
+  .tabbar {
+    position: sticky; bottom: 0; z-index: var(--z-masthead);
+    display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr);
+    padding: 0 var(--safe-right) var(--safe-bottom) var(--safe-left);
+    background: var(--bg); border-top: 1px solid var(--border-2);
+  }
+  .tabbar a, .tabbar button {
+    position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+    min-height: var(--tabbar-h); padding: 6px 2px 4px;
+    background: none; border: 0; cursor: pointer; text-decoration: none;
+    color: var(--fg-4); font-family: var(--sans); font-size: 11px; font-weight: 500; line-height: 1.1;
+  }
+  .tabbar svg { width: 22px; height: 22px; flex: 0 0 auto; }
+  .tabbar a:active, .tabbar button:active { background: var(--surface-hover); }
+  .tabbar [aria-current="page"] { color: var(--fg); }
+  /* the same "you are here" mark as the masthead and tabs: a 2px emerald bar */
+  .tabbar [aria-current="page"]::before {
+    content: ""; position: absolute; top: -1px; inset-inline: 28%; height: 2px; background: var(--emerald);
+  }
+  .tabbar :focus-visible { outline-offset: -3px; }
+  .tabbar .badge { position: absolute; top: 5px; inset-inline-start: calc(50% + 6px); min-height: 16px; padding: 0 4px; font-size: 9px; background: var(--bg); }
+}
+
+/* bottom sheet: the phone's modal. Same native <dialog>, anchored to the
+   bottom edge, capped at 85% of the screen, clear of the home indicator. */
+.sheet {
+  padding: 0; margin: auto auto 0; max-width: none;
+  width: min(560px, 100vw); max-height: 85dvh;
+  border: 1px solid var(--border-2); border-bottom: 0;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: var(--bg-2); color: var(--fg-2); box-shadow: var(--shadow-float);
+  padding-bottom: var(--safe-bottom);
+}
+.sheet::backdrop { background: var(--overlay); }
+.sheet[open] { display: flex; flex-direction: column; animation: sheetIn var(--dur-panel) var(--ease-panel); }
+@keyframes sheetIn { from { transform: translateY(100%); } }
+.sheet::before { /* grabber: decorative; closing is Esc, the backdrop or a real button */
+  content: ""; align-self: center; flex: 0 0 auto; width: 36px; height: 4px; margin-top: 8px;
+  border-radius: 2px; background: var(--border-3);
+}
+
+/* installed app (display-mode standalone/fullscreen): no browser chrome, so
+   the page owns the whole screen -- and nothing should reveal the canvas by
+   rubber-banding or pull-to-refresh on the shell. */
+.app-only { display: none; }
+@media (display-mode: standalone), (display-mode: fullscreen) {
+  html { overscroll-behavior-y: none; }
+  .app-only { display: revert; }
+  .browser-only { display: none !important; }
+}

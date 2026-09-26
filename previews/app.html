@@ -1,0 +1,43 @@
+<!-- @dsCard group="Patterns" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DSECT — App Shell (standalone)</title>
+<link rel="stylesheet" href="../fonts.css">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../base.css">
+<link rel="stylesheet" href="../components.css">
+<style>
+  body { padding: 24px 24px 60px; }
+  .label { font-family: var(--mono); font-size: 10px; letter-spacing: .05em; text-transform: uppercase; color: var(--fg-5); margin-bottom: 10px; }
+  .phones { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start; margin-top: 24px; }
+  .phone { display: grid; gap: 8px; }
+  .phone iframe { display: block; border: 1px solid var(--border-3); border-radius: 18px; background: var(--bg); }
+  ul.notes { margin: 0; padding-inline-start: 1.1em; display: grid; gap: 6px; max-width: 72ch; color: var(--fg-3); font-size: 13px; }
+  @media (max-width: 760px) { .phones { display: none; } }
+</style>
+</head>
+<body>
+<h1 class="text-section" style="margin-bottom:4px;">App Shell</h1>
+<p class="text-lede" style="max-width:66ch;margin:0;">The hub as an installed app on a phone. A compact app bar, a bottom tab bar in thumb reach, bottom sheets instead of centred modals, and the safe areas a notch and home indicator take. Framed at the two widths the hub's touch test runs at. <a href="app/shell.html">Open the shell on its own</a> to try it at your own width.</p>
+
+<div class="phones">
+  <div class="phone"><span class="label">393 × 852 · dark</span><iframe src="app/shell.html?theme=dark" width="393" height="852" title="App shell, dark, 393 wide"></iframe></div>
+  <div class="phone"><span class="label">360 × 780 · light</span><iframe src="app/shell.html?theme=light" width="360" height="780" title="App shell, light, 360 wide"></iframe></div>
+</div>
+
+<h2 class="text-label" style="font-size:11px;margin-top:36px;">What the layer does</h2>
+<ul class="notes">
+  <li><code>.app</code> is a <code>100dvh</code> column; the tab bar is <code>sticky</code> at its foot, so content never scrolls under it and no page needs bottom padding hacks.</li>
+  <li><code>.tabbar</code> renders only below 760px, the width at which the sidenav stops. A page uses it <em>or</em> the hamburger drawer. One mobile nav.</li>
+  <li>Every tab is 58px tall. The active tab takes the system's one "you are here" mark, a 2px emerald bar, and <code>aria-current="page"</code>.</li>
+  <li><code>.sheet</code> is the phone's modal: a native <code>&lt;dialog&gt;</code> on the bottom edge, capped at 85% height, padded clear of the home indicator.</li>
+  <li><code>viewport-fit=cover</code> + <code>env(safe-area-inset-*)</code> keep the app bar and tab bar out of the notch and home indicator.</li>
+  <li>Installed (<code>display-mode: standalone</code>): no rubber-band overscroll, <code>.app-only</code> shows, <code>.browser-only</code> hides.</li>
+  <li><code>touch-action: manipulation</code> removes the double-tap-zoom delay; the grey tap flash is replaced by the system's own <code>:active</code> states.</li>
+  <li>Toasts on phones already sit 68px up, clear of the 58px tab bar.</li>
+</ul>
+</body>
+</html>

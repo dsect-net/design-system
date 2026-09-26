@@ -16,9 +16,12 @@ Requires React 18+ (peer dependency).
 
 ## Use
 
+`styles.css` brings the self-hosted fonts (Inter, JetBrains Mono) with it; the font files and their OFL licences
+ship in the package, so nothing is fetched from a font CDN.
+
 ```tsx
 import '@dsect/ui/styles.css';
-import { Button, Card, Badge, Table, Th, Td, setTheme } from '@dsect/ui';
+import { Button, Card, Badge, Table, Th, Td, StateIndicator, setTheme } from '@dsect/ui';
 
 function Services() {
   return (
@@ -29,12 +32,14 @@ function Services() {
           <tr>
             <Th>Service</Th>
             <Th>Uptime</Th>
+            <Th>State</Th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <Td>hub</Td>
             <Td numeric>99.98%</Td>
+            <Td><StateIndicator state="ready" /></Td>
           </tr>
         </tbody>
       </Table>
@@ -46,11 +51,11 @@ function Services() {
 
 ## Theming
 
-Dark is the estate's home theme and the default — no attribute needed. For light:
+Light is the default: no attribute needed. For dark:
 
 ```tsx
 import { setTheme } from '@dsect/ui';
-setTheme('light'); // sets data-theme="light" on <html>
+setTheme('dark'); // sets data-theme="dark" on <html>
 ```
 
 ## Principles (embodied, not aspirational)
@@ -64,8 +69,14 @@ These come from the system itself; this package just obeys them:
 5. **44px is the touch-target floor**, enforced on every interactive control.
 6. **Motion always degrades.** Every animation has a `prefers-reduced-motion` fallback.
 
-Brand identity (wordmark, "The Cut" mark) is a separate pending decision (ADR-012)
-and is intentionally not part of this package.
+7. **The name is DSECT.** ADR-012 was ratified 2026-09-23: `DSECT//` is a visual treatment only.
+   `<Wordmark>` renders the `//` `aria-hidden` by construction, so assistive tech always reads "DSECT".
+   Logo artwork is not drawn here; pass the image as `<Wordmark>`'s children when it exists.
+
+```tsx
+<Wordmark href="/" descriptor="Hub" />           {/* DSECT// Hub */}
+<Wordmark name="Nebula" cut={false} />            {/* an instrument: codename only */}
+```
 
 ## Components
 
@@ -75,6 +86,27 @@ and is intentionally not part of this package.
 - **Data:** `Table` (title, mono count, footer), `Th` (sortable), `Td` (numeric, actions), `TableUserCell`
 - **Forms:** `TextField`, `TextArea`, `SelectField`, `Checkbox`
 - **Navigation:** `Steps` (h/v), `SideNav` (hidden below 760px by design — mobile nav belongs to the app shell), `FilterBar` (+ `FilterBarActions`, `SearchInput`, `FilterSelect`, applied-filter chips)
+- **Brand:** `Wordmark` (entity / division / product / instrument lockups), `DivisionTag`, `Rule` (plain or cut)
+- **State & fleet:** `StateIndicator` (ready / busy / degraded / stopped / alert / unknown — shape + label, not colour alone), `Records` + `RecordRow` (goal and ADR lifecycle → badge), `Avatar` (monogram fallback), `AgentCard`
+- **Telemetry:** `KeyValue`, `Metric`, `Meter`, `Bars` and `Uptime` (both require a `label` summary), `Terminal` + `ExitChip` (Quantum CLI 0 ok / 1 warn / 2 error), `Stamp`
+- **Overlays:** `Tabs` (roving tabindex, arrow keys), `Dialog` (native `<dialog>`: `modal`, `drawer`, or `sheet` for phones). The command palette is CSS-only (`.palette`).
+- **App shell (installed / standalone):** `AppShell`, `AppBar`, `TabBar` (renders below 760px; use it *or* a hamburger drawer, never both). Needs `viewport-fit=cover` in the page's viewport meta.
+
+## With Tailwind or Untitled UI React
+
+`@dsect/ui/styles.css` is unlayered, which is right for a plain app. In a Tailwind v4 app, unlayered rules beat
+every utility, so a base rule like `select { width: 100% }` silently overrides Untitled UI's classes. Import
+the parts into layers instead, together with the Untitled UI bridge (`untitled/dsect-theme.css` in the repo):
+
+```css
+@import "tailwindcss";
+@import "<untitled>/styles/theme.css";
+@import "@dsect/ui/fonts.css";
+@import "@dsect/ui/tokens.css";
+@import "<design-system>/untitled/dsect-theme.css";
+@import "@dsect/ui/base.css" layer(base);
+@import "@dsect/ui/components.css" layer(components);
+```
 
 ## Developing
 

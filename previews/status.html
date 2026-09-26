@@ -1,0 +1,131 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DSECT — State &amp; Records</title>
+<link rel="stylesheet" href="../fonts.css">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../base.css">
+<link rel="stylesheet" href="../components.css">
+<style>
+  body { padding: 24px 24px 60px; }
+  section { margin-bottom: 36px; max-width: 880px; }
+  .label { font-family: var(--mono); font-size: 10px; letter-spacing: .05em; text-transform: uppercase; color: var(--fg-5); margin-bottom: 12px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; }
+</style>
+</head>
+<body>
+<button id="themeToggle" style="position:fixed;top:12px;inset-inline-end:12px;z-index:99;min-height:var(--tap);padding:0 12px;border-radius:var(--radius);border:1px solid var(--border-3);background:var(--surface);color:var(--fg-2);font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;">theme: light</button>
+
+<h1 class="text-section" style="margin-bottom:4px;">State &amp; Records</h1>
+<p class="text-lede" style="max-width:64ch;margin-bottom:28px;">A state indicator is a status-plane projection: it must keep rendering when the agent or node it describes is down, so <em>stopped</em> and <em>unknown</em> are states it reports, not failures it suffers. Each state has its own shape and, when live, its own motion. Switch on reduced motion or grayscale and every state is still distinguishable.</p>
+
+<section>
+  <div class="label">State indicator — six states, six shapes</div>
+  <div class="row">
+    <span class="state state--ready"><i class="state__dot" aria-hidden="true"></i>Ready</span>
+    <span class="state state--busy"><i class="state__dot" aria-hidden="true"></i>Thinking</span>
+    <span class="state state--degraded"><i class="state__dot" aria-hidden="true"></i>Degraded</span>
+    <span class="state state--stopped"><i class="state__dot" aria-hidden="true"></i>Stopped</span>
+    <span class="state state--alert"><i class="state__dot" aria-hidden="true"></i>Operator required</span>
+    <span class="state state--unknown"><i class="state__dot" aria-hidden="true"></i>Unknown</span>
+  </div>
+</section>
+
+<section>
+  <div class="label">The model</div>
+  <div class="tbl-wrap">
+    <div class="tbl-scroll">
+      <table class="tbl tbl--sm">
+        <thead><tr><th>State</th><th>Modifier</th><th>Shape</th><th>Motion</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><span class="state state--ready"><i class="state__dot" aria-hidden="true"></i>Ready</span></td><td><code>.state--ready</code></td><td>solid disc</td><td>static</td><td>Up, idle or serving</td></tr>
+          <tr><td><span class="state state--busy"><i class="state__dot" aria-hidden="true"></i>Busy</span></td><td><code>.state--busy</code></td><td>half disc</td><td>slow breath</td><td>Thinking, connecting, syncing</td></tr>
+          <tr><td><span class="state state--degraded"><i class="state__dot" aria-hidden="true"></i>Degraded</span></td><td><code>.state--degraded</code></td><td>ringed disc</td><td>static</td><td>Working, but below its measured normal</td></tr>
+          <tr><td><span class="state state--stopped"><i class="state__dot" aria-hidden="true"></i>Stopped</span></td><td><code>.state--stopped</code></td><td>hollow ring</td><td>static</td><td>Down on purpose, or started by hand</td></tr>
+          <tr><td><span class="state state--alert"><i class="state__dot" aria-hidden="true"></i>Alert</span></td><td><code>.state--alert</code></td><td>diamond</td><td>fast breath</td><td>Needs a human before it can continue</td></tr>
+          <tr><td><span class="state state--unknown"><i class="state__dot" aria-hidden="true"></i>Unknown</span></td><td><code>.state--unknown</code></td><td>dashed ring</td><td>static</td><td>No report — the probe itself could not reach it</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="label">Records — goals and ADRs with a lifecycle</div>
+  <p class="text-small" style="max-width:68ch;margin:0 0 14px;">An ID, a codename, a title and a status in words. The lifecycle is <code>Draft · Active · Pending Review · Completed · Archived</code>; a superseded record keeps its row and points at its successor rather than being edited away.</p>
+  <ul class="records">
+    <li class="record">
+      <span class="record__id">ADR-012</span>
+      <div>
+        <div class="record__title">Brand naming: DSECT supersedes D//SECT</div>
+        <div class="record__meta">Ratified 2026-09-23 · amended: DSECT// is the wordmark treatment</div>
+      </div>
+      <span class="badge badge--ok">Ratified</span>
+    </li>
+    <li class="record">
+      <span class="record__id">BRD-001</span>
+      <div>
+        <div class="record__title"><span class="record__codename">Meridian</span>Identity reimagining and naming decision</div>
+        <div class="record__meta">Brand · phase 1</div>
+      </div>
+      <span class="badge badge--ok">Completed</span>
+    </li>
+    <li class="record">
+      <span class="record__id">BRD-002</span>
+      <div>
+        <div class="record__title"><span class="record__codename">Imprint</span>Wordmark rollout and name clearance</div>
+        <div class="record__meta">Brand · phase 2</div>
+      </div>
+      <span class="badge">Draft</span>
+    </li>
+    <li class="record">
+      <span class="record__id">HUB-001</span>
+      <div>
+        <div class="record__title"><span class="record__codename">Horizon</span>Hub foundation and module frame</div>
+        <div class="record__meta">Hub · phase 1</div>
+      </div>
+      <span class="badge badge--info">Active</span>
+    </li>
+    <li class="record">
+      <span class="record__id">HUB-007</span>
+      <div>
+        <div class="record__title"><span class="record__codename">Docket</span>Wishlist and acquisition board</div>
+        <div class="record__meta">Hub · phase 4</div>
+      </div>
+      <span class="badge badge--warn">Pending review</span>
+    </li>
+    <li class="record record--archived">
+      <span class="record__id">BRAND-001</span>
+      <div>
+        <div class="record__title">§1.1 — name written as D//SECT</div>
+        <div class="record__meta">Superseded → ADR-012</div>
+      </div>
+      <span class="badge badge--slate">Superseded</span>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <div class="label">Lifecycle → badge</div>
+  <div class="row">
+    <span class="badge">Draft</span>
+    <span class="badge badge--info">Active</span>
+    <span class="badge badge--warn">Pending review</span>
+    <span class="badge badge--ok">Completed</span>
+    <span class="badge badge--slate">Archived</span>
+  </div>
+</section>
+
+<script>
+document.getElementById('themeToggle').addEventListener('click', function(){
+  var root = document.documentElement;
+  var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  root.setAttribute('data-theme', next);
+  this.textContent = 'theme: ' + next;
+});
+</script>
+</body>
+</html>

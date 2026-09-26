@@ -46,5 +46,31 @@ export type {
   FilterBarProps,
 } from './components/navigation';
 
+export { Wordmark, DivisionTag, Rule } from './components/brand';
+export type { WordmarkProps, Division, DivisionTagProps, RuleProps } from './components/brand';
+
+export { StateIndicator, Records, RecordRow, Avatar, AgentCard } from './components/status';
+export type { AgentState, StateIndicatorProps, Lifecycle, RecordRowProps, AvatarProps, AgentCardProps } from './components/status';
+
+export { KeyValue, Metric, Meter, Bars, Uptime, ExitChip, Terminal, Stamp } from './components/telemetry';
+export type {
+  KeyValueItem,
+  KeyValueProps,
+  MetricProps,
+  MeterProps,
+  BarsProps,
+  UptimeTick,
+  UptimeProps,
+  ExitCode,
+  TerminalProps,
+  StampProps,
+} from './components/telemetry';
+
+export { Tabs, Dialog } from './components/overlays';
+export type { TabItem, TabsProps, DialogProps } from './components/overlays';
+
+export { AppShell, AppBar, TabBar } from './components/app';
+export type { AppShellProps, AppBarProps, TabBarItem, TabBarProps } from './components/app';
+
 export { setTheme, getTheme } from './theme';
 export type { Theme } from './theme';

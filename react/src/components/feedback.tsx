@@ -8,13 +8,14 @@ import type { HTMLAttributes, ReactNode } from 'react';
  * state in text, so it survives colour-blindness and monochrome screenshots.
  */
 
-export type Tone = 'ok' | 'warn' | 'err' | 'info' | 'neutral';
+export type Tone = 'ok' | 'warn' | 'err' | 'info' | 'slate' | 'neutral';
 
 const toneClass: Record<Tone, string> = {
   ok: 'badge--ok',
   warn: 'badge--warn',
   err: 'badge--err',
   info: 'badge--info',
+  slate: 'badge--slate',
   neutral: '',
 };
 
@@ -23,6 +24,7 @@ const toastToneClass: Record<Tone, string> = {
   warn: 'toast--warn',
   err: 'toast--err',
   info: 'toast--info',
+  slate: '', // muted is a badge state (archived, superseded); a toast is never muted
   neutral: '',
 };
 
@@ -159,6 +161,7 @@ const toastIcon: Record<Tone, string> = {
   warn: '!',
   err: '×',
   info: 'i',
+  slate: '•',
   neutral: '•',
 };
 

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dashboard — DSECT Hub</title>
+<!-- browser chrome colour = --bg, copied (meta tags can't read CSS); the theme script keeps it in step -->
+<meta name="theme-color" content="#FFFFFF">
+<script>try { var t = localStorage.getItem('dsect-theme'); if (t === 'light' || t === 'dark') { document.documentElement.setAttribute('data-theme', t); document.querySelector('meta[name="theme-color"]').content = t === 'dark' ? '#0A0C10' : '#FFFFFF'; } } catch (e) {}</script>
+<link rel="stylesheet" href="../fonts.css">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../base.css">
+<link rel="stylesheet" href="../components.css">
+<style>
+  /* layout only: every visual value comes from the system */
+  .shell { display: flex; align-items: stretch; min-height: calc(100dvh - 90px); }
+  .main { flex: 1; min-width: 0; padding-block: var(--space-6) var(--space-16); }
+  .stack { display: grid; gap: var(--space-4); align-content: start; }
+  .nav-toggle { display: none; }
+  @media (max-width: 900px) { .nav-toggle { display: inline-flex; margin-inline-start: auto; } }
+  .mobile-nav a { display: flex; align-items: center; min-height: var(--tap); color: var(--fg-2); text-decoration: none; border-bottom: 1px solid var(--border); }
+</style>
+</head>
+<body>
+  <div class="utility-bar"><div class="wrap utility-inner"><span>node: example</span><span>updated <span class="text-mono">00:00:00</span></span></div></div>
+  <header class="masthead-wrap">
+    <div class="wrap masthead">
+      <a class="wordmark" href="./">DSECT<span class="wordmark__cut" aria-hidden="true">//</span><span class="wordmark__descriptor">Hub</span></a>
+      <nav class="mast-nav" aria-label="Primary"><a href="#" class="active" aria-current="page">Overview</a><a href="#">Services</a><a href="#">Agents</a></nav>
+      <!-- one mobile nav: below 900px the masthead nav hides and this drawer replaces it -->
+      <button class="icon-btn nav-toggle" data-open="navDrawer" aria-label="Open navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </header>
+
+  <div class="shell">
+    <nav class="sidenav" aria-label="Sections">
+      <div class="sidenav__body">
+        <p class="sidenav__sub">Operate</p>
+        <a href="#" class="active" aria-current="page"><span class="sidenav__icon">01</span><span class="sidenav__label">Overview</span></a>
+        <a href="#"><span class="sidenav__icon">02</span><span class="sidenav__label">Services</span><span class="badge badge--sm">0</span></a>
+      </div>
+      <div class="sidenav__foot"><span class="text-label">v0000.00</span></div>
+    </nav>
+
+    <main class="main wrap">
+      <span class="text-label">01 — Overview</span>
+      <h1 style="margin: var(--space-2) 0 var(--space-5); font-size: clamp(26px, 3.2vw, 40px);">Title</h1>
+
+      <div class="panel" style="margin-bottom: var(--space-5);"><div class="panel-body">
+        <div class="stat-strip">
+          <div class="metric"><span class="metric__label">Metric</span><span class="metric__value">0<span class="metric__unit">unit</span></span><span class="metric__delta">no change</span></div>
+          <div class="metric"><span class="metric__label">Metric</span><span class="metric__value">0</span><span class="metric__delta">no change</span></div>
+          <div class="metric"><span class="metric__label">Metric</span><span class="metric__value">0</span><span class="metric__delta">no change</span></div>
+          <div class="metric"><span class="metric__label">Metric</span><span class="metric__value">0</span><span class="metric__delta">no change</span></div>
+        </div>
+      </div></div>
+
+      <div class="content-grid">
+        <div class="stack">
+          <div class="tbl-wrap">
+            <div class="tbl-head"><h3>Table</h3><span class="count">0 rows</span></div>
+            <div class="tbl-scroll">
+              <table class="tbl">
+                <thead><tr><th>Name</th><th>State</th><th class="num">Value</th></tr></thead>
+                <tbody><tr><td>example</td><td><span class="state state--ready"><i class="state__dot" aria-hidden="true"></i>Ready</span></td><td class="num">0</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <aside class="stack" aria-label="Details">
+          <div class="panel">
+            <div class="panel-head"><h3 style="margin:0;">Aside</h3></div>
+            <div class="panel-body"><dl class="kv"><dt>Key</dt><dd>Value</dd><dt>Key</dt><dd class="num">0</dd></dl></div>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <div id="toastWrap" aria-live="polite"></div>
+
+  <dialog class="drawer" id="navDrawer" aria-label="Navigation">
+    <div class="dialog__head"><span class="wordmark">DSECT<span class="wordmark__cut" aria-hidden="true">//</span><span class="wordmark__descriptor">Hub</span></span><button class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+    <nav class="dialog__body mobile-nav" aria-label="Sections"><a href="#" aria-current="page">01 · Overview</a><a href="#">02 · Services</a></nav>
+  </dialog>
+
+<script>
+document.querySelectorAll('[data-open]').forEach(function(b){ b.addEventListener('click', function(){ document.getElementById(b.getAttribute('data-open')).showModal(); }); });
+document.querySelectorAll('dialog').forEach(function(d){ d.addEventListener('click', function(e){ if (e.target === d || e.target.closest('[data-close]')) d.close(); }); });
+</script>
+</body>
+</html>

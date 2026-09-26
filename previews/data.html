@@ -1,0 +1,123 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DSECT — Data &amp; Telemetry</title>
+<link rel="stylesheet" href="../fonts.css">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../base.css">
+<link rel="stylesheet" href="../components.css">
+<style>
+  body { padding: 24px 24px 60px; }
+  section { margin-bottom: 36px; max-width: 920px; }
+  .label { font-family: var(--mono); font-size: 10px; letter-spacing: .05em; text-transform: uppercase; color: var(--fg-5); margin-bottom: 12px; }
+  .stack { display: grid; gap: 14px; }
+  .thumb { height: 150px; border-radius: var(--radius-lg); border: 1px solid var(--border); overflow: hidden;
+    background: repeating-linear-gradient(135deg, var(--bg-3) 0 12px, var(--bg-4) 12px 24px); }
+</style>
+</head>
+<body>
+<button id="themeToggle" style="position:fixed;top:12px;inset-inline-end:12px;z-index:99;min-height:var(--tap);padding:0 12px;border-radius:var(--radius);border:1px solid var(--border-3);background:var(--surface);color:var(--fg-2);font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;">theme: light</button>
+
+<h1 class="text-section" style="margin-bottom:4px;">Data &amp; Telemetry</h1>
+<p class="text-lede" style="max-width:64ch;margin-bottom:28px;">Measured before it is claimed. Numbers are mono and tabular so they line up and compare, and a chart is never the only place a number lives: every chart carries <code>role="img"</code> and an <code>aria-label</code> that says the summary in words. The chart tokens that sat unused in <code>tokens.css</code> now have components.</p>
+
+<section>
+  <div class="label">Metrics — in a stat strip</div>
+  <div class="panel"><div class="panel-body">
+    <div class="stat-strip">
+      <div class="metric"><span class="metric__label">Generation</span><span class="metric__value">41.8<span class="metric__unit">tok/s</span></span><span class="metric__delta metric__delta--good">▲ 6.2% vs 24h</span></div>
+      <div class="metric"><span class="metric__label">p95 latency</span><span class="metric__value">212<span class="metric__unit">ms</span></span><span class="metric__delta metric__delta--bad">▲ 18 ms vs 24h</span></div>
+      <div class="metric"><span class="metric__label">Services</span><span class="metric__value">34</span><span class="metric__delta">no change</span></div>
+      <div class="metric"><span class="metric__label">Uptime 90d</span><span class="metric__value">99.82<span class="metric__unit">%</span></span><span class="metric__delta">1 incident</span></div>
+    </div>
+  </div></div>
+  <p class="text-small" style="margin-top:10px;max-width:68ch;">Direction lives in the arrow; sentiment lives in the modifier. Latency going <em>up</em> is <code>--bad</code>.</p>
+</section>
+
+<section>
+  <div class="label">Meters — resource use with thresholds</div>
+  <div class="panel" style="max-width:420px;"><div class="panel-body stack">
+    <div class="meter"><span class="meter__label">GPU</span><span class="meter__value">62%</span><div class="progbar"><i style="width:62%"></i></div></div>
+    <div class="meter"><span class="meter__label">VRAM</span><span class="meter__value">38.4 / 48 GB · 80%</span><div class="progbar progbar--warn"><i style="width:80%"></i></div></div>
+    <div class="meter"><span class="meter__label">Disk · /srv</span><span class="meter__value">1.79 / 1.86 TB · 96%</span><div class="progbar progbar--err"><i style="width:96%"></i></div></div>
+  </div></div>
+</section>
+
+<section>
+  <div class="label">Bars — sparkline columns</div>
+  <div class="card-grid-2">
+    <div class="panel"><div class="panel-head"><span class="text-label">Requests / min · 24h</span><span class="text-mono" style="font-size:11px;color:var(--fg-3);">peak 312</span></div>
+      <div class="panel-body"><div class="bars bars--lg" role="img" aria-label="Requests per minute over 24 hours, rising to a peak of 312 mid-afternoon, now 128."><i style="--v:0.32"></i><i style="--v:0.38"></i><i style="--v:0.35"></i><i style="--v:0.41"></i><i style="--v:0.47"></i><i style="--v:0.52"></i><i style="--v:0.49"></i><i style="--v:0.58"></i><i style="--v:0.64"></i><i style="--v:0.61"></i><i style="--v:0.7"></i><i style="--v:0.76"></i><i style="--v:0.72"></i><i style="--v:0.81"></i><i style="--v:0.95" class="is-hot"></i><i style="--v:0.88" class="is-hot"></i><i style="--v:0.74"></i><i style="--v:0.66"></i><i style="--v:0.6"></i><i style="--v:0.55"></i><i style="--v:0.5"></i><i style="--v:0.46"></i><i style="--v:0.42"></i><i style="--v:0.4"></i></div></div></div>
+    <div class="panel"><div class="panel-head"><span class="text-label">Health-check latency · 24h</span><span class="text-mono" style="font-size:11px;color:var(--fg-3);">2 spikes</span></div>
+      <div class="panel-body"><div class="bars bars--lg" role="img" aria-label="Health-check latency over 24 hours, flat around 40 ms except two spikes above 180 ms."><i style="--v:0.2"></i><i style="--v:0.22"></i><i style="--v:0.19"></i><i style="--v:0.24"></i><i style="--v:0.21"></i><i style="--v:0.23"></i><i style="--v:0.2"></i><i style="--v:0.18"></i><i style="--v:0.22"></i><i style="--v:0.25"></i><i style="--v:0.9" class="is-down"></i><i style="--v:0.85" class="is-down"></i><i style="--v:0.3"></i><i style="--v:0.24"></i><i style="--v:0.21"></i><i style="--v:0.2"></i><i style="--v:0.23"></i><i style="--v:0.22"></i><i style="--v:0.19"></i><i style="--v:0.21"></i><i style="--v:0.2"></i><i style="--v:0.18"></i><i style="--v:0.22"></i><i style="--v:0.2"></i></div></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="label">Uptime — 90 days, one tick per day</div>
+  <div class="panel"><div class="panel-body">
+    <div class="uptime" role="img" aria-label="90 days: 82 up, 3 degraded, 1 down, 4 with no data."><i class="is-none"></i><i class="is-none"></i><i class="is-none"></i><i class="is-none"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="is-warn"></i><i class="is-down"></i><i class="is-warn"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="is-warn"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="uptime__legend"><span>90 days ago</span><span>82 up · 3 degraded · 1 down · 4 no data</span><span>today</span></div>
+  </div></div>
+  <p class="text-small" style="margin-top:10px;max-width:68ch;">Severity is carried by height as well as colour — full, two-thirds, one-third — so the strip survives a grayscale screenshot.</p>
+</section>
+
+<section>
+  <div class="label">Key-value — the node fact sheet</div>
+  <div class="panel" style="max-width:460px;">
+    <div class="panel-head"><h3 style="margin:0;">Tritium</h3><span class="state state--ready"><i class="state__dot" aria-hidden="true"></i>Ready</span></div>
+    <div class="panel-body">
+      <dl class="kv">
+        <dt>Role</dt><dd>Full node — inference engine, gateways, orchestrator</dd>
+        <dt>Tier</dt><dd>Quantum Node · full</dd>
+        <dt>Engine</dt><dd>llama.cpp</dd>
+        <dt>Division</dt><dd><span class="division division--systems">DSECT Systems</span></dd>
+        <dt>Uptime</dt><dd class="num">41d 06:12:09</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="label">Terminal — captured CLI output</div>
+  <figure class="term" style="max-width:640px;">
+    <figcaption class="term__bar"><span class="term__title">quantum status</span><span class="exit exit--warn">exit 1 · warn</span></figcaption>
+<pre class="term__body"><code><span class="t-prompt">$ </span><span class="t-cmd">quantum status</span>
+<span class="t-dim">core</span>     <span class="t-ok">ok</span>       memory · codex · registry
+<span class="t-dim">NODE</span>     <span class="t-dim">TIER</span>     <span class="t-dim">ENGINE</span>      <span class="t-dim">STATE</span>
+tritium  full     llama.cpp   <span class="t-ok">ready</span>
+victus   light    —           <span class="t-ok">ready</span>
+pixel    minimal  —           <span class="t-warn">stopped</span>
+<span class="t-dim">AGENT</span>    <span class="t-dim">NODE</span>     <span class="t-dim">STATE</span>
+qubit    tritium  <span class="t-ok">ready</span>
+ion      victus   <span class="t-accent">busy</span>
+quark    pixel    <span class="t-warn">stopped</span>
+<span class="t-warn">1 node stopped</span> <span class="t-dim">— exit 1</span></code></pre>
+  </figure>
+  <p class="text-small" style="margin-top:10px;max-width:68ch;">The Quantum CLI contract is <code>0</code> ok · <code>1</code> warn · <code>2</code> error, so watchdogs and crons can drive it. The exit chip says the code and its meaning in words.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:18px;margin-top:10px;">
+    <span class="exit exit--ok">exit 0 · ok</span><span class="exit exit--warn">exit 1 · warn</span><span class="exit exit--err">exit 2 · error</span>
+  </div>
+</section>
+
+<section>
+  <div class="label">Stamp — overlay label on media</div>
+  <div class="card-grid-2" style="max-width:640px;">
+    <div class="thumb has-stamp" role="img" aria-label="Placeholder image"><span class="stamp">captured 14:02</span></div>
+    <div class="thumb has-stamp" role="img" aria-label="Placeholder image"><span class="stamp stamp--end stamp--bottom">1024 × 1024</span></div>
+  </div>
+</section>
+
+<script>
+document.getElementById('themeToggle').addEventListener('click', function(){
+  var root = document.documentElement;
+  var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  root.setAttribute('data-theme', next);
+  this.textContent = 'theme: ' + next;
+});
+</script>
+</body>
+</html>

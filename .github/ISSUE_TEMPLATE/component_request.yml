@@ -1,0 +1,37 @@
+name: Component or pattern request
+description: Something an app needs that the system doesn't have yet.
+labels: [component]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: The need
+      description: Which app needs it (Hub, the installed app, Nebula, …) and for what. Describe the job, not a design.
+    validations:
+      required: true
+  - type: textarea
+    id: anatomy
+    attributes:
+      label: Anatomy and states
+      description: Parts, sizes, and every state (default, hover, focus, disabled, loading, empty, error).
+  - type: textarea
+    id: a11y
+    attributes:
+      label: Accessibility
+      description: Keyboard behaviour, what a screen reader should announce, how each state shows without colour.
+  - type: textarea
+    id: prior
+    attributes:
+      label: Prior art
+      description: An existing DSECT pattern it extends, or the Untitled UI React equivalent (see untitled/README.md).
+  - type: checkboxes
+    id: rules
+    attributes:
+      label: Constraints it must meet
+      options:
+        - label: Tokens only; values stay in tokens.css
+          required: true
+        - label: Colour is never the only signal
+          required: true
+        - label: 44px hit area on touch
+          required: true

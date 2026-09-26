@@ -1,6 +1,6 @@
 <!-- @dsCard group="Components" -->
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <title>DSECT — Buttons</title>
@@ -14,10 +14,10 @@
 </style>
 </head>
 <body>
-<button id="themeToggle" style="position:fixed;top:12px;inset-inline-end:12px;z-index:99;min-height:36px;padding:0 12px;border-radius:var(--radius);border:1px solid var(--border-3);background:var(--surface);color:var(--fg-2);font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;">theme: dark</button>
+<button id="themeToggle" style="position:fixed;top:12px;inset-inline-end:12px;z-index:99;min-height:var(--tap);padding:0 12px;border-radius:var(--radius);border:1px solid var(--border-3);background:var(--surface);color:var(--fg-2);font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;">theme: light</button>
 
 <h1 class="text-section" style="margin-bottom:4px;">Buttons</h1>
-<p class="text-lede" style="max-width:60ch;margin-bottom:28px;">Every interactive control enforces a 44px touch-target floor (46px under coarse-pointer media), regardless of visible size. Radius is always <code>--radius</code> — buttons never borrow the larger card radius. There is no dedicated danger button; destructive actions are carried by <code>--red</code> text/icon color on a standard variant, not a separate shape.</p>
+<p class="text-lede" style="max-width:60ch;margin-bottom:28px;">Every interactive control enforces a 44px touch-target floor (46px under coarse-pointer media), regardless of visible size. Radius is always <code>--radius</code> — buttons never borrow the larger card radius. There is no dedicated danger button; destructive actions are carried by <code>--red</code> text/icon color on a standard variant, not a separate shape: add <code>.is-destructive</code>.</p>
 
 <div class="row"><div class="label">Primary</div>
   <button class="btn btn-primary">Deploy service</button>
@@ -39,8 +39,12 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
   </button>
 </div>
-<div class="row"><div class="label">Destructive intent (color, not a variant)</div>
-  <button class="btn btn-outline" style="color:var(--red);border-color:color-mix(in srgb, var(--red) 30%, var(--border-3));">Delete key</button>
+<div class="row"><div class="label">Destructive intent — .is-destructive (color, not a variant)</div>
+  <button class="btn btn-outline is-destructive">Delete key</button>
+  <button class="btn btn-small ghost is-destructive">Revoke</button>
+</div>
+<div class="row"><div class="label">A link styled as a button</div>
+  <a class="btn btn-outline" href="#">Open the Codex</a>
 </div>
 
 <script>
