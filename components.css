@@ -113,6 +113,9 @@
   font-family: var(--sans); text-decoration: none;
 }
 .empty__actions .is-primary { background: var(--ink-btn-bg); color: var(--ink-btn-fg); border-color: transparent; }
+@media (hover: none), (pointer: coarse) {
+  .empty__actions .btn, .empty__actions button, .empty__actions a { min-height: var(--tap-coarse); } /* same bump as .btn */
+}
 
 /* compact variant for inside a card (wishlist thumbnails, chat log) */
 .empty--inline { padding: 18px 14px; gap: 6px; }
@@ -848,6 +851,9 @@ body:has(dialog[open]:modal) { overflow: hidden; }
 /*   Instrument  Nebula              (codename alone -- no prefix, no //) */
 /* ===================================================================== */
 .wordmark { display: inline-flex; align-items: baseline; white-space: nowrap; }
+/* as the home link it is a primary tap target: pad the hit area, not the look */
+a.wordmark { position: relative; }
+a.wordmark::before { content: ""; position: absolute; inset: -10px -6px; }
 .wordmark__cut {
   margin-inline-start: .06em; padding-inline-end: .1em;
   color: var(--wordmark-cut); font-weight: 500; letter-spacing: -.1em;

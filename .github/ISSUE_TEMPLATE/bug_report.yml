@@ -1,0 +1,41 @@
+name: Bug
+description: Something in the system renders or behaves wrongly.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you saw, and what you expected instead.
+    validations:
+      required: true
+  - type: input
+    id: where
+    attributes:
+      label: Component, class or page
+      placeholder: ".tbl th.num, previews/tables.html"
+    validations:
+      required: true
+  - type: dropdown
+    id: theme
+    attributes:
+      label: Theme
+      options: [dark, light, both]
+    validations:
+      required: true
+  - type: input
+    id: width
+    attributes:
+      label: Width, device and browser
+      placeholder: "393px, Pixel, Chrome 140 (installed app)"
+  - type: textarea
+    id: shots
+    attributes:
+      label: Screenshots
+      description: Paste or drag images here.
+  - type: checkboxes
+    id: checked
+    attributes:
+      label: Before filing
+      options:
+        - label: It reproduces on a preview page, not only inside an app's own CSS.

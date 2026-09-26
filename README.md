@@ -36,7 +36,8 @@ This is the UI system that actually ships: tokens, type, components. It is not a
 - `previews/` — one HTML file per category, each a self-contained, theme-toggleable showcase, plus two
   composed patterns (`hub.html`, `quantum.html`) built from nothing but system classes.
 - `react/` — `@dsect/ui`, typed React wrappers over the same classes. No new visual decisions.
-- `scripts/check.mjs` — the verification below.
+- `scripts/check.mjs` and `scripts/smoke.mjs` — the verification below.
+- `templates/` — starter pages (plain page, dashboard, installed app) with the head set up correctly.
 
 Load order:
 
@@ -65,6 +66,10 @@ request, and also builds `react/` against the CSS.
 
 Exit codes follow the Quantum CLI contract: `0` ok · `1` warn · `2` error. `--verbose` prints the full contrast
 matrix.
+
+`npm run smoke` (after `npm install`, for Playwright) renders what `check` reads. It loads every page in both themes
+at 360, 393 and 1280px and fails on a console error, on sideways scroll, or on an interactive control whose hit
+area is under 44 × 44px on a touch phone. CI runs it too.
 
 ## Design principles (as embodied by the code, not aspirational)
 
@@ -98,18 +103,10 @@ not: since 2026-09-24 it is image-generated from the chosen splash direction and
 hexagon mark that used to sit at the repo root belonged to the superseded `D//SECT` pack and now lives in
 `brand/archive/`. See `brand/README.md`.
 
-## For agents working in this repo
+## Contributing
 
-- Declare values only in `tokens.css`; refer to them everywhere else. Run `npm run check` before a PR.
-- Write **DSECT**. Never `D//SECT`, `D-SECT` or `D/SECT`. Never draw or regenerate a logo mark; wire in the
-  artwork files when they exist.
-- Instruments get a bare codename (Nebula, Reeve, Quantum); only external-facing things carry the DSECT prefix.
-- **Tritium** is the machine; **Quantum** is the AI system that runs on it. Never find-and-replace one for the other.
-- This repository is **public**. Preview copy uses sample data: no hostnames, tailnet names, keys, internal
-  paths or security posture.
-- Keep class names stable: `react/` and the hub both depend on them. Add, alias or fix; don't rename.
-- In a Tailwind / Untitled UI app, import `base.css` and `components.css` into CSS layers (`untitled/README.md`).
-  Unlayered, they beat every utility.
+`CONTRIBUTING.md` covers set-up, adding tokens and components, and the rules. Agents: `AGENTS.md` (Claude Code
+loads it through `CLAUDE.md`). Starter pages for apps are in `templates/`.
 
 ## Licence
 

@@ -1,0 +1,12 @@
+* text=auto eol=lf
+
+*.woff2 binary
+*.png   binary
+*.jpg   binary
+
+# GitHub language stats: the library is the CSS (and react/). Previews,
+# templates and docs are documentation, not code that ships.
+previews/**  linguist-documentation
+templates/** linguist-documentation
+docs/**      linguist-documentation
+brand/**     linguist-documentation

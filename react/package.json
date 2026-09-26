@@ -1,12 +1,20 @@
 {
   "name": "@dsect/ui",
   "version": "0.1.0",
-  "description": "React component layer for the DSECT design system \u2014 typed wrappers over the canonical CSS classes. No new visual decisions.",
+  "description": "React component layer for the DSECT design system — typed wrappers over the canonical CSS classes. No new visual decisions.",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dsect-net/design-system.git",
+    "directory": "react"
+  },
   "type": "module",
   "main": "./dist/dsect-ui.umd.cjs",
   "module": "./dist/dsect-ui.js",
   "types": "./dist/index.d.ts",
+  "sideEffects": [
+    "*.css"
+  ],
   "files": [
     "dist"
   ],

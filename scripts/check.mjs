@@ -30,7 +30,10 @@ const previews = readdirSync(join(ROOT, 'previews')).filter((f) => f.endsWith('.
 const embedded = existsSync(join(ROOT, 'previews', 'app'))
   ? readdirSync(join(ROOT, 'previews', 'app')).filter((f) => f.endsWith('.html')).map((f) => `previews/app/${f}`)
   : [];
-const HTML = ['index.html', ...previews.map((f) => `previews/${f}`), ...embedded];
+const templates = existsSync(join(ROOT, 'templates'))
+  ? readdirSync(join(ROOT, 'templates')).filter((f) => f.endsWith('.html')).map((f) => `templates/${f}`)
+  : [];
+const HTML = ['index.html', ...previews.map((f) => `previews/${f}`), ...embedded, ...templates];
 
 // ---------------------------------------------------------------- tokens.css
 // Blocks are flat (no nesting, no @media), so a single-level parse is exact.

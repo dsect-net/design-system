@@ -267,6 +267,10 @@ h3, .text-card-title {
 
 /* native checkbox/radio elsewhere — just tint it */
 input[type="checkbox"].native, input[type="radio"] { accent-color: var(--emerald); }
+/* A native control is 13–16px and can't be padded, so wrap it in its label and
+   let the LABEL be the touch target: <label class="check-native"><input …> Text</label> */
+label.check-native { display: inline-flex; align-items: center; gap: 10px; min-height: var(--tap); cursor: pointer; }
+label.check-native > input { flex: 0 0 auto; margin: 0; }
 
 /* ===================================================================== */
 /* MASTHEAD / TOPBAR                                                     */

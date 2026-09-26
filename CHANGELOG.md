@@ -17,6 +17,23 @@ decision memo is `docs/proposals/2026-09-26-react-untitled-mobile.md`.
   import for Tailwind apps.
 - Check: the bridge may only read DSECT tokens and may redefine none (`--radius-lg` is shared with Tailwind).
   Link checks ignore `?query` strings. Pages embedded by previews are checked too.
+- **Templates** (`templates/`): `page.html`, `dashboard.html`, `app.html` + `manifest.webmanifest`, with the head
+  set up (viewport-fit, per-scheme `theme-color`, a pre-paint saved-theme script, stylesheet order).
+- **`scripts/smoke.mjs`** (`npm run smoke`, Playwright, in CI): every page in both themes at 360/393/1280 fails on
+  console errors, failed requests, sideways scroll, or a control under a 44 × 44px hit area on a touch phone.
+- Repo: PR template; issue forms for bugs, component requests and token/brand changes (brand routes to an ADR);
+  Dependabot (monthly, grouped); `CONTRIBUTING.md`; `AGENTS.md` (imported by `CLAUDE.md`); `.editorconfig`;
+  `.gitattributes` (LF, binary fonts, previews/templates/docs as documentation in language stats); CI
+  concurrency and timeouts; `@dsect/ui` declares `sideEffects: ["*.css"]` so bundlers can tree-shake it.
+
+### Fixed
+
+Found by the new smoke test, measured with touch input at 393px:
+
+- The `a.wordmark` home link was a 24px-tall target; its hit area is now padded to 44px.
+- Empty-state action buttons stayed 36px on touch; they now take `.btn`'s coarse-pointer bump.
+- A native checkbox (14px) can't be padded; the new `label.check-native` makes its label the 44px target.
+- Preview theme toggles were 36px; now `var(--tap)`.
 
 ## 2026-09-25
 
