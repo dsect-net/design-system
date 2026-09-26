@@ -86,7 +86,23 @@ These come from the system itself; this package just obeys them:
 - **Brand:** `Wordmark` (entity / division / product / instrument lockups), `DivisionTag`, `Rule` (plain or cut)
 - **State & fleet:** `StateIndicator` (ready / busy / degraded / stopped / alert / unknown — shape + label, not colour alone), `Records` + `RecordRow` (goal and ADR lifecycle → badge), `Avatar` (monogram fallback), `AgentCard`
 - **Telemetry:** `KeyValue`, `Metric`, `Meter`, `Bars` and `Uptime` (both require a `label` summary), `Terminal` + `ExitChip` (Quantum CLI 0 ok / 1 warn / 2 error), `Stamp`
-- **Overlays:** `Tabs` (roving tabindex, arrow keys), `Dialog` (native `<dialog>`, `modal` or `drawer`). The command palette is CSS-only (`.palette`).
+- **Overlays:** `Tabs` (roving tabindex, arrow keys), `Dialog` (native `<dialog>`: `modal`, `drawer`, or `sheet` for phones). The command palette is CSS-only (`.palette`).
+- **App shell (installed / standalone):** `AppShell`, `AppBar`, `TabBar` (renders below 760px; use it *or* a hamburger drawer, never both). Needs `viewport-fit=cover` in the page's viewport meta.
+
+## With Tailwind or Untitled UI React
+
+`@dsect/ui/styles.css` is unlayered, which is right for a plain app. In a Tailwind v4 app, unlayered rules beat
+every utility, so a base rule like `select { width: 100% }` silently overrides Untitled UI's classes. Import
+the parts into layers instead, together with the Untitled UI bridge (`untitled/dsect-theme.css` in the repo):
+
+```css
+@import "tailwindcss";
+@import "<untitled>/styles/theme.css";
+@import "@dsect/ui/tokens.css";
+@import "<design-system>/untitled/dsect-theme.css";
+@import "@dsect/ui/base.css" layer(base);
+@import "@dsect/ui/components.css" layer(components);
+```
 
 ## Developing
 

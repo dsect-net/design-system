@@ -69,5 +69,8 @@ export type {
 export { Tabs, Dialog } from './components/overlays';
 export type { TabItem, TabsProps, DialogProps } from './components/overlays';
 
+export { AppShell, AppBar, TabBar } from './components/app';
+export type { AppShellProps, AppBarProps, TabBarItem, TabBarProps } from './components/app';
+
 export { setTheme, getTheme } from './theme';
 export type { Theme } from './theme';

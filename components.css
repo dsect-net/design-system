@@ -894,3 +894,93 @@ body:has(dialog[open]:modal) { overflow: hidden; }
   font-family: var(--sans); font-size: 13px; font-weight: 500; line-height: 1;
   letter-spacing: -.1em; color: var(--wordmark-cut);
 }
+
+/* ===================================================================== */
+/* APP SHELL -- the hub as an installed, standalone app                  */
+/* For phones first: a compact app bar, a bottom tab bar in thumb reach,  */
+/* bottom sheets instead of centred modals, and the safe areas a notch or */
+/* home indicator takes. One mobile nav still holds: a page uses the tab  */
+/* bar OR the hamburger drawer, never both. The tab bar only renders      */
+/* below 760px -- the same width at which the sidenav stops -- so wider    */
+/* screens keep the masthead and sidenav.                                 */
+/*                                                                       */
+/* Page setup this layer expects:                                         */
+/*   <meta name="viewport" content="width=device-width, initial-scale=1,  */
+/*         viewport-fit=cover">   (without viewport-fit the safe-area      */
+/*         insets are all 0 and content hides under the notch)            */
+/*   <body class="app"> <header class="appbar"> <main class="app__main">  */
+/*   <nav class="tabbar">                                                 */
+/* ===================================================================== */
+.app {
+  min-height: 100dvh; display: flex; flex-direction: column;
+  -webkit-tap-highlight-color: transparent; /* we draw our own :active states */
+}
+.app :is(a, button, [role="tab"], [role="option"], summary, label) { touch-action: manipulation; } /* no double-tap-zoom delay */
+.app__main { flex: 1 0 auto; min-width: 0; overflow-x: clip; padding-inline: var(--space-4); padding-block: var(--space-4) var(--space-8); }
+
+.appbar {
+  position: sticky; top: 0; z-index: var(--z-masthead);
+  display: flex; align-items: center; gap: var(--space-2);
+  min-height: calc(var(--appbar-h) + var(--safe-top));
+  padding: var(--safe-top) max(var(--space-2), var(--safe-right)) 0 max(var(--space-2), var(--safe-left));
+  background: var(--bg); border-bottom: 1px solid var(--border-2);
+}
+.appbar__title {
+  flex: 1; min-width: 0; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-size: 16px; font-weight: 600; letter-spacing: -.01em; color: var(--fg);
+}
+.appbar__title:first-child { padding-inline-start: var(--space-2); }
+.appbar__sub { display: block; font-family: var(--mono); font-size: 10px; font-weight: 400; letter-spacing: .05em; text-transform: uppercase; color: var(--fg-5); }
+
+.tabbar { display: none; }
+@media (max-width: 760px) {
+  .tabbar {
+    position: sticky; bottom: 0; z-index: var(--z-masthead);
+    display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr);
+    padding: 0 var(--safe-right) var(--safe-bottom) var(--safe-left);
+    background: var(--bg); border-top: 1px solid var(--border-2);
+  }
+  .tabbar a, .tabbar button {
+    position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+    min-height: var(--tabbar-h); padding: 6px 2px 4px;
+    background: none; border: 0; cursor: pointer; text-decoration: none;
+    color: var(--fg-4); font-family: var(--sans); font-size: 11px; font-weight: 500; line-height: 1.1;
+  }
+  .tabbar svg { width: 22px; height: 22px; flex: 0 0 auto; }
+  .tabbar a:active, .tabbar button:active { background: var(--surface-hover); }
+  .tabbar [aria-current="page"] { color: var(--fg); }
+  /* the same "you are here" mark as the masthead and tabs: a 2px emerald bar */
+  .tabbar [aria-current="page"]::before {
+    content: ""; position: absolute; top: -1px; inset-inline: 28%; height: 2px; background: var(--emerald);
+  }
+  .tabbar :focus-visible { outline-offset: -3px; }
+  .tabbar .badge { position: absolute; top: 5px; inset-inline-start: calc(50% + 6px); min-height: 16px; padding: 0 4px; font-size: 9px; background: var(--bg); }
+}
+
+/* bottom sheet: the phone's modal. Same native <dialog>, anchored to the
+   bottom edge, capped at 85% of the screen, clear of the home indicator. */
+.sheet {
+  padding: 0; margin: auto auto 0; max-width: none;
+  width: min(560px, 100vw); max-height: 85dvh;
+  border: 1px solid var(--border-2); border-bottom: 0;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: var(--bg-2); color: var(--fg-2); box-shadow: var(--shadow-float);
+  padding-bottom: var(--safe-bottom);
+}
+.sheet::backdrop { background: var(--overlay); }
+.sheet[open] { display: flex; flex-direction: column; animation: sheetIn var(--dur-panel) var(--ease-panel); }
+@keyframes sheetIn { from { transform: translateY(100%); } }
+.sheet::before { /* grabber: decorative; closing is Esc, the backdrop or a real button */
+  content: ""; align-self: center; flex: 0 0 auto; width: 36px; height: 4px; margin-top: 8px;
+  border-radius: 2px; background: var(--border-3);
+}
+
+/* installed app (display-mode standalone/fullscreen): no browser chrome, so
+   the page owns the whole screen -- and nothing should reveal the canvas by
+   rubber-banding or pull-to-refresh on the shell. */
+.app-only { display: none; }
+@media (display-mode: standalone), (display-mode: fullscreen) {
+  html { overscroll-behavior-y: none; }
+  .app-only { display: revert; }
+  .browser-only { display: none !important; }
+}

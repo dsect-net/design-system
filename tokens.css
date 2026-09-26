@@ -164,6 +164,10 @@
   --tap:44px;
   --tap-coarse:46px;
 
+  /* app shell (installed / standalone): bar heights, safe areas added on top */
+  --appbar-h:52px;
+  --tabbar-h:58px;
+
   /* one focus ring for every non-text control */
   --focus-width:2px;
   --focus-offset:2px;

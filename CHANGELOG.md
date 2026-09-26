@@ -1,5 +1,23 @@
 # Changelog
 
+## 2026-09-26
+
+Exploration for TRELLIS (HUB-015): React, Untitled UI React, and the hub as a standalone phone app. The
+decision memo is `docs/proposals/2026-09-26-react-untitled-mobile.md`.
+
+### Added
+
+- **App shell** (`components.css`): `.app`, `.appbar`, `.tabbar` (below 760px; tab bar *or* drawer), `.sheet`,
+  safe-area handling, `display-mode: standalone` rules, `touch-action: manipulation`. Tokens `--appbar-h`,
+  `--tabbar-h`. Preview `previews/app.html`, framing `previews/app/shell.html` at 393 and 360px.
+- **Untitled UI bridge** `untitled/dsect-theme.css` + `untitled/README.md`: 134 Untitled semantic tokens mapped
+  onto 35 DSECT tokens, `dark:` following `data-theme`, and the measured component edits (primary button
+  1.09 → 17.98:1; toggle off-knob 1.13 → 5.57:1).
+- `@dsect/ui`: `AppShell`, `AppBar`, `TabBar`, `Dialog variant="sheet"`. The README documents the layered
+  import for Tailwind apps.
+- Check: the bridge may only read DSECT tokens and may redefine none (`--radius-lg` is shared with Tailwind).
+  Link checks ignore `?query` strings. Pages embedded by previews are checked too.
+
 ## 2026-09-25
 
 Grounded in the ratified brand (ADR-012, Brand Architecture, Identity Spec), the Quantum architecture, and

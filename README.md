@@ -24,10 +24,15 @@ This is the UI system that actually ships: tokens, type, components. It is not a
   indicators, tables, filter bars, progress steps, sidenav. Added 2026-09-25: **state indicator**, **key-value
   list**, **metric / meter / bars / uptime strip**, **terminal + exit chip**, **tabs**, **dialogs** (modal,
   drawer, command palette on native `<dialog>`), **stamp**, **record rows** (goals and ADRs with a lifecycle),
-  **avatar + agent card**, and the **brand layer** (wordmark treatment, division tags, the cut rule). Patterns
+  **avatar + agent card**, the **brand layer** (wordmark treatment, division tags, the cut rule), and, added
+  2026-09-26, the **app shell** for the hub as an installed phone app (app bar, bottom tab bar, bottom sheet,
+  safe areas, `display-mode: standalone`). Patterns
   are adapted from Untitled UI's anatomy, rebuilt in this estate's idiom: flat rounded rectangles instead of
   pills, mono microtype, hairline borders, tokens only.
 - `brand/` — the name rules for implementers, slots for the logo artwork, and the archived superseded mark.
+- `untitled/` — `dsect-theme.css`, the bridge that re-themes Untitled UI React onto these tokens (for TRELLIS),
+  with its set-up, the measured component edits, and what it can't change.
+- `docs/proposals/` — decision memos. The first covers React + Untitled UI + the standalone app.
 - `previews/` — one HTML file per category, each a self-contained, theme-toggleable showcase, plus two
   composed patterns (`hub.html`, `quantum.html`) built from nothing but system classes.
 - `react/` — `@dsect/ui`, typed React wrappers over the same classes. No new visual decisions.
@@ -56,6 +61,7 @@ request, and also builds `react/` against the CSS.
 | fonts | `fonts.css` points at a missing file, a face isn't a weight range, or an OFL licence is missing |
 | pages | a local link is broken, or a preview lacks its `@dsCard` group |
 | ADR-012 | a `.wordmark__cut` is not `aria-hidden` |
+| bridge | `untitled/dsect-theme.css` reads a token `tokens.css` doesn't declare, or redefines one it does |
 
 Exit codes follow the Quantum CLI contract: `0` ok · `1` warn · `2` error. `--verbose` prints the full contrast
 matrix.
@@ -102,6 +108,8 @@ hexagon mark that used to sit at the repo root belonged to the superseded `D//SE
 - This repository is **public**. Preview copy uses sample data: no hostnames, tailnet names, keys, internal
   paths or security posture.
 - Keep class names stable: `react/` and the hub both depend on them. Add, alias or fix; don't rename.
+- In a Tailwind / Untitled UI app, import `base.css` and `components.css` into CSS layers (`untitled/README.md`).
+  Unlayered, they beat every utility.
 
 ## Licence
 

@@ -24,9 +24,13 @@ const warn = (area, msg) => warnings.push(`${area}: ${msg}`);
 const ok = (area, msg) => passed.push(`${area}: ${msg}`);
 
 // ---------------------------------------------------------------- inputs
-const STYLESHEETS = ['base.css', 'components.css'];
+const STYLESHEETS = ['base.css', 'components.css', 'untitled/dsect-theme.css'];
 const previews = readdirSync(join(ROOT, 'previews')).filter((f) => f.endsWith('.html')).sort();
-const HTML = ['index.html', ...previews.map((f) => `previews/${f}`)];
+// pages a preview embeds (e.g. the app shell in an iframe): checked for tokens and links, not gallery cards
+const embedded = existsSync(join(ROOT, 'previews', 'app'))
+  ? readdirSync(join(ROOT, 'previews', 'app')).filter((f) => f.endsWith('.html')).map((f) => `previews/app/${f}`)
+  : [];
+const HTML = ['index.html', ...previews.map((f) => `previews/${f}`), ...embedded];
 
 // ---------------------------------------------------------------- tokens.css
 // Blocks are flat (no nesting, no @media), so a single-level parse is exact.
@@ -180,9 +184,9 @@ const DECLARED = new Set(Object.keys(dark));
       const u = m[1];
       if (/^(#|https?:|mailto:|data:|javascript:)/.test(u) || u === './') continue;
       links++;
-      if (!existsSync(join(ROOT, dirname(f), u.split('#')[0]))) err('links', `${f} → ${u} does not exist`);
+      if (!existsSync(join(ROOT, dirname(f), u.split(/[?#]/)[0]))) err('links', `${f} → ${u} does not exist`);
     }
-    if (f.startsWith('previews/')) {
+    if (/^previews\/[^/]+\.html$/.test(f)) {
       const card = /^<!-- @dsCard group="([^"]+)" -->/.exec(src);
       if (!card) err('previews', `${f} must open with <!-- @dsCard group="…" -->`);
       else if (!GROUPS.includes(card[1])) err('previews', `${f} has unknown group "${card[1]}" (use ${GROUPS.join(', ')})`);
@@ -210,6 +214,19 @@ const DECLARED = new Set(Object.keys(dark));
     }
   }
   if (!errors.some((e) => e.startsWith('ADR-012'))) ok('ADR-012', `${cuts} wordmark cuts, all aria-hidden — the name read aloud is always "DSECT"`);
+}
+
+// ---------------------------------------------------------------- 8. the Untitled UI bridge
+// untitled/dsect-theme.css may only POINT at DSECT tokens, and must never
+// redefine one: --radius-lg is the same property name in tokens.css and in
+// Tailwind, and a bridge that "flattened" it would silently reshape every card.
+if (existsSync(join(ROOT, 'untitled', 'dsect-theme.css'))) {
+  const bridge = stripComments(read('untitled/dsect-theme.css'));
+  const used = [...new Set([...bridge.matchAll(/var\(\s*(--[\w-]+)/g)].map((m) => m[1]))];
+  const defined = [...new Set([...bridge.matchAll(/(--[\w-]+)\s*:/g)].map((m) => m[1]))];
+  for (const u of used) if (!DECLARED.has(u)) err('bridge', `untitled/dsect-theme.css reads ${u}, which tokens.css does not declare`);
+  for (const d of defined) if (DECLARED.has(d)) err('bridge', `untitled/dsect-theme.css redefines DSECT token ${d}`);
+  if (!errors.some((e) => e.startsWith('bridge'))) ok('bridge', `maps ${defined.length} Untitled UI tokens onto ${used.length} DSECT tokens; redefines none of DSECT's`);
 }
 
 // ---------------------------------------------------------------- report

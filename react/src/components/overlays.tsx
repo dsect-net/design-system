@@ -85,8 +85,8 @@ export interface DialogProps extends Omit<DialogHTMLAttributes<HTMLDialogElement
   open: boolean;
   /** Called for Esc, the close button, and a click on the backdrop. */
   onClose: () => void;
-  /** 'modal' centres; 'drawer' slides in from the inline end. */
-  variant?: 'modal' | 'drawer';
+  /** 'modal' centres; 'drawer' slides in from the inline end; 'sheet' rises from the bottom (phones). */
+  variant?: 'modal' | 'drawer' | 'sheet';
   title: ReactNode;
   closeLabel?: string;
   footer?: ReactNode;

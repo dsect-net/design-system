@@ -1,0 +1,219 @@
+/* DSECT theme for Untitled UI React — the bridge.
+ *
+ * Untitled UI React (MIT, React 19 + Tailwind v4 + React Aria) themes itself
+ * with semantic custom properties: --color-text-primary, --color-bg-brand-solid,
+ * --color-border-secondary … This file points those SEMANTIC tokens at DSECT's
+ * tokens.css instead of re-tinting Untitled's colour ramps. Consequences:
+ *
+ *   - tokens.css stays the single source of truth. Change --surface there and
+ *     both the hand-written DSECT components and every Untitled component move.
+ *   - Theming is DSECT's [data-theme]. Untitled's .dark-mode class is never
+ *     applied, and its `dark:` variant is redefined below to follow DSECT's
+ *     dark theme (the default, i.e. anything but data-theme="light").
+ *   - Contrast is inherited: every text/surface pair here is a pair
+ *     scripts/check.mjs already measures in both themes.
+ *
+ * Import order, in the app's Tailwind entry CSS (see untitled/README.md):
+ *
+ *   @import "tailwindcss";
+ *   @import "<untitled>/styles/theme.css";
+ *   @import "<untitled>/styles/typography.css";
+ *   @import "<design-system>/tokens.css";
+ *   @import "<design-system>/untitled/dsect-theme.css";
+ *   @import "<design-system>/base.css" layer(base);
+ *   @import "<design-system>/components.css" layer(components);
+ *
+ * base.css and components.css MUST go into layers: unlayered rules beat every
+ * Tailwind utility regardless of specificity, so an unlayered `select { width:
+ * 100% }` or `a { color }` silently overrides Untitled's classes.
+ *
+ * Tokens only: every value is a var() into tokens.css (or color-mix of one).
+ */
+
+@custom-variant dark (&:where(:root:not([data-theme="light"]), :root:not([data-theme="light"]) *));
+
+:root {
+  /* ---------------------------------------------------------------- type */
+  --font-body: var(--sans);
+  --font-display: var(--sans);
+  --font-mono: var(--mono);
+
+  /* ------------------------------------------------------------- radius
+     Flatter by one step: Untitled's 12–16px cards become DSECT's 8px.
+     --radius-lg is deliberately NOT set here — it is the same property name
+     in tokens.css and in Tailwind, already 8px in both, and redefining it
+     would change every DSECT card. --radius-md is 6px in both, too. */
+  --radius-xl: var(--radius-lg);
+  --radius-2xl: var(--radius-lg);
+
+  /* --------------------------------------------------------------- text */
+  --color-text-primary: var(--fg);
+  --color-text-secondary: var(--fg-2);
+  --color-text-secondary_hover: var(--fg);
+  --color-text-tertiary: var(--fg-3);
+  --color-text-tertiary_hover: var(--fg-2);
+  --color-text-quaternary: var(--fg-4);
+  --color-text-placeholder: var(--fg-5);
+  --color-text-error-primary: var(--red);
+  --color-text-error-primary_hover: var(--red);
+  --color-text-warning-primary: var(--amber);
+  --color-text-success-primary: var(--emerald);
+  /* "brand" text and links: DSECT's accent (cyan in dark, ink in light) */
+  --color-text-brand-primary: var(--fg);
+  --color-text-brand-secondary: var(--accent);
+  --color-text-brand-secondary_hover: var(--fg);
+  --color-text-brand-tertiary: var(--accent);
+  --color-text-brand-tertiary_alt: var(--accent);
+  /* on a brand fill. DSECT's primary action is the INK button, so text on it
+     is --ink-btn-fg. Copied components that hard-code `text-white` on a brand
+     fill must switch to `text-primary_on-brand` (see README: component edits). */
+  --color-text-primary_on-brand: var(--ink-btn-fg);
+  --color-text-secondary_on-brand: var(--ink-btn-fg);
+  --color-text-tertiary_on-brand: var(--ink-btn-fg);
+  --color-text-quaternary_on-brand: var(--ink-btn-fg);
+  --color-tooltip-supporting-text: var(--fg-3);
+
+  /* ---------------------------------------------------- icon foregrounds */
+  --color-fg-primary: var(--fg);
+  --color-fg-secondary: var(--fg-2);
+  --color-fg-secondary_hover: var(--fg);
+  --color-fg-tertiary: var(--fg-3);
+  --color-fg-tertiary_hover: var(--fg-2);
+  --color-fg-quaternary: var(--fg-4);
+  --color-fg-quaternary_hover: var(--fg-3);
+  --color-fg-error-primary: var(--red);
+  --color-fg-error-secondary: var(--red);
+  --color-fg-warning-primary: var(--amber);
+  --color-fg-warning-secondary: var(--amber);
+  --color-fg-success-primary: var(--emerald);
+  --color-fg-success-secondary: var(--emerald);
+  /* brand foregrounds (progress fills, checked icons) are the signal green */
+  --color-fg-brand-primary: var(--emerald);
+  --color-fg-brand-primary_alt: var(--emerald);
+  --color-fg-brand-secondary: var(--emerald-dim);
+  --color-fg-brand-secondary_alt: var(--emerald-dim);
+  --color-fg-brand-secondary_hover: var(--emerald);
+  /* "white" icon ON a brand fill: the checkbox tick, the radio dot, the toggle
+     knob. The fill is DSECT's ink, so the mark takes the ink button's text
+     colour, or it vanishes in dark theme (white on near-white). */
+  --color-fg-white: var(--ink-btn-fg);
+
+  /* -------------------------------------------------------- backgrounds */
+  --color-bg-primary: var(--surface);
+  --color-bg-primary_alt: var(--bg);
+  --color-bg-primary_hover: var(--surface-hover);
+  --color-bg-secondary: var(--bg-2);
+  --color-bg-secondary_alt: var(--bg-2);
+  --color-bg-secondary_hover: var(--bg-3);
+  --color-bg-secondary-solid: var(--fg-5);
+  --color-bg-tertiary: var(--bg-3);
+  --color-bg-quaternary: var(--bg-4);
+  --color-bg-brand-primary: var(--accent-soft);
+  --color-bg-brand-primary_alt: var(--accent-soft);
+  --color-bg-brand-secondary: var(--accent-soft);
+  --color-bg-brand-section: var(--bg-2);
+  --color-bg-brand-section_subtle: var(--bg-2);
+  /* primary action fill = DSECT's ink button */
+  --color-bg-brand-solid: var(--ink-btn-bg);
+  --color-bg-brand-solid_hover: var(--ink-btn-hover);
+  --color-bg-error-primary: var(--red-bg);
+  --color-bg-error-secondary: var(--red-bg);
+  --color-bg-error-solid: var(--red-dim);
+  --color-bg-error-solid_hover: var(--red-dim);
+  --color-bg-warning-primary: var(--amber-bg);
+  --color-bg-warning-secondary: var(--amber-bg);
+  --color-bg-warning-solid: var(--amber-dim);
+  --color-bg-success-primary: var(--emerald-bg);
+  --color-bg-success-secondary: var(--emerald-bg);
+  --color-bg-success-solid: var(--emerald-dim);
+  /* tooltips and scrims are dark in BOTH themes (Untitled pairs them with
+     text-white), so these two are set per theme below */
+  --color-bg-primary-solid: var(--bg-4);
+  --color-bg-overlay: var(--bg);
+
+  /* ------------------------------------------------------------ borders */
+  --color-border-primary: var(--border-3);
+  --color-border-secondary: var(--border-2);
+  --color-border-secondary_alt: var(--border);
+  --color-border-tertiary: var(--border);
+  --color-border-error: var(--red);
+  --color-border-error_subtle: color-mix(in srgb, var(--red) 40%, transparent);
+  /* focused text fields: DSECT keeps text-field focus soft (base.css FORMS),
+     so the "brand" border is the strongest hairline, not the cyan ring */
+  --color-border-brand: var(--border-3);
+  --color-border-brand_alt: var(--border-3);
+
+  /* --------------------------------------------------------------- focus */
+  --color-focus-ring: var(--focus-ring);
+  --color-focus-ring-error: var(--red);
+
+  /* ------------------------------------------------------------- toggle */
+  --color-toggle-border: var(--border-3);
+  --color-toggle-slim-border_pressed: var(--ink-btn-bg);
+  --color-toggle-slim-border_pressed-hover: var(--ink-btn-hover);
+
+  /* ----------------------------------------------- badge utility ramps
+     DSECT badges: neutral surface, state-coloured text, a 30% state border.
+     50 = fill, 100 = hover fill, 200 = ring, 400/500 = addon, 700 = text.
+     Out-of-palette hues (orange, pink) are left as upstream on purpose. */
+  --color-utility-neutral-50: var(--surface);
+  --color-utility-neutral-100: var(--surface-hover);
+  --color-utility-neutral-200: var(--border-2);
+  --color-utility-neutral-400: var(--fg-5);
+  --color-utility-neutral-500: var(--fg-4);
+  --color-utility-neutral-700: var(--fg-3);
+
+  --color-utility-brand-50: var(--surface);
+  --color-utility-brand-100: var(--surface-hover);
+  --color-utility-brand-200: color-mix(in srgb, var(--accent) 30%, var(--border-2));
+  --color-utility-brand-400: var(--accent);
+  --color-utility-brand-500: var(--accent);
+  --color-utility-brand-700: var(--accent);
+
+  --color-utility-red-50: var(--surface);
+  --color-utility-red-100: var(--surface-hover);
+  --color-utility-red-200: color-mix(in srgb, var(--red) 30%, var(--border-2));
+  --color-utility-red-400: var(--red);
+  --color-utility-red-500: var(--red);
+  --color-utility-red-700: var(--red);
+
+  --color-utility-yellow-50: var(--surface);
+  --color-utility-yellow-100: var(--surface-hover);
+  --color-utility-yellow-200: color-mix(in srgb, var(--amber) 30%, var(--border-2));
+  --color-utility-yellow-400: var(--amber);
+  --color-utility-yellow-500: var(--amber);
+  --color-utility-yellow-700: var(--amber);
+
+  --color-utility-green-50: var(--surface);
+  --color-utility-green-100: var(--surface-hover);
+  --color-utility-green-200: color-mix(in srgb, var(--emerald) 30%, var(--border-2));
+  --color-utility-green-400: var(--emerald);
+  --color-utility-green-500: var(--emerald);
+  --color-utility-green-700: var(--emerald);
+
+  --color-utility-slate-50: var(--slate-bg);
+  --color-utility-slate-100: var(--surface-hover);
+  --color-utility-slate-200: color-mix(in srgb, var(--slate) 30%, var(--border-2));
+  --color-utility-slate-400: var(--slate);
+  --color-utility-slate-500: var(--slate);
+  --color-utility-slate-700: var(--slate);
+
+  --color-utility-sky-50: var(--surface);
+  --color-utility-sky-100: var(--surface-hover);
+  --color-utility-sky-200: color-mix(in srgb, var(--accent) 30%, var(--border-2));
+  --color-utility-sky-400: var(--accent);
+  --color-utility-sky-500: var(--accent);
+  --color-utility-sky-700: var(--accent);
+
+  --color-utility-purple-50: var(--surface);
+  --color-utility-purple-100: var(--surface-hover);
+  --color-utility-purple-200: color-mix(in srgb, var(--division-labs) 30%, var(--border-2));
+  --color-utility-purple-400: var(--division-labs);
+  --color-utility-purple-500: var(--division-labs);
+  --color-utility-purple-700: var(--division-labs);
+}
+
+:root[data-theme="light"] {
+  --color-bg-primary-solid: var(--fg);
+  --color-bg-overlay: var(--fg);
+}
