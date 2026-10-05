@@ -7,6 +7,7 @@
 - [ ] Token (`tokens.css`)
 - [ ] Component or fix (`base.css`, `components.css`)
 - [ ] React layer (`react/`)
+- [ ] React kit (`kit/`)
 - [ ] Brand: palette, type, mark or naming. **Needs an ADR** (Brand Architecture §7); link it:
 - [ ] Docs, previews, templates or tooling
 
@@ -15,6 +16,7 @@
 - [ ] `npm run check` exits 0
 - [ ] `npm run smoke` exits 0 (no errors, no sideways scroll at 360/393/1280, 44px hit areas on touch)
 - [ ] `react/`: `npm run typecheck && npm run build`, if CSS classes or `react/` changed
+- [ ] `kit/`: `npm run typecheck && npm run build`, if `kit/` or the CSS it renders changed
 - [ ] No class renamed (add, alias or fix: the hub and `@dsect/ui` depend on them)
 - [ ] Any new state carries a label or shape, not colour alone
 - [ ] New or changed components are shown in a preview linked from `index.html`
