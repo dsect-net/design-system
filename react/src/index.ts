@@ -74,3 +74,6 @@ export type { AppShellProps, AppBarProps, TabBarItem, TabBarProps } from './comp
 
 export { setTheme, getTheme } from './theme';
 export type { Theme } from './theme';
+
+export { Dropdown, AvatarDropdown } from './components/dropdown';
+export type { DropdownItem, DropdownProps, AvatarDropdownProps } from './components/dropdown';
