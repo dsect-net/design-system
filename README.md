@@ -33,6 +33,7 @@ This is the UI system that actually ships: tokens, type, components. It is not a
 - `brand/` — the name rules for implementers, slots for the logo artwork, and the archived superseded mark.
 - `untitled/` — `dsect-theme.css`, the bridge that re-themes Untitled UI React onto these tokens (for TRELLIS),
   with its set-up, the measured component edits, and what it can't change.
+- `styles/eidolon/` — the paper sub-style for Eidolon. Untitled UI React, retinted. Not loaded by the hub.
 - `docs/proposals/` — decision memos. The first covers React + Untitled UI + the standalone app.
 - `previews/` — one HTML file per category, each a self-contained, theme-toggleable showcase, plus two
   composed patterns (`hub.html`, `quantum.html`) built from nothing but system classes.
