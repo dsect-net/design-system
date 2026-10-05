@@ -1,0 +1,32 @@
+/* Eidolon paper sub-style. Not loaded by the hub. Do not alias these onto core tokens. */
+
+:root {
+  --eidolon-paper: #f4efe6;
+  --eidolon-ink: #1c1712;
+  --eidolon-quiet: #6f6558;
+  --eidolon-line: #e3d9c8;
+  --eidolon-curtain: #8f3d2c;
+  --eidolon-curtain-ink: #fff8f4;
+  --eidolon-brass: #8d6a32;
+  --eidolon-card: #fffdf8;
+  --eidolon-card-2: #efe8db;
+  --eidolon-danger: #9f2d2d;
+  --eidolon-font-display: "Fraunces", ui-serif, Georgia, serif;
+  --eidolon-font-body: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --eidolon-radius-card: 1rem;
+  --eidolon-rise: 320ms;
+}
+
+[data-theme="dark"],
+.dark {
+  --eidolon-paper: #12100e;
+  --eidolon-ink: #f4efe6;
+  --eidolon-quiet: #a89b8c;
+  --eidolon-line: #332e27;
+  --eidolon-curtain: #e07a5f;
+  --eidolon-curtain-ink: #1c100c;
+  --eidolon-brass: #d4b483;
+  --eidolon-card: #1c1916;
+  --eidolon-card-2: #26221d;
+  --eidolon-danger: #f0a0a0;
+}
