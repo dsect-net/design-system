@@ -8,8 +8,9 @@ import { Avatar } from './status';
  * Adapted from Untitled UI's DropdownAvatar pattern, rebuilt with DSECT
  * design tokens and without external dependencies (no react-aria).
  *
- * Uses native <details> for accessibility where possible, with React state
- * for controlled behavior.
+ * Button trigger + `role="menu"`, with React state for controlled behavior.
+ * Keyboard support: Escape closes the menu and returns focus to the trigger;
+ * arrow-key navigation between menu items is not yet implemented.
  */
 
 export interface DropdownItem {
@@ -25,6 +26,8 @@ export interface DropdownItem {
 export interface DropdownProps {
   /** The trigger element (e.g., an Avatar button). */
   trigger: ReactNode;
+  /** Accessible name for the trigger button. Required when the trigger has no text of its own (e.g., an avatar image). */
+  triggerLabel?: string;
   /** Menu items. */
   items: DropdownItem[];
   /** Optional header content (e.g., user info). */
@@ -34,28 +37,46 @@ export interface DropdownProps {
   className?: string;
 }
 
-export function Dropdown({ trigger, items, header, footer, className = '' }: DropdownProps) {
+export function Dropdown({ trigger, triggerLabel, items, header, footer, className = '' }: DropdownProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  const close = () => setOpen(false);
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
+        close();
       }
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
+  // Escape closes the menu and returns focus to the trigger.
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        close();
+        triggerRef.current?.focus();
+      }
+    };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [open ]);
+
   return (
     <div ref={ref} className={['dropdown', className].filter(Boolean).join(' ')} data-open={open}>
       <button
         type="button"
+        ref={triggerRef}
         className="dropdown__trigger"
         onClick={() => setOpen(!open)}
         aria-expanded={open}
         aria-haspopup="menu"
+        aria-label={triggerLabel}
       >
         {trigger}
       </button>
@@ -121,6 +142,7 @@ export function AvatarDropdown({
     <Dropdown
       className={['avatar-dropdown', className].filter(Boolean).join(' ')}
       trigger={<Avatar name={name} src={avatarSrc} size="sm" />}
+      triggerLabel={`${name} — account menu`}
       header={
         <div className="avatar-dropdown__user">
           <Avatar name={name} src={avatarSrc} size="md" />
@@ -128,7 +150,7 @@ export function AvatarDropdown({
             <div className="avatar-dropdown__user-name">
               {name}
               {status && (
-                <span className={`status-dot status-dot--${status}`} aria-label={status} />
+                <span className={`status-dot status-dot--${status}`} role="img" aria-label={status} />
               )}
             </div>
             {email && <div className="avatar-dropdown__user-email">{email}</div>}
