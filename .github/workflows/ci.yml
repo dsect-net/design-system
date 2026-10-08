@@ -71,6 +71,9 @@ jobs:
           cache: npm
           cache-dependency-path: kit/package-lock.json
       - run: npm ci --no-audit --no-fund
+      # kit type-checks react/src via relative imports, so react's own
+      # dependencies (@types/react, …) must be installed for module resolution
+      - run: npm --prefix ../react install --no-audit --no-fund
       - run: npm run typecheck
       - run: npm run build
 
