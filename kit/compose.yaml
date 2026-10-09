@@ -1,0 +1,11 @@
+# Loopback only. The machine's reverse proxy owns the public name.
+# Image tag matches the one published from main.
+services:
+  kit:
+    build:
+      context: ..
+      dockerfile: kit/Dockerfile
+    image: ghcr.io/dsect-net/design-system:main
+    ports:
+      - "127.0.0.1:8093:80"
+    restart: unless-stopped

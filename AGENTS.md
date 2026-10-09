@@ -9,6 +9,7 @@ particular get wrong.
 npm run check                      # must exit 0
 npm install && npm run smoke       # must exit 0 — renders every page
 cd react && npm run typecheck && npm run build   # if you touched react/ or any CSS class
+cd kit && npm run typecheck && npm run build     # if you touched kit/ or the CSS it renders
 ```
 
 Report the numbers you measured, not "should work". Send screenshots of both themes and a phone width for anything visual.
@@ -27,6 +28,7 @@ Report the numbers you measured, not "should work". Send screenshots of both the
 - **Public repository.** Sample data only: no tailnet names, hosts, keys, emails, internal paths or security
   posture. Ring-fenced brands do not appear here at all.
 - **44px hit areas on touch, both themes, no sideways scroll at 360px.** The smoke test measures all three.
+- **New pages are React.** The gallery under `kit/` is the app. The HTML files (`index.html`, `previews/`, `templates/`) stay: the check and the smoke test render them, and they are the CSS contract. Do not replace that contract with a single HTML page, and do not delete it to "make everything React". A Vite `index.html` that only mounts the app is a shell, not a site.
 - **In Tailwind / Untitled UI apps**, import `base.css` and `components.css` into CSS layers
   (`untitled/README.md`). Unlayered, they override every utility.
 
@@ -38,6 +40,7 @@ Report the numbers you measured, not "should work". Send screenshots of both the
 | `previews/`, `index.html` | the gallery; one page per category |
 | `templates/` | copy-paste starting pages for apps |
 | `react/` | `@dsect/ui`, typed wrappers over the same classes |
+| `kit/` | the React gallery: every component, the three templates, Untitled UI recolored |
 | `untitled/` | the Untitled UI React theme bridge (TRELLIS) |
 | `brand/` | name rules, logo artwork slots, archive |
 | `docs/proposals/` | decision memos |
