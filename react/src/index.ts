@@ -12,3 +12,5 @@ import '../../base.css';
 import '../../components.css';
 
 export * from './lib';
+export { Dropdown, AvatarDropdown } from './components/dropdown';
+export type { DropdownItem, DropdownProps, AvatarDropdownProps } from './components/dropdown';
