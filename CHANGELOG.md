@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-10-17
+
+### Added
+
+- **Dropdowns in the gallery.** `previews/overlays.html` gains a Dropdowns section demoing `Dropdown` and
+  `AvatarDropdown` (shipped in `@dsect/ui` in #7 with no gallery entry): button trigger, `role="menu"`,
+  header/footer slots, shortcut hints, Esc-to-close with focus return, click-away close.
+- **Settings pattern.** `previews/settings.html`: a composed settings page — profile, preferences,
+  sessions, danger zone — built from panels, form fields, check-toggles and one small table, sample
+  data only. Linked from the gallery's Patterns group.
+- **Gallery search.** `index.html` filters every entry by title, description and keyword
+  (`data-search`), hides empty groups, and falls back to the kit's own empty state.
+
 ## 2026-09-26
 
 ### Changed

@@ -41,53 +41,66 @@
     <p class="text-lede">The UI system the DSECT Hub ships, extracted from the running code rather than drawn as a proposal. Light by default; dark is a full parallel set, one attribute away. It is a dense operations dossier, not a marketing site: flat rectangles, mono for data, hairline borders, and colour that is never the only signal.</p>
   </section>
 
+  <div class="group" style="margin-top:8px;">
+    <label class="text-label" for="gallerySearch" style="display:block;margin-bottom:12px;">Search the gallery</label>
+    <input class="input" id="gallerySearch" type="search" placeholder="Try “table”, “toast”, “dropdown”, “settings”…" style="width:100%;max-width:520px;">
+    <p class="text-small" id="galleryCount" role="status" style="margin-top:8px;"></p>
+    <div class="empty" id="galleryEmpty" hidden style="margin-top:16px;">
+      <div class="empty__mark">∅</div>
+      <div class="empty__title">Nothing in the gallery matches</div>
+      <div class="empty__text">Try a component name — “table”, “toast”, “dropdown” — or clear the search.</div>
+      <div class="empty__actions"><button class="btn btn-outline" id="galleryClear" type="button">Clear search</button></div>
+    </div>
+  </div>
+
   <div class="group">
     <span class="text-label">Foundations</span>
     <div class="card-grid-3">
-      <a class="card" href="previews/colors.html"><h3>Color</h3><p class="text-small">Every token, both themes, including division accents and chart colours.</p></a>
-      <a class="card" href="previews/typography.html"><h3>Typography</h3><p class="text-small">Inter for prose, JetBrains Mono for data. Variable weights, self-hosted.</p></a>
-      <a class="card" href="previews/spacing-motion.html"><h3>Space, Elevation &amp; Motion</h3><p class="text-small">4px grid, radii, shadows, easing, the 44px touch floor, stacking.</p></a>
+      <a class="card" href="previews/colors.html" data-search="color colour tokens palette swatch foundations variables hex"><h3>Color</h3><p class="text-small">Every token, both themes, including division accents and chart colours.</p></a>
+      <a class="card" href="previews/typography.html" data-search="typography type font inter jetbrains mono scale text"><h3>Typography</h3><p class="text-small">Inter for prose, JetBrains Mono for data. Variable weights, self-hosted.</p></a>
+      <a class="card" href="previews/spacing-motion.html" data-search="spacing space radius elevation shadow motion animation touch grid"><h3>Space, Elevation &amp; Motion</h3><p class="text-small">4px grid, radii, shadows, easing, the 44px touch floor, stacking.</p></a>
     </div>
   </div>
 
   <div class="group">
     <span class="text-label">Brand</span>
     <div class="card-grid-3">
-      <a class="card" href="previews/brand.html"><h3>Brand</h3><p class="text-small">DSECT in text, DSECT// in the treatment. Lockups by tier, divisions, the cut rule.</p></a>
+      <a class="card" href="previews/brand.html" data-search="brand logo wordmark divisions lockup identity"><h3>Brand</h3><p class="text-small">DSECT in text, DSECT// in the treatment. Lockups by tier, divisions, the cut rule.</p></a>
     </div>
   </div>
 
   <div class="group">
     <span class="text-label">Components</span>
     <div class="card-grid-3">
-      <a class="card" href="previews/buttons.html"><h3>Buttons</h3><p class="text-small">Primary, outline, ghost, icon; destructive intent as colour.</p></a>
-      <a class="card" href="previews/cards.html"><h3>Cards &amp; Panels</h3><p class="text-small">Destinations lift; containers do not.</p></a>
-      <a class="card" href="previews/forms.html"><h3>Forms</h3><p class="text-small">Soft focus for text fields, 16px on phones.</p></a>
-      <a class="card" href="previews/badges.html"><h3>Badges</h3><p class="text-small">Status in one flat shape, always labelled.</p></a>
-      <a class="card" href="previews/status.html"><h3>State &amp; Records</h3><p class="text-small">Six states, six shapes. Goals and ADRs with a lifecycle.</p></a>
-      <a class="card" href="previews/data.html"><h3>Data &amp; Telemetry</h3><p class="text-small">Metrics, meters, bars, uptime, key-value, terminal, stamp.</p></a>
-      <a class="card" href="previews/tables.html"><h3>Tables &amp; Filters</h3><p class="text-small">Sortable, scrollable, with applied-filter chips.</p></a>
-      <a class="card" href="previews/feedback.html"><h3>Feedback &amp; Loading</h3><p class="text-small">Toasts, spinners that never freeze, skeletons, empty states.</p></a>
-      <a class="card" href="previews/navigation.html"><h3>Navigation</h3><p class="text-small">Two-tier masthead, sidenav, progress steps.</p></a>
-      <a class="card" href="previews/overlays.html"><h3>Tabs &amp; Overlays</h3><p class="text-small">Tabs, modal, drawer and command palette on native &lt;dialog&gt;.</p></a>
+      <a class="card" href="previews/buttons.html" data-search="button btn primary outline ghost icon destructive actions"><h3>Buttons</h3><p class="text-small">Primary, outline, ghost, icon; destructive intent as colour.</p></a>
+      <a class="card" href="previews/cards.html" data-search="card panel surface container"><h3>Cards &amp; Panels</h3><p class="text-small">Destinations lift; containers do not.</p></a>
+      <a class="card" href="previews/forms.html" data-search="form input select textarea checkbox toggle switch field label"><h3>Forms</h3><p class="text-small">Soft focus for text fields, 16px on phones.</p></a>
+      <a class="card" href="previews/badges.html" data-search="badge status pill label"><h3>Badges</h3><p class="text-small">Status in one flat shape, always labelled.</p></a>
+      <a class="card" href="previews/status.html" data-search="state indicator records goals adr avatar agent card lifecycle status"><h3>State &amp; Records</h3><p class="text-small">Six states, six shapes. Goals and ADRs with a lifecycle.</p></a>
+      <a class="card" href="previews/data.html" data-search="data telemetry metric meter bars uptime key-value key value terminal stamp exit"><h3>Data &amp; Telemetry</h3><p class="text-small">Metrics, meters, bars, uptime, key-value, terminal, stamp.</p></a>
+      <a class="card" href="previews/tables.html" data-search="table tbl data grid sort filter chips rows services"><h3>Tables &amp; Filters</h3><p class="text-small">Sortable, scrollable, with applied-filter chips.</p></a>
+      <a class="card" href="previews/feedback.html" data-search="feedback toast spinner loading skeleton progress empty state"><h3>Feedback &amp; Loading</h3><p class="text-small">Toasts, spinners that never freeze, skeletons, empty states.</p></a>
+      <a class="card" href="previews/navigation.html" data-search="navigation masthead sidenav steps progress search filter bar"><h3>Navigation</h3><p class="text-small">Two-tier masthead, sidenav, progress steps.</p></a>
+      <a class="card" href="previews/overlays.html" data-search="tabs overlay modal dialog drawer command palette dropdown menu overlays account"><h3>Tabs &amp; Overlays</h3><p class="text-small">Tabs, modal, drawer and command palette on native &lt;dialog&gt;, plus dropdown menus.</p></a>
     </div>
   </div>
 
   <div class="group">
     <span class="text-label">Patterns</span>
     <div class="card-grid-3">
-      <a class="card" href="previews/hub.html"><h3>Hub overview</h3><p class="text-small">A full page composed from the system, phone to desktop.</p></a>
-      <a class="card" href="previews/quantum.html"><h3>Quantum fleet</h3><p class="text-small">Core, nodes and clients; the agent roster.</p></a>
-      <a class="card" href="previews/app.html"><h3>App shell</h3><p class="text-small">The hub as an installed phone app: app bar, tab bar, sheets, safe areas.</p></a>
+      <a class="card" href="previews/hub.html" data-search="pattern dashboard overview composed page example services"><h3>Hub overview</h3><p class="text-small">A full page composed from the system, phone to desktop.</p></a>
+      <a class="card" href="previews/quantum.html" data-search="pattern fleet agents roster composed page example"><h3>Quantum fleet</h3><p class="text-small">Core, nodes and clients; the agent roster.</p></a>
+      <a class="card" href="previews/app.html" data-search="pattern app shell tab bar sheet installed mobile"><h3>App shell</h3><p class="text-small">The hub as an installed phone app: app bar, tab bar, sheets, safe areas.</p></a>
+      <a class="card" href="previews/settings.html" data-search="settings profile preferences account sessions forms panels pattern composed"><h3>Settings</h3><p class="text-small">Profile, preferences and sessions, composed from forms, panels and one small table.</p></a>
     </div>
   </div>
 
   <div class="group">
     <span class="text-label">Templates — start a page</span>
     <div class="card-grid-3">
-      <a class="card" href="templates/page.html"><h3>Page</h3><p class="text-small">A single page with the lockup, a lede and the cut-rule footer.</p></a>
-      <a class="card" href="templates/dashboard.html"><h3>Dashboard</h3><p class="text-small">Masthead, sidenav, stats, table, aside; a drawer as the one mobile nav.</p></a>
-      <a class="card" href="templates/app.html"><h3>Installed app</h3><p class="text-small">App bar, tab bar, sheet, safe areas and a manifest.</p></a>
+      <a class="card" href="templates/page.html" data-search="template starter page"><h3>Page</h3><p class="text-small">A single page with the lockup, a lede and the cut-rule footer.</p></a>
+      <a class="card" href="templates/dashboard.html" data-search="template starter dashboard table sidenav"><h3>Dashboard</h3><p class="text-small">Masthead, sidenav, stats, table, aside; a drawer as the one mobile nav.</p></a>
+      <a class="card" href="templates/app.html" data-search="template starter installed app shell"><h3>Installed app</h3><p class="text-small">App bar, tab bar, sheet, safe areas and a manifest.</p></a>
     </div>
   </div>
 
@@ -128,6 +141,36 @@
     root.setAttribute('data-theme', next);
     t.setAttribute('aria-label', 'Switch to ' + (next === 'light' ? 'dark' : 'light') + ' theme');
   });
+})();
+
+// gallery search: filter every entry by its title, description and keywords;
+// a group heading hides when none of its entries survive the filter
+(function(){
+  var input = document.getElementById('gallerySearch');
+  var cards = Array.prototype.slice.call(document.querySelectorAll('a.card'));
+  var groups = Array.prototype.slice.call(document.querySelectorAll('.group'));
+  var empty = document.getElementById('galleryEmpty');
+  var count = document.getElementById('galleryCount');
+  function apply(){
+    var q = input.value.trim().toLowerCase(), shown = 0;
+    cards.forEach(function(c){
+      var hay = (c.textContent + ' ' + (c.getAttribute('data-search') || '')).toLowerCase();
+      var on = !q || hay.indexOf(q) !== -1;
+      c.style.display = on ? '' : 'none';
+      if (on) shown++;
+    });
+    groups.forEach(function(g){
+      var cs = g.querySelectorAll('a.card');
+      if (!cs.length) return;
+      var any = Array.prototype.some.call(cs, function(c){ return c.style.display !== 'none'; });
+      g.style.display = any ? '' : 'none';
+    });
+    empty.hidden = shown !== 0;
+    count.textContent = q ? shown + ' of ' + cards.length + ' entries' : cards.length + ' entries — foundations, brand, components, patterns, templates';
+  }
+  input.addEventListener('input', apply);
+  document.getElementById('galleryClear').addEventListener('click', function(){ input.value = ''; apply(); input.focus(); });
+  apply();
 })();
 </script>
 </body>
