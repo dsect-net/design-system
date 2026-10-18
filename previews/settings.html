@@ -1,0 +1,159 @@
+<!-- @dsCard group="Patterns" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DSECT — Settings (pattern)</title>
+<meta name="theme-color" content="#FFFFFF">
+<script>try { var t = localStorage.getItem('dsect-theme'); if (t === 'light' || t === 'dark') { document.documentElement.setAttribute('data-theme', t); document.querySelector('meta[name="theme-color"]').content = t === 'dark' ? '#0A0C10' : '#FFFFFF'; } } catch (e) {}</script>
+<link rel="stylesheet" href="../fonts.css">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../base.css">
+<link rel="stylesheet" href="../components.css">
+<style>
+  /* layout only: every visual value comes from the system */
+  .shell { display: flex; align-items: stretch; min-height: calc(100dvh - 90px); }
+  .main { flex: 1; min-width: 0; padding-block: var(--space-6) var(--space-16); }
+  .stack { display: grid; gap: var(--space-4); align-content: start; max-width: 680px; }
+  .field { margin-bottom: var(--space-5); }
+  .field label { display: block; font-size: 12px; color: var(--fg-3); margin-bottom: 6px; }
+  .field:last-child { margin-bottom: 0; }
+  /* stacked toggles sit a full touch floor apart, so each 44px hit area is its own */
+  .pref-row { margin-bottom: var(--space-8); }
+  .nav-toggle { display: none; }
+  @media (max-width: 900px) { .nav-toggle { display: inline-flex; margin-inline-start: auto; } }
+  .mobile-nav a { display: flex; align-items: center; min-height: var(--tap); color: var(--fg-2); text-decoration: none; border-bottom: 1px solid var(--border); }
+  #toastWrap { position: fixed; inset-inline-end: var(--space-4); bottom: var(--space-4); z-index: var(--z-toast); display: grid; gap: var(--space-2); }
+</style>
+</head>
+<body>
+  <div class="utility-bar"><div class="wrap utility-inner"><span>node: example</span><span>pattern — settings</span></div></div>
+  <header class="masthead-wrap">
+    <div class="wrap masthead">
+      <a class="wordmark" href="../index.html">DSECT<span class="wordmark__cut" aria-hidden="true">//</span><span class="wordmark__descriptor">Hub</span></a>
+      <nav class="mast-nav" aria-label="Primary"><a href="#">Overview</a><a href="#">Services</a><a href="#">Agents</a><a href="#" class="active" aria-current="page">Settings</a></nav>
+      <button class="icon-btn nav-toggle" data-open="navDrawer" aria-label="Open navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </header>
+
+  <div class="shell">
+    <nav class="sidenav" aria-label="Settings sections">
+      <div class="sidenav__body">
+        <p class="sidenav__sub">Account</p>
+        <a href="#" class="active" aria-current="page"><span class="sidenav__icon">01</span><span class="sidenav__label">Profile</span></a>
+        <a href="#"><span class="sidenav__icon">02</span><span class="sidenav__label">Preferences</span></a>
+        <a href="#"><span class="sidenav__icon">03</span><span class="sidenav__label">Notifications</span><span class="badge badge--sm">3</span></a>
+        <hr class="sidenav__divider">
+        <p class="sidenav__sub">Access</p>
+        <a href="#"><span class="sidenav__icon">04</span><span class="sidenav__label">API keys</span></a>
+        <a href="#"><span class="sidenav__icon">05</span><span class="sidenav__label">Sessions</span></a>
+      </div>
+      <div class="sidenav__foot"><span class="text-label">sample data</span></div>
+    </nav>
+
+    <main class="main wrap">
+      <span class="text-label">Account — 01 · Profile</span>
+      <h1 style="margin: var(--space-2) 0 var(--space-5); font-size: clamp(26px, 3.2vw, 40px);">Settings</h1>
+      <p class="text-lede" style="max-width:62ch;margin:0 0 var(--space-6);">A composed pattern: profile, preferences and sessions built from nothing but panels, form fields, check-toggles and one small table. Every value on it is sample data.</p>
+
+      <div class="stack">
+        <div class="panel">
+          <div class="panel-head"><h3 style="margin:0;">Profile</h3></div>
+          <div class="panel-body">
+            <div class="field">
+              <label for="s-name">Display name</label>
+              <input class="input" id="s-name" type="text" value="A. Operator">
+            </div>
+            <div class="field">
+              <label for="s-email">Email</label>
+              <input class="input" id="s-email" type="email" value="operator@example.com">
+            </div>
+            <div class="field">
+              <label for="s-role">Role</label>
+              <select id="s-role">
+                <option selected>Operator</option>
+                <option>Administrator</option>
+                <option>Viewer</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="s-about">About</label>
+              <textarea id="s-about" rows="3" placeholder="What this account operates, in one or two lines."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h3 style="margin:0;">Preferences</h3></div>
+          <div class="panel-body">
+            <div class="field row check-toggle pref-row" style="display:flex;align-items:center;gap:10px;">
+              <input type="checkbox" id="s-notify" checked>
+              <label for="s-notify" style="margin:0;">Email me when a service changes state</label>
+            </div>
+            <div class="field row check-toggle pref-row" style="display:flex;align-items:center;gap:10px;">
+              <input type="checkbox" id="s-digest">
+              <label for="s-digest" style="margin:0;">Weekly summary digest</label>
+            </div>
+            <div class="field row check-toggle pref-row" style="display:flex;align-items:center;gap:10px;">
+              <input type="checkbox" id="s-restart" checked>
+              <label for="s-restart" style="margin:0;">Restart failed services automatically</label>
+            </div>
+            <div class="field">
+              <label for="s-theme">Theme</label>
+              <select id="s-theme">
+                <option selected>Light</option>
+                <option>Dark</option>
+                <option>Match system</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="tbl-wrap">
+          <div class="tbl-head"><h3>Sessions</h3><span class="count">2 active</span></div>
+          <div class="tbl-scroll">
+            <table class="tbl">
+              <thead><tr><th>Device</th><th>Last active</th><th>State</th><th></th></tr></thead>
+              <tbody>
+                <tr><td>This device</td><td class="num">now</td><td><span class="badge badge--ok badge--dot">current</span></td><td></td></tr>
+                <tr><td>Second device</td><td class="num">2026-10-16 21:40</td><td><span class="state state--ready"><i class="state__dot" aria-hidden="true"></i>Signed in</span></td><td><button class="btn btn-outline btn-small" type="button">Revoke</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h3 style="margin:0;">Danger zone</h3></div>
+          <div class="panel-body">
+            <p class="text-small" style="margin:0 0 var(--space-4);">Revoking every session signs this account out everywhere, including devices you are not looking at. API keys are not affected.</p>
+            <button class="btn btn-outline is-destructive" type="button">Revoke all sessions</button>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn btn-primary" type="button" id="saveBtn">Save changes</button>
+          <button class="btn btn-outline" type="button">Cancel</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toastWrap" aria-live="polite"></div>
+
+  <dialog class="drawer" id="navDrawer" aria-label="Navigation">
+    <div class="dialog__head"><span class="wordmark">DSECT<span class="wordmark__cut" aria-hidden="true">//</span><span class="wordmark__descriptor">Hub</span></span><button class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+    <nav class="dialog__body mobile-nav" aria-label="Sections"><a href="#">01 · Profile</a><a href="#">02 · Preferences</a><a href="#">03 · Notifications</a><a href="#">04 · API keys</a><a href="#">05 · Sessions</a></nav>
+  </dialog>
+
+<script>
+document.querySelectorAll('[data-open]').forEach(function(b){ b.addEventListener('click', function(){ document.getElementById(b.getAttribute('data-open')).showModal(); }); });
+document.querySelectorAll('dialog').forEach(function(d){ d.addEventListener('click', function(e){ if (e.target === d || e.target.closest('[data-close]')) d.close(); }); });
+document.getElementById('saveBtn').addEventListener('click', function(){
+  var wrap = document.getElementById('toastWrap');
+  wrap.innerHTML = '<div class="toast toast--ok"><span class="toast__icon">✓</span><div class="toast__body"><div class="toast__title">Settings saved</div><div class="toast__text">Profile and preferences updated</div></div><button class="toast__close" aria-label="Dismiss">&times;</button></div>';
+  wrap.querySelector('.toast__close').addEventListener('click', function(){ wrap.innerHTML = ''; });
+});
+</script>
+</body>
+</html>
