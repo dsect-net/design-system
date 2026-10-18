@@ -77,3 +77,6 @@ export type { Theme } from './theme';
 
 export { Dropdown, AvatarDropdown } from './components/dropdown';
 export type { DropdownItem, DropdownProps, AvatarDropdownProps } from './components/dropdown';
+
+export { SignIn } from './components/auth';
+export type { SignInProps, SignInMethods, SignInMode } from './components/auth';

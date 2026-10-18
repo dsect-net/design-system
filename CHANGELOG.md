@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-10-17
+
+### Added
+
+- **Sign-in** (`components.css`, `@dsect/ui` `SignIn`, `previews/sign-in.html`): the Nebula login canonised as
+  the one auth screen for every app. Centred 400px card; app-supplied mark, name, subtitle and footer copy;
+  a segmented Email | Passphrase switch (`.segmented`, also usable standalone); provider buttons (Google,
+  Tailscale) under an "or" rule; methods are configuration. States are part of the pattern: field error
+  (`aria-invalid` border + icon + a text line), form error (`role="alert"`), submitting (disabled submit with
+  spinner), and a forgot view with a non-committal reset confirmation. Divergences from the source screen,
+  decided for the kit: the "Forgot password?" link takes the standard link treatment instead of a brand
+  colour; segment and text-link hit areas are padded to the 44px floor (the source draws them smaller); the
+  submit is the ink `.btn-primary`, its disabled state carried by opacity, never a grey placeholder colour.
+
 ## 2026-09-26
 
 ### Changed

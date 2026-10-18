@@ -1,0 +1,309 @@
+<!-- @dsCard group="Patterns" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<title>DSECT — Sign-in</title>
+<link rel="stylesheet" href="../fonts.css">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../base.css">
+<link rel="stylesheet" href="../components.css">
+<style>
+  body { padding: 24px 24px 60px; max-width: 880px; margin: 0 auto; }
+  .stage { border: 1px solid var(--border-2); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 12px; }
+  .stage .sign-in { min-height: 0; }
+  .stage--phone { max-width: 390px; }
+  .caption { font-size: 12px; color: var(--fg-5); margin-bottom: 32px; line-height: 1.55; }
+  h2.state { font-size: 16px; font-weight: 600; letter-spacing: -.01em; margin: 28px 0 6px; }
+  p.state-note { font-size: 13px; color: var(--fg-3); line-height: 1.6; margin-bottom: 12px; max-width: 62ch; }
+</style>
+</head>
+<body>
+<button id="themeToggle" style="position:fixed;top:12px;inset-inline-end:12px;z-index:99;min-height:var(--tap);padding:0 12px;border-radius:var(--radius);border:1px solid var(--border-3);background:var(--surface);color:var(--fg-2);font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;">theme: light</button>
+
+<h1 class="text-section" style="margin-bottom:4px;">Sign-in</h1>
+<p class="text-lede" style="margin-bottom:28px;">The one auth screen for every app, canonised from the Nebula login. A centred 400px card: the app's mark, name and subtitle, a segmented Email | Passphrase switch, provider buttons under an “or” rule, and two quiet footer lines. Apps supply their own mark, name, footer copy and submit wiring; the shape, spacing and states live in <code>components.css</code> (<code>.sign-in</code>) and in <code>@dsect/ui</code> as <code>&lt;SignIn&gt;</code>. All copy on this page is sample copy.</p>
+
+<h2 class="state">Canonical — all methods</h2>
+<p class="state-note">Interactive: the segmented switch, the forgot view and the password reveal all work. Submitting simulates a failed sign-in, so the error state below is the same one this demo lands in. The logo slot is app-supplied artwork; the archived mark stands in here.</p>
+<div class="stage">
+  <div class="sign-in" id="demo">
+    <div class="sign-in__card">
+      <div class="sign-in__logo"><img src="../brand/archive/d-sect-hex-mark-2026-08-29.svg" alt="" aria-hidden="true"></div>
+      <h1 class="sign-in__name">Nebula</h1>
+      <p class="sign-in__sub">ComfyUI console</p>
+      <div class="segmented sign-in__segments" role="tablist" aria-label="Sign-in method">
+        <button type="button" role="tab" id="demo-tab-email" aria-selected="true">Email</button>
+        <button type="button" role="tab" id="demo-tab-pass" aria-selected="false">Passphrase</button>
+      </div>
+      <form class="sign-in__form" id="demo-form">
+        <div id="demo-panel-email">
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div class="sign-in__field">
+              <input class="input" id="demo-email" aria-label="Email" type="email" autocomplete="email" required placeholder="Email">
+              <span class="sign-in__field-error" id="demo-email-error" hidden>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </span>
+            </div>
+            <div class="sign-in__field">
+              <input class="input" id="demo-password" aria-label="Password" type="password" autocomplete="current-password" required placeholder="Password">
+              <button type="button" class="sign-in__reveal" id="demo-reveal" aria-label="Show password" aria-pressed="false">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+            <button type="button" class="sign-in__link" id="demo-forgot-link">Forgot password?</button>
+          </div>
+        </div>
+        <div id="demo-panel-forgot" hidden>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <p class="sign-in__hint">Enter your email and we’ll send you a link to reset your password.</p>
+            <div class="sign-in__field">
+              <input class="input" id="demo-forgot-email" aria-label="Email" type="email" autocomplete="email" required placeholder="Email">
+            </div>
+            <button type="button" class="sign-in__link sign-in__link--start" id="demo-back-link">← Back to sign in</button>
+          </div>
+        </div>
+        <div id="demo-panel-pass" hidden>
+          <div class="sign-in__field">
+            <input class="input" id="demo-token" aria-label="Hub passphrase" type="password" autocomplete="current-password" required placeholder="Hub passphrase">
+          </div>
+        </div>
+        <p role="alert" class="sign-in__alert" id="demo-alert" hidden>Those credentials did not work. Try again.</p>
+        <button type="submit" class="btn btn-primary sign-in__submit" id="demo-submit" disabled>Unlock</button>
+      </form>
+      <div class="sign-in__divider"><span>or</span></div>
+      <button type="button" class="sign-in__provider">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg>
+        Sign in with Google
+      </button>
+      <button type="button" class="sign-in__provider">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Sign in with Tailscale
+      </button>
+      <p class="sign-in__note">Some networks sign you in automatically via network identity — this form only shows when yours doesn’t.</p>
+      <p class="sign-in__meta">Private · nebula.example.com</p>
+    </div>
+  </div>
+</div>
+<p class="caption">Above: the full configuration — both credential tabs, the forgot view behind the link, both providers, both footer lines.</p>
+
+<h2 class="state">Error — field and form</h2>
+<p class="state-note">A rejected sign-in marks the credential fields (<code>aria-invalid</code>: red border plus an icon, so colour is never the only signal) and adds one plain-language line as <code>role="alert"</code>. OAuth failures land in the same alert line.</p>
+<div class="stage">
+  <div class="sign-in">
+    <div class="sign-in__card">
+      <div class="sign-in__logo"><img src="../brand/archive/d-sect-hex-mark-2026-08-29.svg" alt="" aria-hidden="true"></div>
+      <h1 class="sign-in__name">Nebula</h1>
+      <p class="sign-in__sub">ComfyUI console</p>
+      <div class="segmented sign-in__segments" role="tablist" aria-label="Sign-in method">
+        <button type="button" role="tab" aria-selected="true">Email</button>
+        <button type="button" role="tab" aria-selected="false">Passphrase</button>
+      </div>
+      <form class="sign-in__form">
+        <div class="sign-in__field">
+          <input class="input" aria-label="Email" type="email" autocomplete="email" required placeholder="Email" value="someone@example.com" aria-invalid="true">
+          <span class="sign-in__field-error">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </span>
+        </div>
+        <div class="sign-in__field">
+          <input class="input" aria-label="Password" type="password" autocomplete="current-password" required placeholder="Password" value="••••••••" aria-invalid="true">
+          <button type="button" class="sign-in__reveal" aria-label="Show password" aria-pressed="false">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <button type="button" class="sign-in__link">Forgot password?</button>
+        <p role="alert" class="sign-in__alert">Those credentials did not work. Try again.</p>
+        <button type="submit" class="btn btn-primary sign-in__submit">Unlock</button>
+      </form>
+      <p class="sign-in__meta">Private · nebula.example.com</p>
+    </div>
+  </div>
+</div>
+
+<h2 class="state">Submitting</h2>
+<p class="state-note">While a sign-in is in flight the submit disables and carries a spinner; the fields stay put. Nothing else on the card moves.</p>
+<div class="stage">
+  <div class="sign-in">
+    <div class="sign-in__card">
+      <div class="sign-in__logo"><img src="../brand/archive/d-sect-hex-mark-2026-08-29.svg" alt="" aria-hidden="true"></div>
+      <h1 class="sign-in__name">Nebula</h1>
+      <p class="sign-in__sub">ComfyUI console</p>
+      <form class="sign-in__form">
+        <div class="sign-in__field">
+          <input class="input" aria-label="Email" type="email" autocomplete="email" required placeholder="Email" value="someone@example.com" disabled>
+        </div>
+        <div class="sign-in__field">
+          <input class="input" aria-label="Password" type="password" autocomplete="current-password" required placeholder="Password" value="••••••••" disabled>
+          <button type="button" class="sign-in__reveal" aria-label="Show password" aria-pressed="false" disabled>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <button type="submit" class="btn btn-primary sign-in__submit" disabled><span class="spinner spinner--sm" aria-hidden="true"></span>Unlock</button>
+      </form>
+      <p class="sign-in__meta">Private · nebula.example.com</p>
+    </div>
+  </div>
+</div>
+
+<h2 class="state">Forgot — reset sent</h2>
+<p class="state-note">The same card in reset copy. The confirmation never confirms whether an account exists; the submit stays disabled after sending.</p>
+<div class="stage">
+  <div class="sign-in">
+    <div class="sign-in__card">
+      <div class="sign-in__logo"><img src="../brand/archive/d-sect-hex-mark-2026-08-29.svg" alt="" aria-hidden="true"></div>
+      <h1 class="sign-in__name">Nebula</h1>
+      <p class="sign-in__sub">ComfyUI console</p>
+      <form class="sign-in__form">
+        <p class="sign-in__hint">Enter your email and we’ll send you a link to reset your password.</p>
+        <div class="sign-in__field">
+          <input class="input" aria-label="Email" type="email" autocomplete="email" required placeholder="Email" value="someone@example.com">
+        </div>
+        <button type="button" class="sign-in__link sign-in__link--start">← Back to sign in</button>
+        <p role="status" class="sign-in__notice">Check your email — if an account exists, a reset link is on its way.</p>
+        <button type="submit" class="btn btn-primary sign-in__submit" disabled>Send Reset Link</button>
+      </form>
+      <p class="sign-in__meta">Private · nebula.example.com</p>
+    </div>
+  </div>
+</div>
+
+<h2 class="state">One method — passphrase only</h2>
+<p class="state-note">Methods are configuration. With one credential method and no providers, the switch, the divider and the provider buttons all disappear; the card keeps its shape. This is the legacy gate's configuration.</p>
+<div class="stage">
+  <div class="sign-in">
+    <div class="sign-in__card">
+      <div class="sign-in__logo"><img src="../brand/archive/d-sect-hex-mark-2026-08-29.svg" alt="" aria-hidden="true"></div>
+      <h1 class="sign-in__name">Nebula</h1>
+      <p class="sign-in__sub">ComfyUI console</p>
+      <form class="sign-in__form">
+        <div class="sign-in__field">
+          <input class="input" aria-label="Hub passphrase" type="password" autocomplete="current-password" required placeholder="Hub passphrase">
+          <button type="button" class="sign-in__reveal" aria-label="Show passphrase" aria-pressed="false">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <button type="submit" class="btn btn-primary sign-in__submit" disabled>Unlock</button>
+      </form>
+      <p class="sign-in__note">Some networks sign you in automatically via network identity — this form only shows when yours doesn’t.</p>
+      <p class="sign-in__meta">Private · nebula.example.com</p>
+    </div>
+  </div>
+</div>
+
+<h2 class="state">Phone width</h2>
+<p class="state-note">The card is fluid to 400px and the page never scrolls sideways; every control keeps its 44px hit area at 390px and below.</p>
+<div class="stage stage--phone">
+  <div class="sign-in">
+    <div class="sign-in__card">
+      <div class="sign-in__logo"><img src="../brand/archive/d-sect-hex-mark-2026-08-29.svg" alt="" aria-hidden="true"></div>
+      <h1 class="sign-in__name">Nebula</h1>
+      <p class="sign-in__sub">ComfyUI console</p>
+      <div class="segmented sign-in__segments" role="tablist" aria-label="Sign-in method">
+        <button type="button" role="tab" aria-selected="true">Email</button>
+        <button type="button" role="tab" aria-selected="false">Passphrase</button>
+      </div>
+      <form class="sign-in__form">
+        <div class="sign-in__field">
+          <input class="input" aria-label="Email" type="email" autocomplete="email" required placeholder="Email">
+        </div>
+        <div class="sign-in__field">
+          <input class="input" aria-label="Password" type="password" autocomplete="current-password" required placeholder="Password">
+          <button type="button" class="sign-in__reveal" aria-label="Show password" aria-pressed="false">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <button type="button" class="sign-in__link">Forgot password?</button>
+        <button type="submit" class="btn btn-primary sign-in__submit" disabled>Unlock</button>
+      </form>
+      <div class="sign-in__divider"><span>or</span></div>
+      <button type="button" class="sign-in__provider">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg>
+        Sign in with Google
+      </button>
+      <button type="button" class="sign-in__provider">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Sign in with Tailscale
+      </button>
+      <p class="sign-in__meta">Private · nebula.example.com</p>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('themeToggle').addEventListener('click', function(){
+  var root = document.documentElement;
+  var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  root.setAttribute('data-theme', next);
+  this.textContent = 'theme: ' + next;
+});
+
+// --- Canonical demo: mode switching, reveal, simulated failed submit. ---
+(function(){
+  var tabEmail = document.getElementById('demo-tab-email');
+  var tabPass = document.getElementById('demo-tab-pass');
+  var panelEmail = document.getElementById('demo-panel-email');
+  var panelPass = document.getElementById('demo-panel-pass');
+  var panelForgot = document.getElementById('demo-panel-forgot');
+  var form = document.getElementById('demo-form');
+  var email = document.getElementById('demo-email');
+  var password = document.getElementById('demo-password');
+  var token = document.getElementById('demo-token');
+  var forgotEmail = document.getElementById('demo-forgot-email');
+  var submit = document.getElementById('demo-submit');
+  var alert = document.getElementById('demo-alert');
+  var emailError = document.getElementById('demo-email-error');
+  var mode = 'email';
+
+  function render(){
+    tabEmail.setAttribute('aria-selected', mode === 'passphrase' ? 'false' : 'true');
+    tabPass.setAttribute('aria-selected', mode === 'passphrase' ? 'true' : 'false');
+    panelEmail.hidden = mode !== 'email';
+    panelForgot.hidden = mode !== 'forgot';
+    panelPass.hidden = mode !== 'passphrase';
+    submit.textContent = mode === 'forgot' ? 'Send Reset Link' : 'Unlock';
+    var ready = mode === 'email' ? (email.value.trim() !== '' && password.value !== '')
+      : mode === 'forgot' ? forgotEmail.value.trim() !== ''
+      : token.value.trim() !== '';
+    submit.disabled = !ready;
+  }
+  function clearError(){
+    alert.hidden = true;
+    emailError.hidden = true;
+    email.removeAttribute('aria-invalid');
+    password.removeAttribute('aria-invalid');
+  }
+  tabEmail.addEventListener('click', function(){ mode = 'email'; clearError(); render(); });
+  tabPass.addEventListener('click', function(){ mode = 'passphrase'; clearError(); render(); });
+  document.getElementById('demo-forgot-link').addEventListener('click', function(){ mode = 'forgot'; forgotEmail.value = email.value; clearError(); render(); });
+  document.getElementById('demo-back-link').addEventListener('click', function(){ mode = 'email'; clearError(); render(); });
+  document.getElementById('demo-reveal').addEventListener('click', function(){
+    var show = password.type === 'password';
+    password.type = show ? 'text' : 'password';
+    this.setAttribute('aria-pressed', show ? 'true' : 'false');
+    this.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+  });
+  [email, password, token, forgotEmail].forEach(function(el){ el.addEventListener('input', function(){ clearError(); render(); }); });
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    submit.disabled = true;
+    setTimeout(function(){
+      if (mode === 'email') {
+        email.setAttribute('aria-invalid', 'true');
+        password.setAttribute('aria-invalid', 'true');
+        emailError.hidden = false;
+        alert.textContent = 'Those credentials did not work. Try again.';
+      } else if (mode === 'forgot') {
+        alert.textContent = "Couldn't send the reset email. Try again.";
+      } else {
+        alert.textContent = 'That passphrase did not work. Try again.';
+      }
+      alert.hidden = false;
+      render();
+    }, 600);
+  });
+  render();
+})();
+</script>
+</body>
+</html>
