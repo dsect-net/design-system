@@ -91,6 +91,26 @@ These come from the system itself; this package just obeys them:
 - **Telemetry:** `KeyValue`, `Metric`, `Meter`, `Bars` and `Uptime` (both require a `label` summary), `Terminal` + `ExitChip` (Quantum CLI 0 ok / 1 warn / 2 error), `Stamp`
 - **Overlays:** `Tabs` (roving tabindex, arrow keys), `Dialog` (native `<dialog>`: `modal`, `drawer`, or `sheet` for phones). The command palette is CSS-only (`.palette`).
 - **App shell (installed / standalone):** `AppShell`, `AppBar`, `TabBar` (renders below 760px; use it *or* a hamburger drawer, never both). Needs `viewport-fit=cover` in the page's viewport meta.
+- **Auth:** `SignIn` — the one sign-in screen for every app, canonised from the Nebula login. The app supplies its mark, name, subtitle, footer copy and submit handlers; which methods appear (email, passphrase, Google, Tailscale) is configuration via `methods`. Handlers that return promises get the busy state; a rejected handler shows the source screen's plain-language errors, and the forgot view is built in when `onForgotPassword` is passed.
+
+```tsx
+import { SignIn } from '@dsect/ui';
+
+<SignIn
+  appName="Nebula"
+  subtitle="ComfyUI console"
+  logo={<img src="/logo.png" alt="" aria-hidden />}
+  methods={{ email: true, passphrase: true, google: true, tailscale: true }}
+  onEmailSubmit={async ({ email, password }) => { /* POST credentials; throw on failure */ }}
+  onPassphraseSubmit={async ({ token }) => { /* POST passphrase; throw on failure */ }}
+  onForgotPassword={async (email) => { /* request a reset link */ }}
+  googleHref="/api/auth/google"
+  onTailscale={async () => { /* POST the tailscale sign-in; throw an Error with a message on failure */ }}
+  error={oauthErrorFromUrl}
+  note="Some networks sign you in automatically via network identity — this form only shows when yours doesn't."
+  meta="Private · nebula.example.com"
+/>
+```
 
 ## With Tailwind or Untitled UI React
 

@@ -29,7 +29,10 @@ This is the UI system that actually ships: tokens, type, components. It is not a
   2026-09-26, the **app shell** for the hub as an installed phone app (app bar, bottom tab bar, bottom sheet,
   safe areas, `display-mode: standalone`). Patterns
   are adapted from Untitled UI's anatomy, rebuilt in this estate's idiom: flat rounded rectangles instead of
-  pills, mono microtype, hairline borders, tokens only.
+  pills, mono microtype, hairline borders, tokens only. Added 2026-10-17: the **sign-in** pattern
+  (`.sign-in`, `.segmented`), canonised from the Nebula login as the one auth screen for every app —
+  methods (email, passphrase, Google, Tailscale) are configuration, states (field error, form error,
+  submitting, forgot) are part of the pattern. Preview: `previews/sign-in.html`; React: `<SignIn>`.
 - `brand/` — the name rules for implementers, slots for the logo artwork, and the archived superseded mark.
 - `untitled/` — `dsect-theme.css`, the bridge that re-themes Untitled UI React onto these tokens (for TRELLIS),
   with its set-up, the measured component edits, and what it can't change.
