@@ -55,3 +55,43 @@ jobs:
       - run: npm install --no-audit --no-fund
       - run: npm run typecheck
       - run: npm run build
+
+  kit:
+    name: react kit typechecks and builds
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: kit
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: kit/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      # kit type-checks react/src via relative imports, so react's own
+      # dependencies (@types/react, …) must be installed for module resolution
+      - run: npm --prefix ../react install --no-audit --no-fund
+      - run: npm run typecheck
+      - run: npm run build
+
+  publish:
+    name: publish the kit image
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [check, smoke, react, kit]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v7
+      - name: Publish ghcr.io/dsect-net/design-system:main
+        run: |
+          set -euo pipefail
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker build -f kit/Dockerfile -t ghcr.io/dsect-net/design-system:main .
+          docker push ghcr.io/dsect-net/design-system:main
+

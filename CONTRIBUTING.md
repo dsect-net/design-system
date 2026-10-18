@@ -13,7 +13,9 @@ npm run smoke        # renders every page: errors, sideways scroll, 44px hit are
 
 The React layer builds on its own: `cd react && npm install && npm run typecheck && npm run build`.
 
-Open `index.html` in a browser for the gallery. Everything works from `file://` and needs no server.
+The React kit builds on its own: `cd kit && npm install && npm run typecheck && npm run build`.
+
+Open `index.html` in a browser for the CSS gallery. The React gallery is `kit/`. Everything in the HTML gallery works from `file://` and needs no server.
 
 ## What the checks enforce
 
@@ -40,7 +42,7 @@ contrast is measured for you.
    `index.html`.
 5. Add a typed wrapper in `react/src/components/` and export it from `react/src/index.ts`.
 
-**A page for an app.** Start from `templates/`.
+**A page for an app.** Build it in React. Start from `kit/` (the page, dashboard, and installed-app templates). The HTML files in `templates/` stay as the CSS reference the check renders. Do not add a new site as a single HTML file.
 
 ## Rules that aren't negotiable
 

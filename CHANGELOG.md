@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-10-05
+
+### Added
+
+- **React kit** (`kit/`): every `@dsect/ui` component, the page, dashboard and installed-app templates, and the Untitled UI controls this system uses. Untitled is recolored only where a hard-coded color sits past the bridge (primary button text, toggle knob off). CI typechecks and builds the kit, and a push to `main` publishes `ghcr.io/dsect-net/design-system:main`.
+- `@dsect/ui` exports the same components from `src/lib.ts` without the stylesheet, so a layered app does not load `base.css` a second time.
+
+The HTML gallery is unchanged. It remains what `check` and `smoke` render.
+
 ## 2026-09-26
 
 ### Changed

@@ -1,11 +1,12 @@
 # Templates
 
-Starting points for a new page or app. Copy one, fix the four stylesheet paths, delete what you don't need.
-Every visual value comes from the system; the templates declare none, only layout.
+The HTML files here are the CSS reference. `scripts/check.mjs` and `scripts/smoke.mjs` render them. Do not delete them.
+
+New pages are React. The same three starting points live in the kit (`kit/`, templates section): a page, a dashboard, and the installed app. Copy from there.
 
 | File | For |
 |---|---|
-| `page.html` | A single page: masthead with the `DSECT//` lockup, a lede, a panel, the cut-rule footer. No section nav. |
+| `page.html` | A single page: masthead with the wordmark, a lede, a panel, the cut-rule footer. No section nav. |
 | `dashboard.html` | An operations page: utility bar, masthead nav, sidenav, stat strip, table, aside. Below 900px the masthead nav becomes a drawer, so there is one mobile nav. |
 | `app.html` + `manifest.webmanifest` | The hub as an installed phone app: app bar, tab bar, bottom sheet, safe areas. |
 

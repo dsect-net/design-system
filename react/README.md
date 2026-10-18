@@ -108,6 +108,8 @@ the parts into layers instead, together with the Untitled UI bridge (`untitled/d
 @import "@dsect/ui/components.css" layer(components);
 ```
 
+Inside this repo, `src/lib.ts` is those same exports without the stylesheet import. The kit uses it, because `kit/src/styles.css` already loads the CSS in layers. Importing `src/index.ts` there would load the stylesheets a second time, unlayered, and the utilities would lose.
+
 ## Developing
 
 ```bash

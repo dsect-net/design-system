@@ -38,8 +38,9 @@ This is the UI system that actually ships: tokens, type, components. It is not a
 - `previews/` — one HTML file per category, each a self-contained, theme-toggleable showcase, plus two
   composed patterns (`hub.html`, `quantum.html`) built from nothing but system classes.
 - `react/` — `@dsect/ui`, typed React wrappers over the same classes. No new visual decisions.
+- `kit/` — the React gallery. Every component, the three templates, and Untitled UI recolored onto these tokens. This is the app that ships. The HTML gallery stays as the CSS contract.
 - `scripts/check.mjs` and `scripts/smoke.mjs` — the verification below.
-- `templates/` — starter pages (plain page, dashboard, installed app) with the head set up correctly.
+- `templates/` — starter pages (plain page, dashboard, installed app) kept so the check can render them. New pages are the React copies in `kit/`.
 
 Load order:
 
